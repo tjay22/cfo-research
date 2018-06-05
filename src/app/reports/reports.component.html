@@ -18,14 +18,14 @@
             <input type="text" class="form-control" id="first-name" placeholder="First Name" formControlName="firstName" value="{{ firstName }}">
             <div class="errors" role="alert" *ngIf="firstNameControl.errors">
               <div *ngIf="firstNameControl.errors.required && (firstNameControl.touched || firstNameControl.dirty)" class="alert alert-danger">Required</div>
-              <div *ngIf="firstNameControl.errors.minlength" class="alert alert-danger">Must be at least {{firstNameControl.errors.minlength.requiredLength}} letters</div>
+              <div *ngIf="firstNameControl.errors.minlength" class="alert alert-danger">Minimum {{firstNameControl.errors.minlength.requiredLength}} letters</div>
             </div>
           </div>
           <div class="col-sm-6">
             <input type="text" class="form-control" id="last-name" placeholder="Last Name" formControlName="lastName" value="{{ lastName }}">
             <div class="errors" *ngIf="lastNameControl.errors">
               <div *ngIf="lastNameControl.errors.required && (lastNameControl.touched || lastNameControl.dirty)" class="alert alert-danger">Required</div>
-              <div *ngIf="lastNameControl.errors.minlength" class="alert alert-danger">Must be at least {{lastNameControl.errors.minlength.requiredLength}} letters</div>
+              <div *ngIf="lastNameControl.errors.minlength" class="alert alert-danger">Minimum {{lastNameControl.errors.minlength.requiredLength}} letters</div>
             </div>
           </div>
         </div>
@@ -73,16 +73,20 @@
             </select>
           </div>
         </div>
-        <select id="lead_source" name="lead_source"formControlName="lead_source" style="display:none;">
-          <option value="Partner Aquisition Campaign" selected="selected">CFO Survey</option>
-        </select>
-        <select id="00N20000001DX1u" name="00N20000001DX1u" title="Sub-Source" formControlName="00N20000001DX1u" style="display:none;">
-          <option value="CFOSurveyResults" selected="selected">CFOSurveyResults</option>
-        </select>
-        <select id="rating" name="rating" formControlName="rating" style="display:none;">
-          <option value="Hot">Hot</option>
-        </select>
-        <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!reportForm.valid">Submit</button>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <select id="lead_source" name="lead_source"formControlName="lead_source" style="display:none;">
+              <option value="Partner Aquisition Campaign" selected="selected">CFO Survey</option>
+            </select>
+            <select id="00N20000001DX1u" name="00N20000001DX1u" title="Sub-Source" formControlName="00N20000001DX1u" style="display:none;">
+              <option value="CFOSurveyResults" selected="selected">CFOSurveyResults</option>
+            </select>
+            <select id="rating" name="rating" formControlName="rating" style="display:none;">
+              <option value="Hot">Hot</option>
+            </select>
+            <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!reportForm.valid">Submit</button>
+          </div>
+        </div>
       </form>
     </div>
 

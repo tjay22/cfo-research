@@ -3,9 +3,13 @@
 #section-press-release{
     color:$dark-blue;
     font-size: 1rem;
+    overflow: hidden;
 }
 #section-press-release .heading{
     margin-bottom: $heading-bottom-margin;
+}
+#section-press-release .heading h1{
+    position: relative;
 }
 #section-press-release a.btn-primary{
     background: $dark-blue;

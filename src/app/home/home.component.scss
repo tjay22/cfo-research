@@ -3,7 +3,6 @@
 #section-home{
     visibility: hidden;
     position: relative;
-    padding: $section-inner-padding;
 }
 
 /*.section-body{
@@ -21,4 +20,10 @@
 
 #section-home h1, #section-home hr, #section-home h3, #section-home p{
     position: relative;
+}
+
+@include media-breakpoint-down(sm){
+    .section-body{
+        max-width: 100%;
+    }
 }

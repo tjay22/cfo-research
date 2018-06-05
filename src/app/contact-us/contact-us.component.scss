@@ -2,6 +2,10 @@
 
 #section-contact-us{
     color: $dark-blue;
+    overflow: hidden;
+}
+#section-contact-us .heading h1{
+    position: relative;
 }
 #section-contact-us .contact-form{
     font-size:0.9rem;

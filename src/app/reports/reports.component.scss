@@ -1,5 +1,11 @@
 @import  '~sass/variables';
 
+#section-report{
+    overflow: hidden;
+}
+#section-report .heading h1{
+    position:relative;
+}
 #section-report .report-copy{
     font-size: 1.1rem;
     padding-right: 3rem;

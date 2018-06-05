@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges} from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChanges} from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DataService } from '../shared/data.service';
 
@@ -22,14 +22,14 @@ export class ContactUsComponent implements OnInit, OnChanges {
   phoneControl;
   formFilled = false;
 
-  firstName: string;
-  lastName: string;
-  company: string;
-  designation: string;
-  email: string;
-  mobile: string;
-  country: string;
-  message: string;
+  @Input() firstName: string;
+  @Input() lastName: string;
+  @Input() company: string;
+  @Input() designation: string;
+  @Input() email: string;
+  @Input() mobile: string;
+  @Input() country: string;
+  @Input() message: string;
 
   constructor(private formBuilder: FormBuilder, private data: DataService) {
     this.buildContactForm();
@@ -80,7 +80,6 @@ export class ContactUsComponent implements OnInit, OnChanges {
       .subscribe(value => {
         value && value.toLowerCase().trim();
         this.data.changeFirstName(value);
-        console.log("Contact: "+value);
       });
 
     this.lastNameControl =  this.contactForm.get('lastName');
@@ -128,11 +127,7 @@ export class ContactUsComponent implements OnInit, OnChanges {
   }
    
   ngOnInit() {
-    this.data.currentFirstName.subscribe(value => {
-      this.firstName = value;
-      //this.contactForm.get('firstName').setValue(value);
-      //console.log(value);
-    });
+    this.data.currentFirstName.subscribe(value => this.firstName = value);
     this.data.currentLastName.subscribe((value) => this.lastName = value );
     this.data.currentCompany.subscribe((value) => this.company = value );
     this.data.currentDesignation.subscribe((value) => this.designation = value );
@@ -143,7 +138,12 @@ export class ContactUsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    //this.buildContactForm();
+    /*for(let propName in changes){
+      let chng = changes[propName];
+      let cur = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+      console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+    }*/
   }
 
   onSubmitForm(){
@@ -161,6 +161,10 @@ export class ContactUsComponent implements OnInit, OnChanges {
 
       }
     }
+  }
+
+  checkValidity(input){
+    console.log(input);
   }
 
 }

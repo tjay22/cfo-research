@@ -55,3 +55,9 @@ strong{
 .slick-prev:before, .slick-next:before{
     display:none;
 }
+
+@include media-breakpoint-down(sm){
+    .container{
+        padding:$section-inner-padding-sm;
+    }
+}

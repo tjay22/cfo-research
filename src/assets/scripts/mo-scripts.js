@@ -137,6 +137,7 @@ $(document).ready(function() {
 function startAnimation(){
     //Scroll Animation
     var controller = new ScrollMagic.Controller();
+    var controller_h = new ScrollMagic.Controller({vertical:false});
 
     $('.section.fade').each(function(){
         // Create a scene for each project
@@ -157,7 +158,7 @@ function startAnimation(){
         homeSubtitle = $('#section-home h3');
     TweenMax.set(homeContent, {visibility:'visible'});
     var homeAnimation = new TimelineMax();
-    firstLoad ? homeAnimation.delay(1) : homeAnimation.delay(2);
+    firstLoad ? homeAnimation.delay(0.5) : homeAnimation.delay(2);
     homeAnimation.from(homeVideo, 1, {opacity:0});
     homeAnimation.from(homeTitle, 1, {'top':'-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
     homeAnimation.from(homeHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -182,7 +183,7 @@ function startAnimation(){
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
         overviewImage = $('#section-overview .overview-image');
     var overviewAnimation = new TimelineMax();
-    firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(1.5);
+    firstLoad ? overviewAnimation.delay(0.5) : overAnimation.delay(1.5);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewSubTitle, 1, {'left': '-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -198,5 +199,120 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-    });;
+    });
+
+    /* Insights Animation */
+    var insightsContent = '#section-insights',
+        insightsTitle = $('#section-insights .heading h1'),
+        insightsSlides = $('#section-insights .insight');
+    var insightsAnimation = new TimelineMax();
+    firstLoad ? insightsAnimation.delay(0.5) : insightsAnimation.delay(1.5);
+    insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'100%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
+    var insightsScene = new ScrollMagic.Scene({
+        triggerElement: insightsContent,
+        triggerHook: 0.5
+    })
+    .setTween(insightsAnimation)
+    .addTo(controller)
+    .on("end", function(){
+        firstLoad = false;
+    });
+
+    /* Report Animation */
+    var reportContent = '#section-report',
+        reportTitle = $('#section-report .heading h1'),
+        reportCopy = $('#section-report .report-copy'),
+        reportForm = $('#section-report .report-form'),
+        reportFormRows = $('#section-report .report-form .row');
+    var reportAnimation = new TimelineMax();
+    firstLoad ? reportAnimation.delay(0.5) : reportAnimation.delay(1.5);
+    reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    reportAnimation.from(reportCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
+    reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
+    reportAnimation.staggerFromTo(reportFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
+    var reportScene = new ScrollMagic.Scene({
+        triggerElement: reportContent
+    })
+    .setTween(reportAnimation)
+    .addTo(controller_h)
+    .on("end", function(){
+        firstLoad = false;
+    });
+
+    /* Key Findings Animation */
+    var findingsContent = '#section-presentation',
+        findingsTitle = $('#section-presentation .heading h1'),
+        findingsSlides = $('#section-presentation #findings-content');
+    var findingsAnimation = new TimelineMax();
+    firstLoad ? findingsAnimation.delay(0.5) : findingsAnimation.delay(1.5);
+    findingsAnimation.from(findingsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    findingsAnimation.from(findingsSlides, 1, {opacity:0}, "-=0.5");
+    var findingsScene = new ScrollMagic.Scene({
+        triggerElement: findingsContent
+    })
+    .setTween(findingsAnimation)
+    .addTo(controller)
+    .on("end", function(){
+        firstLoad = false;
+    });
+
+    /* Press Release Animation */
+    var prContent = '#section-press-release',
+        prTitle = $('#section-press-release .heading h1'),
+        prEnglish = $('#section-press-release .english'),
+        prArabic = $('#section-press-release .arabic');
+    var prAnimation = new TimelineMax();
+    firstLoad ? prAnimation.delay(0.5) : prAnimation.delay(1.5);
+    prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
+    prAnimation.from(prArabic, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
+    var prScene = new ScrollMagic.Scene({
+        triggerElement: prContent
+    })
+    .setTween(prAnimation)
+    .addTo(controller_h)
+    .on("end", function(){
+        firstLoad = false;
+    });
+
+    /* CPS Animation */
+    var cpsContent = '#section-cps',
+        cpsTitle = $('#section-cps .heading h1'),
+        cpsCopy = $('#section-cps .cps-copy'),
+        cpsForm = $('#section-cps .cps-form'),
+        cpsFormRows = $('#section-cps .cps-form .row');
+    var cpsAnimation = new TimelineMax();
+    firstLoad ? cpsAnimation.delay(0.5) : cpsAnimation.delay(1.5);
+    cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    cpsAnimation.from(cpsCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
+    cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
+    cpsAnimation.staggerFromTo(cpsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
+    var cpsScene = new ScrollMagic.Scene({
+        triggerElement: cpsContent
+    })
+    .setTween(cpsAnimation)
+    .addTo(controller)
+    .on("end", function(){
+        firstLoad = false;
+    });
+
+    /* Contact Us Animation */
+    var contactUsContent = '#section-contact-us',
+        contactUsTitle = $('#section-contact-us .heading h1'),
+        contactUsForm = $('#section-contact-us .contact-form'),
+        contactUsFormRows = $('#section-contact-us .contact-form .row');
+    var contactUsAnimation = new TimelineMax();
+    firstLoad ? contactUsAnimation.delay(0.5) : contactUsAnimation.delay(1.5);
+    contactUsAnimation.from(contactUsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
+    contactUsAnimation.from(contactUsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
+    contactUsAnimation.staggerFromTo(contactUsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
+    var contactUsScene = new ScrollMagic.Scene({
+        triggerElement: contactUsContent
+    })
+    .setTween(contactUsAnimation)
+    .addTo(controller)
+    .on("end", function(){
+        firstLoad = false;
+    });
 }

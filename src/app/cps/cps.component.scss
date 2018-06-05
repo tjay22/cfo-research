@@ -2,6 +2,10 @@
 
 #section-cps{
     color: $white;
+    overflow: hidden;
+}
+#section-cps .heading h1{
+    position: relative;
 }
 #section-cps .cps-form{
     font-size:0.9rem;
