@@ -1,0 +1,59 @@
+@import  '~sass/variables';
+
+#section-report .report-copy{
+    font-size: 1.1rem;
+    padding-right: 3rem;
+}
+#section-report .report-form{
+    font-size:0.9rem;
+}
+#section-report .report-form input,
+#section-report .report-form select,
+#section-report .report-form button{
+    font-size:0.8rem;
+}
+#section-report .heading-container{
+    margin-bottom: $heading-bottom-margin;
+}
+button.btn-primary,
+a.btn-primary{
+    background-color: $yellow;
+    border-color: $yellow;
+    color: $dark-blue;
+    font-family: BentonSansMedium;
+}
+#section-report .errors{
+    font-size: 0.8rem;
+}
+#section-report .alert{
+    margin-bottom:0px;
+    padding: .5rem 1.25rem;
+    position: absolute;
+    z-index: 999;
+}
+#section-report .download-report{
+    display: none;
+    text-align: center;
+    color: $yellow;
+}
+button.btn-primary .icon,
+a.btn-primary .icon{
+    width: 30px;
+    height:30px;
+    margin-left: 20px;
+    vertical-align: middle;
+    line-height: 1.5rem;
+}
+button.btn-primary .icon use,
+a.btn-primary .icon{
+    fill:$dark-blue;
+}
+a.download{
+    padding:1rem 1.5rem;
+}
+#section-report .visible{
+    display:block;
+}
+#section-report .invisible{
+    display:none;
+}

@@ -1,0 +1,73 @@
+@import '~sass/styles';
+
+.nav-highlights{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index:2000;
+    font-size: 0.8rem;
+    padding-bottom:0rem;
+}
+.nav-highlights #navbarSupportedContent{
+    margin: 0 auto;
+}
+.nav-highlights .navbar-nav{
+    flex-direction: row;
+    margin: 0 auto;
+}
+.nav-highlights .nav-item a{
+    color: $white;
+    width: 60px;
+    text-align: center;
+}
+.nav-highlights .icon-container{
+    text-align: center;
+    width:100%;
+    margin-bottom: .5rem;
+}
+.nav-highlights .icon-outline{
+    border:2px solid $light-blue;
+    width: 42px;
+    height: 42px;
+    padding: .6rem .7rem;
+    border-radius: 50%;
+    margin: 0 auto;
+    transition: all 0.2s ease-in-out;
+}
+.nav-highlights .nav-videos .icon-outline{
+    padding: .8rem .65rem;
+}
+.nav-highlights .nav-report .icon-outline{
+    padding: .7rem .8rem;
+}
+.nav-highlights .nav-item a:hover .icon-container .icon-outline{
+    box-shadow: 0 0 30px rgba($light-blue, 1);
+}
+.nav-highlights .nav-item a:hover {
+    text-shadow: 0 0 30px rgba($light-blue, 1);
+}
+.nav-highlights .icon{
+    width: 16px;
+    height: 16px;
+}
+.nav-highlights .icon use{
+    fill:$light-blue;
+}
+
+@include media-breakpoint-down(xs){
+    .nav-highlights{
+        margin-bottom: 50px;
+    }
+    .nav-highlights .nav-item a{
+        width: auto;
+    }
+    .nav-highlights .navbar-nav{
+        width: 100%;
+    }
+    .nav-highlights .navbar-nav .nav-link{
+        padding: 0;
+    }
+    .nav-highlights .icon-outline{
+        display:none;
+    }
+}

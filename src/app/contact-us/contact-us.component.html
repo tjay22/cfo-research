@@ -1,0 +1,101 @@
+<div id="section-contact-us" class="container">
+  <div class="heading-container">
+    <div class="heading">
+      <h1>Contact Us</h1>
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-md-12">
+      <form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">
+        <div class="row">
+          <div class="col-md-6">
+
+              <div class="form-group row">
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="first-name" placeholder="First Name" formControlName="firstName">
+                  <div class="errors" role="alert" *ngIf="firstNameControl.errors">
+                    <div *ngIf="firstNameControl.errors.required && (firstNameControl.touched || firstNameControl.dirty)" class="alert alert-danger">Required</div>
+                    <div *ngIf="firstNameControl.errors.minlength" class="alert alert-danger">Must be at least {{firstNameControl.errors.minlength.requiredLength}} letters</div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="last-name" placeholder="Last Name" formControlName="lastName" value="{{ lastName }}">
+                  <div class="errors" *ngIf="lastNameControl.errors">
+                    <div *ngIf="lastNameControl.errors.required && (lastNameControl.touched || lastNameControl.dirty)" class="alert alert-danger">Required</div>
+                    <div *ngIf="lastNameControl.errors.minlength" class="alert alert-danger">Must be at least {{lastNameControl.errors.minlength.requiredLength}} letters</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="company" placeholder="Company" formControlName="company" value="{{ company }}">
+                  <div class="errors" role="alert" *ngIf="companyControl.errors">
+                    <div *ngIf="companyControl.errors.required && (companyControl.touched || companyControl.dirty)" class="alert alert-danger">Required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="designation" placeholder="Designation" formControlName="designation" value="{{ designation }}">
+                  <div class="errors" role="alert" *ngIf="designationControl.errors">
+                    <div *ngIf="designationControl.errors.required && (designationControl.touched || designationControl.dirty)" class="alert alert-danger">Required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email" [email]="validateEmail" value="{{ email }}">
+                  <div class="errors" role="alert" *ngIf="emailControl.errors && (emailControl.touched || emailControl.dirty)">
+                    <div *ngIf="emailControl.errors.required" class="alert alert-danger">Required</div>
+                    <div *ngIf="emailControl.errors.pattern" class="alert alert-danger">Invalid email format</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="country-code" placeholder="Code" formControlName="countryCode" disabled>
+                </div>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="mobile" placeholder="xxxx-xxxx" formControlName="mobile" value="{{ mobile }}">
+                  <div class="errors" role="alert" *ngIf="phoneControl.errors">
+                    <div *ngIf="phoneControl.errors.required && (phoneControl.touched || phoneControl.dirty)" class="alert alert-danger">Required</div>
+                    <div *ngIf="phoneControl.errors.pattern" class="alert alert-danger">Please enter a valid number</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <select class="form-control" id="country" formControlName="country" (change)="setCountryCode(this.contactForm.value.country)">
+                    <option *ngFor="let option of countryItems" value="{{option.name}}">{{ option.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <div class="form-group">
+              <textarea class="form-control" id="message" formControlName="message" placeholder="Comments/Message" rows="10"></textarea>
+            </div>
+            <select id="lead_source" name="lead_source"formControlName="lead_source" style="display:none;">
+              <option value="Partner Aquisition Campaign" selected="selected">CFO Survey</option>
+            </select>
+            <select id="00N20000001DX1u" name="00N20000001DX1u" title="Sub-Source" formControlName="00N20000001DX1u" style="display:none;">
+              <option value="CFOSurveyResults" selected="selected">CFOSurveyResults</option>
+            </select>
+            <select id="rating" name="rating" formControlName="rating" style="display:none;">
+              <option value="Hot">Hot</option>
+            </select>
+            <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!contactForm.valid">Submit</button>
+
+          </div>
+        </div>
+        
+      </form>
+    </div>
+    <div class="confirmation col" [class.visible]="formFilled">
+      <p>Thank you for completing the form. We have received your details.</p>
+    </div>
+  </div>
+</div>

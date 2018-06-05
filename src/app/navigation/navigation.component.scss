@@ -1,0 +1,91 @@
+@import '~sass/styles';
+
+#main-nav.cfo-fixed{
+    width: 50px;
+    right: 0;
+    left: auto;
+    height: 100%;
+    padding: 0;
+}
+
+#main-nav .icon{
+    width: 24px;
+    height: 24px;
+}
+#main-nav .icon use{
+    fill: $light-blue;
+}
+
+#main-nav.cfo-fixed .nav-item{
+    background-color: rgba($dark-blue,.8);
+    width: 50px;
+    height: 50px;
+}
+
+#main-nav.cfo-fixed .nav-item a{
+    color:$light-blue;
+}
+
+#main-nav.cfo-fixed .nav-item.active a,
+#main-nav.cfo-fixed .nav-item.active use{
+    color:$white;
+    fill:$white;
+}
+
+#main-nav.navbar-expand-lg .navbar-nav{
+    flex-direction: column;
+}
+
+.popover{
+    background-color: rgba($dark-blue,.63);
+    color: $white;
+    font-family: BentonSansLight;
+}
+.popover-body{
+    color:$white;
+}
+.bs-popover-auto[x-placement^=left] .arrow::after, .bs-popover-left .arrow::after{
+    border-left-color:  rgba($dark-blue,.43);
+}
+.bs-popover-auto[x-placement^=top] .arrow::after, .bs-popover-top .arrow::after{
+    border-top-color:  rgba($dark-blue,.43);
+}
+
+/*@include media-breakpoint-up(sm) { ... }
+@include media-breakpoint-up(md) { ... }
+@include media-breakpoint-up(lg) { ... }
+@include media-breakpoint-up(xl) { ... }
+small: 576, medium: 768, large: 992, extra large:1200*/
+
+@include media-breakpoint-up(md){
+    .navbar-expand-lg .navbar-nav .nav-link{
+        padding: .5rem;
+        text-align: center;
+    }
+}
+
+@include media-breakpoint-down(xs){
+    #main-nav.cfo-fixed{
+        width: 100%;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        top: auto;
+        height: 50px;
+        padding: 0;
+    }
+    #main-nav.navbar-expand-lg .navbar-nav{
+        flex-direction: row;
+        width: 100%;
+    }
+    #main-nav #navbarSupportedContent{
+        width: 100%;
+    }
+    #main-nav.cfo-fixed .nav-item{
+        width: 16.666667%;
+        height: 50px;
+    }
+    .navbar-expand-lg .navbar-nav .nav-link{
+        padding: .8rem 1.2rem;
+    }
+}

@@ -1,0 +1,59 @@
+@import  '~sass/variables';
+
+#section-cps{
+    color: $white;
+}
+#section-cps .cps-form{
+    font-size:0.9rem;
+}
+#section-cps .cps-form,
+#section-cps .cps-form input,
+#section-cps .cps-form select,
+#section-cps .cps-form button{
+    font-size:0.8rem;
+}
+#section-cps .heading-container{
+    margin-bottom: $heading-bottom-margin;
+}
+button.btn-primary,
+a.btn-primary{
+    background-color: $yellow;
+    border-color: $yellow;
+    color: $dark-blue;
+    font-family: BentonSansMedium;
+}
+#section-cps .errors{
+    font-size: 0.8rem;
+}
+#section-cps .alert{
+    margin-bottom:0px;
+    padding: .5rem 1.25rem;
+    position: absolute;
+    z-index: 999;
+}
+#section-cps .confirmation{
+    display: none;
+    text-align: center;
+    color: $yellow;
+}
+button.btn-primary .icon,
+a.btn-primary .icon{
+    width: 30px;
+    height:30px;
+    margin-left: 20px;
+    vertical-align: middle;
+    line-height: 1.5rem;
+}
+button.btn-primary .icon use,
+a.btn-primary .icon{
+    fill:$dark-blue;
+}
+a.download{
+    padding:1rem 1.5rem;
+}
+#section-cps .visible{
+    display:block;
+}
+#section-cps .invisible{
+    display:none;
+}

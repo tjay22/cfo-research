@@ -1,0 +1,57 @@
+@import  '~sass/variables';
+
+body{
+    background-color: $primary-color;
+    color: $primary-text-color;
+    font-family: $font-stack;
+    font-size: 20px;
+}
+strong{
+    font-family: $font-stack-bold;
+}
+@include media-breakpoint-down(xs) {
+    h1{
+        font-size: 1.7em;
+    }
+    h3{
+        font-size: 1.3em;
+    }
+}
+
+/* ANIMATIONS */
+.section{
+    position: relative;
+}
+.section.fade{
+    opacity: 0;
+    transition: all 1s ease-out;
+}
+.section.fade-in{
+    opacity: 1;
+    top:0px;
+}
+
+/* GENERAL STYLES */
+.section .heading{
+    text-align: center;
+}
+.container{
+    padding:$section-inner-padding;
+}
+.arabic{
+    direction: rtl;
+    font-family: $font-arabic;
+    text-align: right;
+}
+
+/* SLICK */
+.slick-arrow{
+    display:block;
+    width:30px;
+    height:30px; 
+    position:absolute;
+    top:50%;
+}
+.slick-prev:before, .slick-next:before{
+    display:none;
+}

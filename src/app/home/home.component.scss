@@ -1,0 +1,24 @@
+@import '~sass/styles';
+
+#section-home{
+    visibility: hidden;
+    position: relative;
+    padding: $section-inner-padding;
+}
+
+/*.section-body{
+    background-color: $dark-blue;
+}*/
+
+.section-body{
+    max-width: 50%;
+}
+
+#section-home .line{
+    border:none;
+    border-bottom:3px solid $light-blue
+}
+
+#section-home h1, #section-home hr, #section-home h3, #section-home p{
+    position: relative;
+}

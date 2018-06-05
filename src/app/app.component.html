@@ -1,0 +1,46 @@
+<div id="logo">
+  <img src="../assets/svg/logo-amex.svg" class="amex-logo">
+</div>
+<app-navigation></app-navigation>
+<div id="fullpage">
+  <div class="section">
+    <!--<div id="video-bg">
+      <video autoplay muted loop playsinline id="home-video">
+        <source src="../assets/video/home_bg.webm" type="video/webm">
+        <source src="../assets/video/home_bg.mp4" type="video/mp4">
+      </video>
+    </div>-->
+    <div id="video-fallback"></div>
+    <app-home></app-home>
+  </div>
+  <div class="section fade">
+    <app-overview></app-overview>
+  </div>
+  <div class="section fade">
+    <nav-highlights></nav-highlights>
+    <div class="slide" data-anchor="insights">
+      <app-insights></app-insights>
+    </div>
+    <!--<div class="slide" data-anchor="videos"> Videos </div>-->
+    <div class="slide" data-anchor="report"> 
+        <app-reports></app-reports>  
+    </div>
+  </div>
+  <div class="section fade">
+    <nav-press-kit></nav-press-kit>
+    <div class="slide" data-anchor="presentation"> 
+      <app-presentation></app-presentation>
+    </div>
+    <div class="slide" data-anchor="press-release"> 
+      <app-press-release></app-press-release>
+    </div>
+  </div>
+  <div class="section fade" data-anchor="corporate-payment-solutions">
+    <app-cps></app-cps>
+  </div>
+  <div class="section fade" data-anchor="contact-us">
+    <app-contact-us></app-contact-us>
+  </div>
+</div>
+
+

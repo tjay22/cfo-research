@@ -1,0 +1,21 @@
+@import  '~sass/variables';
+
+#section-insights .heading{
+    margin-bottom: $heading-bottom-margin;
+}
+#insights-content{
+    margin-bottom: $heading-bottom-margin;
+}
+.insight{
+    text-align:center;
+}
+.insight-image{
+    min-width: 100%;
+    min-height: 250px;
+    background: #8b8d8e;
+}
+.insight-title{
+    background: $light-blue;
+    color: $white;
+    padding: 1rem;
+}

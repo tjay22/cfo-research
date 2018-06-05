@@ -1,0 +1,60 @@
+@import  '~sass/variables';
+
+#section-overview{
+    color:$dark-blue;
+}
+
+#section-overview .heading-container{
+    position: relative;
+    top: 0;
+}
+#section-overview .heading{
+    margin-bottom: $heading-bottom-margin;
+    width: 100%;
+}
+.heading .line{
+    border:none;
+    border-bottom:3px solid $dark-blue
+}
+
+.image-container{
+    width: 310px;
+    height: 310px;
+    margin-right: 3rem;
+    position: relative;
+}
+.overview-image{
+    width: 300px;
+    height: 300px;
+    -webkit-clip-path: url('#circle');
+    clip-path: url('#circle');
+    position: absolute;
+    left: 2.5px;
+    top: 2.5px;
+}
+.overview-image img{
+    height: 100%;
+    position: absolute;
+    right: 0;
+}
+
+#section-overview h1, #section-overview h4, #section-overview .overview-image, #section-overview #overview-content{
+    position: relative;
+}
+
+svg{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+svg #circle-stroke{
+    fill: none;
+    stroke:$dark-blue;
+    stroke-width: 5;
+    position: absolute;
+    z-index: 500;
+    top:0;
+    left: 0;
+}

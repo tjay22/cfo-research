@@ -1,0 +1,23 @@
+@import  '~sass/variables';
+
+#section-presentation{
+    color:$dark-blue;
+}
+
+#section-presentation .heading-container{
+    margin-bottom:$heading-bottom-margin;
+}
+
+#section-presentation .findings-slide{
+    width: 100%;
+    text-align: center;
+}
+#section-presentation .inner-slide{
+    width: 650px;
+    height: 350px;
+    margin: 0 auto;
+    background: $dark-blue;
+    color: $white;
+    vertical-align: middle;
+    padding: 3rem;
+}

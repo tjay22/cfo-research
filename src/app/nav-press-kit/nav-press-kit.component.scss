@@ -1,0 +1,45 @@
+@import '~sass/styles';
+
+.nav-press-kit{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index:2000;
+    font-size: 0.8rem;
+}
+.nav-press-kit .navbar-nav{
+    flex-direction: row;
+    margin: 0 auto;
+}
+.nav-press-kit .nav-item a{
+    color:$dark-blue;
+    width: 120px;
+    text-align: center;
+}
+.nav-press-kit .icon-container{
+    text-align: center;
+    width:100%;
+    margin-bottom: .5rem;
+}
+.nav-press-kit .icon-outline{
+    border:2px solid $dark-blue;
+    width: 42px;
+    height: 42px;
+    padding: .6rem .7rem;
+    border-radius: 50%;
+    margin: 0 auto;
+    transition: all 0.2s ease-in-out;
+}
+.nav-press-kit .nav-press-release .icon-outline{
+    padding: .8rem .65rem;
+}
+.nav-press-kit .nav-item a:hover .icon-container .icon-outline{
+    box-shadow: 0 0 30px rgba($dark-blue, 1);
+}
+.nav-press-kit .icon{
+    width: 16px;
+    height: 16px;
+}
+.nav-press-kit .icon use{
+    fill:$dark-blue;
+}

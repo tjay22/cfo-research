@@ -1,0 +1,50 @@
+@import  'functions', 'mixins';
+
+@font-face {
+    font-family: BentonSansLight;
+    src: url(/assets/fonts/BentonSans-Light.otf) format('opentype');
+}
+@font-face {
+    font-family: BentonSansBook;
+    src: url(/assets/fonts/BentonSans-Book.otf) format('opentype');
+}
+@font-face {
+    font-family: BentonSansRegular;
+    src: url(/assets/fonts/BentonSans-Regular.otf) format('opentype');
+}
+@font-face {
+    font-family: BentonSansMedium;
+    src: url(/assets/fonts/BentonSans-Medium.otf) format('opentype');
+}
+@font-face {
+    font-family: BentonSansBold;
+    src: url(/assets/fonts/BentonSans-Bold.otf) format('opentype');
+}
+@font-face {
+    font-family: Cairo;
+    src: url('https://fonts.googleapis.com/css?family=Cairo');
+}
+
+$dark-blue: #002337;
+$light-blue: #00a1bb;
+$white: #fff;
+$yellow: #fcb52f;
+
+$font-stack: BentonSansLight;
+$font-stack-bold: BentonSansBold;
+$font-arabic: Cairo;
+$primary-color: $dark-blue;
+$secondary-color: $light-blue;
+$primary-text-color: $white;
+$secondary-text-color: $dark-blue;
+$tertiary-text-color: $light-blue;
+
+$grid-breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px
+);
+
+$section-inner-padding: 0rem 6rem;
+$heading-bottom-margin: 3rem;

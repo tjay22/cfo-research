@@ -1,0 +1,59 @@
+@import  '~sass/variables';
+
+#section-contact-us{
+    color: $dark-blue;
+}
+#section-contact-us .contact-form{
+    font-size:0.9rem;
+}
+#section-contact-us .contact-form,
+#section-contact-us .contact-form input,
+#section-contact-us .contact-form select,
+#section-contact-us .contact-form button{
+    font-size:0.8rem;
+}
+#section-contact-us .heading-container{
+    margin-bottom: $heading-bottom-margin;
+}
+button.btn-primary,
+a.btn-primary{
+    background-color: $yellow;
+    border-color: $yellow;
+    color: $dark-blue;
+    font-family: BentonSansMedium;
+}
+#section-contact-us .errors{
+    font-size: 0.8rem;
+}
+#section-contact-us .alert{
+    margin-bottom:0px;
+    padding: .5rem 1.25rem;
+    position: absolute;
+    z-index: 999;
+}
+#section-contact-us .confirmation{
+    display: none;
+    text-align: center;
+    color: $yellow;
+}
+button.btn-primary .icon,
+a.btn-primary .icon{
+    width: 30px;
+    height:30px;
+    margin-left: 20px;
+    vertical-align: middle;
+    line-height: 1.5rem;
+}
+button.btn-primary .icon use,
+a.btn-primary .icon{
+    fill:$dark-blue;
+}
+a.download{
+    padding:1rem 1.5rem;
+}
+#section-report .visible{
+    display:block;
+}
+#section-report .invisible{
+    display:none;
+}

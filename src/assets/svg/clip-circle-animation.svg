@@ -1,0 +1,45 @@
+<svg version="1.1" id="rkX_dbhkm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve"><style type="text/css">@-webkit-keyframes HJlmOObnk7_Sy0YdW2kX_Animation {
+    0% {
+        -webkit-transform: scale(0, 0);
+                transform: scale(0, 0)
+    }
+    33.33% {
+        -webkit-transform: scale(1, 1);
+                transform: scale(1, 1)
+    }
+    100% {
+        -webkit-transform: scale(1, 1);
+                transform: scale(1, 1)
+    }
+}
+@keyframes HJlmOObnk7_Sy0YdW2kX_Animation {
+    0% {
+        -webkit-transform: scale(0, 0);
+                transform: scale(0, 0)
+    }
+    33.33% {
+        -webkit-transform: scale(1, 1);
+                transform: scale(1, 1)
+    }
+    100% {
+        -webkit-transform: scale(1, 1);
+                transform: scale(1, 1)
+    }
+}
+#rkX_dbhkm * {
+    -webkit-animation-duration: 3s;
+            animation-duration: 3s;
+    -webkit-animation-timing-function: cubic-bezier(0, 0, 1, 1);
+            animation-timing-function: cubic-bezier(0, 0, 1, 1)
+}
+#HJlmOObnk7_Sy0YdW2kX {
+    -webkit-animation-name: HJlmOObnk7_Sy0YdW2kX_Animation;
+            animation-name: HJlmOObnk7_Sy0YdW2kX_Animation;
+    -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    transform-box: fill-box;
+    -webkit-transform: scale(0, 0);
+            transform: scale(0, 0)
+}</style><style/>
+<g id="HJlmOObnk7_Sy0YdW2kX" data-animator-group="true" data-animator-type="2"><path d="M300,150c0,41.4-16.8,78.9-43.9,106.1C228.9,283.2,191.4,300,150,300s-78.9-16.8-106.1-43.9C16.8,228.9,0,191.4,0,150&#10;&#9;S16.8,71.1,43.9,43.9S108.6,0,150,0s78.9,16.8,106.1,43.9C283.2,71.1,300,108.6,300,150z" id="HJlmOObnk7"/></g>
+<script>(function(){var a=document.querySelector('#rkX_dbhkm'),b=a.querySelectorAll('style'),c=function(d){b.forEach(function(f){var g=f.textContent;g&amp;&amp;(f.textContent=g.replace(/transform-box:[^;\r\n]*/gi,'transform-box: '+d))})};c('initial'),window.requestAnimationFrame(function(){return c('fill-box')})})();</script></svg>
