@@ -37,6 +37,9 @@
     position: absolute;
     right: 0;
 }
+#section-overview .slick-arrow{
+    color: $dark-blue;
+}
 
 #section-overview h1, #section-overview h4, #section-overview .overview-image, #section-overview #overview-content{
     position: relative;

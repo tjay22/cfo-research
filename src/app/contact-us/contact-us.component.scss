@@ -13,8 +13,9 @@
 #section-contact-us .contact-form,
 #section-contact-us .contact-form input,
 #section-contact-us .contact-form select,
+#section-contact-us .contact-form textarea,
 #section-contact-us .contact-form button{
-    font-size:0.8rem;
+    font-size:1rem;
 }
 #section-contact-us .heading-container{
     margin-bottom: $heading-bottom-margin;
@@ -55,9 +56,16 @@ a.btn-primary .icon{
 a.download{
     padding:1rem 1.5rem;
 }
-#section-report .visible{
+#section-contact-us .visible{
     display:block;
 }
-#section-report .invisible{
+#section-contact-us .invisible{
     display:none;
+}
+#footer{
+    font-size: 0.6rem;
+    position: absolute;
+    bottom: 0;
+    color:$dark-blue;
+    padding: 0rem 3rem;
 }

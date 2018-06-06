@@ -51,6 +51,16 @@ strong{
     height:30px; 
     position:absolute;
     top:50%;
+    z-index: 1040;
+    font-size: 2rem;
+}
+.slick-next{
+    float: right;
+    right: -50px;
+}
+.slick-prev{
+    float: left;
+    left: -50px;
 }
 .slick-prev:before, .slick-next:before{
     display:none;

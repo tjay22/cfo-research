@@ -8,6 +8,7 @@ var screenMedium = 768;
 var screenLarge = 992;
 var screenExtraLarge = 1200;
 var screenWidth, screenHeight;
+var socialIcons, slickArrows;
 var firstLoad = true;
 
 $(document).ready(function() {
@@ -15,6 +16,8 @@ $(document).ready(function() {
     screenWidth = window.outerWidth;
     screenHeight = window.outerHeight;
     console.log(screenWidth + " x " + screenHeight);
+    socialIcons = $("#social-icons .nav-link");
+    slickArrows = $('.slick-arrow');
 
     // Initialize FullPage
     $('#fullpage').fullpage({
@@ -29,27 +32,33 @@ $(document).ready(function() {
         afterRender: function(){
             startAnimation();
             //document.getElementById('home-video').play();
+        },
+        onLeave: function(index, nextIndex, direction){
+            if( nextIndex%2 == 0 ){
+                socialIcons.css('color', darkBlue);
+                slickArrows.css('color', darkBlue);
+                console.log("blue");
+            }else{
+                socialIcons.css('color', white);
+                slickArrows.css('color', white);
+                console.log("white");
+            }
         }
     });
 
-    $('#insights-content').on('init', function(event, slick){
-        //$('.slick-arrow').attr('style', 'display:block; width:50px; height:50px; position:absolute; top:35%;');
+    /*$('#insights-content').on('init', function(event, slick){
         $('.slick-next').attr('style', 'float:right; right:-100px;');
         $('.slick-prev').attr('style', 'float:left; left:-100px;');
         $('.slick-disabled').css('display', 'none');
-    });
+    });*/
 
     $('#overview-content').slick({
         infinite: false,
-        nextArrow: `<div class="slick-button slick-next">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-right" class="icon-next" fill="`+darkBlue+`"></use>
-                        </svg>
+        nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
+                        <i class="fas fa-chevron-right fa-lg"></i>
                     </div>`,
-        prevArrow: `<div class="slick-button slick-prev">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-left" class="icon-previous" fill="`+darkBlue+`"></use>
-                        </svg>
+        prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
+                        <i class="fas fa-chevron-left fa-lg"></i>
                     </div>`   
     }).on('afterChange', function(){
         $('.slick-arrow').css('display', 'block');
@@ -58,15 +67,11 @@ $(document).ready(function() {
 
     $('#insights-content').slick({
         infinite: false,
-        nextArrow: `<div class="slick-button slick-next">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-right" class="icon-next" fill="`+white+`"></use>
-                        </svg>
+        nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
+                        <i class="fas fa-chevron-right fa-lg"></i>
                     </div>`,
-        prevArrow: `<div class="slick-button slick-prev">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-left" class="icon-previous" fill="`+white+`"></use>
-                        </svg>
+        prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
+                        <i class="fas fa-chevron-left fa-lg"></i>
                     </div>`,
         slidesToShow: 3   
     }).on('afterChange', function(){
@@ -76,24 +81,20 @@ $(document).ready(function() {
 
     $('#findings-content').slick({
         infinite: false,
-        nextArrow: `<div class="slick-button slick-next">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-right" class="icon-next" fill="`+darkBlue+`"></use>
-                        </svg>
+        nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
+                        <i class="fas fa-chevron-right fa-lg"></i>
                     </div>`,
-        prevArrow: `<div class="slick-button slick-prev">
-                        <svg viewBox="0 0 8 8" class="icon">
-                            <use xlink:href="#chevron-left" class="icon-previous" fill="`+darkBlue+`"></use>
-                        </svg>
-                    </div>`  
+        prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
+                        <i class="fas fa-chevron-left fa-lg"></i>
+                    </div>`
     }).on('afterChange', function(){
         $('.slick-arrow').css('display', 'block');
         $('.slick-disabled').css('display', 'none');
     });
 
     // Inject SVGs
-    var mySVGsToInject = document.querySelectorAll('.iconic-sprite');
-    SVGInjector(mySVGsToInject);
+    /*var mySVGsToInject = document.querySelectorAll('.iconic-sprite');
+    SVGInjector(mySVGsToInject);*/
 
     if(screenWidth > screenSmall){
 
@@ -183,7 +184,7 @@ function startAnimation(){
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
         overviewImage = $('#section-overview .overview-image');
     var overviewAnimation = new TimelineMax();
-    firstLoad ? overviewAnimation.delay(0.5) : overAnimation.delay(1.5);
+    firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewSubTitle, 1, {'left': '-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -206,7 +207,7 @@ function startAnimation(){
         insightsTitle = $('#section-insights .heading h1'),
         insightsSlides = $('#section-insights .insight');
     var insightsAnimation = new TimelineMax();
-    firstLoad ? insightsAnimation.delay(0.5) : insightsAnimation.delay(1.5);
+    firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
     insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'100%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
     var insightsScene = new ScrollMagic.Scene({
@@ -226,7 +227,7 @@ function startAnimation(){
         reportForm = $('#section-report .report-form'),
         reportFormRows = $('#section-report .report-form .row');
     var reportAnimation = new TimelineMax();
-    firstLoad ? reportAnimation.delay(0.5) : reportAnimation.delay(1.5);
+    firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
     reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     reportAnimation.from(reportCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
     reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -245,7 +246,7 @@ function startAnimation(){
         findingsTitle = $('#section-presentation .heading h1'),
         findingsSlides = $('#section-presentation #findings-content');
     var findingsAnimation = new TimelineMax();
-    firstLoad ? findingsAnimation.delay(0.5) : findingsAnimation.delay(1.5);
+    firstLoad ? findingsAnimation.delay(1) : findingsAnimation.delay(0);
     findingsAnimation.from(findingsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     findingsAnimation.from(findingsSlides, 1, {opacity:0}, "-=0.5");
     var findingsScene = new ScrollMagic.Scene({
@@ -263,7 +264,7 @@ function startAnimation(){
         prEnglish = $('#section-press-release .english'),
         prArabic = $('#section-press-release .arabic');
     var prAnimation = new TimelineMax();
-    firstLoad ? prAnimation.delay(0.5) : prAnimation.delay(1.5);
+    firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
     prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
     prAnimation.from(prArabic, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
@@ -283,7 +284,7 @@ function startAnimation(){
         cpsForm = $('#section-cps .cps-form'),
         cpsFormRows = $('#section-cps .cps-form .row');
     var cpsAnimation = new TimelineMax();
-    firstLoad ? cpsAnimation.delay(0.5) : cpsAnimation.delay(1.5);
+    firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
     cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     cpsAnimation.from(cpsCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
     cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -303,7 +304,7 @@ function startAnimation(){
         contactUsForm = $('#section-contact-us .contact-form'),
         contactUsFormRows = $('#section-contact-us .contact-form .row');
     var contactUsAnimation = new TimelineMax();
-    firstLoad ? contactUsAnimation.delay(0.5) : contactUsAnimation.delay(1.5);
+    firstLoad ? contactUsAnimation.delay(1) : contactUsAnimation.delay(0);
     contactUsAnimation.from(contactUsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     contactUsAnimation.from(contactUsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     contactUsAnimation.staggerFromTo(contactUsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);

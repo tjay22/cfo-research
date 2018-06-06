@@ -22,7 +22,6 @@
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/fullpage.js/dist/jquery.fullpage.min.css",
         "../node_modules/slick-carousel/slick/slick.css",
-        "../node_modules/slick-carousel/slick/slick-theme.css",
         "sass/styles.scss"
       ],
       "stylePreprocessorOptions": {
@@ -41,6 +40,7 @@
         "../node_modules/scrollmagic/scrollmagic/minified/plugins/animation.gsap.min.js",
         "../node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js",
         "../node_modules/slick-carousel/slick/slick.min.js",
+        "./assets/icons/fontawesome-all.min.js",
         "./assets/scripts/mo-scripts.js"
       ],
       "environmentSource": "environments/environment.ts",

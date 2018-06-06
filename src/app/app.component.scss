@@ -7,10 +7,33 @@
     left: 0;
     z-index: 2500;
     padding: 20px;
+    z-index: 900;
 }
 
 #logo .amex-logo{
     width: 80px;
+}
+
+#social-icons{
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1031;
+}
+#social-icons .navbar-nav{
+    flex-direction: row;
+}
+#social-icons .nav-item{
+    padding: .75rem 1rem;
+}
+#social-icons .nav-link{
+    padding: 0;
+}
+#social-icons .facebook .nav-link{
+    color: $white;
+}
+#social-icons .linkedin .nav-link{
+    color: $white;
 }
 
 #video-fallback{
@@ -19,7 +42,7 @@
     top: 0;
     min-width: 100%; 
     min-height: 100%;
-    background: url('../assets/jpg/introduction.jpg');
+    background: url('/assets/jpg/introduction.jpg');
     background-size: cover;
 }
 #video-bg{
