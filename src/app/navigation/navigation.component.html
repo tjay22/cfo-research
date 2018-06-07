@@ -6,39 +6,11 @@
 
   <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
     <ul class="navbar-nav mr-auto">
-      <li data-menuanchor="home" data-content="Home" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#home"> 
-          <i class="fas fa-home fa-lg"></i>
+      <li *ngFor="let link of links" [attr.data-menuanchor]="link.anchor" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
+        <a class="nav-link" href="{{link.linkhref}}"> 
+          <i class="fas {{link.icon}} fa-fw"></i>
         </a>
       </li>
-      <li data-menuanchor="overview" data-content="Overview" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#overview">
-          <i class="fas fa-eye fa-lg"></i>
-        </a>
-      </li>
-      <li data-menuanchor="highlights" data-content="Highlights" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#highlights">
-          <i class="fas fa-chart-line fa-lg"></i>
-        </a>
-      </li>
-      <li data-menuanchor="press-kit" data-content="Press Kit" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#press-kit">
-          <i class="fas fa-briefcase fa-lg"></i>
-        </a>
-      </li>
-      <li data-menuanchor="corporate-payment-solutions" data-content="Corporate Payment Solutions" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#corporate-payment-solutions">
-          <i class="fas fa-credit-card fa-lg"></i>
-        </a>
-        </li>
-      <li data-menuanchor="contact-us" data-content="Contact Us" data-toggle="popover" class="nav-item">
-        <a class="nav-link" href="#contact-us">
-          <i class="fas fa-envelope fa-lg"></i>
-        </a>
-      </li>
-      <!--<li data-menuanchor="test" class="nav-item">
-        <a class="nav-link" href="#press-kit/press-release">Test</a>
-      </li>-->
     </ul>
   </div>
 </nav>

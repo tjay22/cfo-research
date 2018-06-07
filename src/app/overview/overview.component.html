@@ -1,4 +1,4 @@
-<div id="section-overview" class="container slick-init">
+<div id="section-overview" class="container slick-init" data-anchor="overview">
   <div class="heading-container">
     <div class="heading">
       <h1>Overview</h1>
@@ -8,23 +8,30 @@
   </div>
   <div id="overview-content">
     <div>
-      <div class="image-container float-left">
-        <div class="overview-image">
-          <img src="assets/jpg/overview.jpg">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="image-container">
+            <div class="overview-image text-center">
+              <img src="assets/jpg/overview.jpg">
+              <svg>
+                <defs>
+                  <clipPath id="circle">
+                      <path id="inner-circle" class="a" d="M300,150A150,150,0,1,1,256.07,43.93,149.57,149.57,0,0,1,300,150Z" transform="translate(0)"/>
+                  </clipPath>
+                </defs>
+                <circle id='circle-stroke' cx='127.5' cy='127.5' r='125' stroke-dasharray='1000' stroke-dashoffset='1000'/>
+              </svg>
+            </div>
+            
+          </div>
         </div>
-        <svg>
-          <defs>
-            <clipPath id="circle">
-                <path id="inner-circle" class="a" d="M300,150A150,150,0,1,1,256.07,43.93,149.57,149.57,0,0,1,300,150Z" transform="translate(0)"/>
-            </clipPath>
-          </defs>
-          <circle id='circle-stroke' cx='152.5' cy='152.5' r='150' stroke-dasharray='1000' stroke-dashoffset='1000'/>
-        </svg>
+        <div class="col-md-8 text-justify">
+          <p>The 2018 Global Business &amp; Spending Outlook by American Express details Middle East's executives' views on the economic outlook, spending plans and the future of the technology. </p>
+        </div>
       </div>
-      <p>The 2018 Global Business &amp; Spending Outlook by American Express details Middle East's executives' views on the economic outlook, spending plans and the future of the technology. </p>
     </div>
     <div>
-      <p>Middle East finance executives report great confidence in the economic growth prospects for the year ahead. This optimistic climate is expected to boost business spending and investment levels thus shifting businesses in to growth mode. In 2018, the top priority for the senior executives is better meeting customers’ evolving needs with focus on new product development and mobile technology. Employment levels are also anticipated to rise. In the year ahead, more freelancers, part-time workers and temps are expected to join Middle East’s growing workforce. Visionary finance executives are taking great interest in next-generation technologies with investments in Robotics &amp; Automation and Artificial intelligence. 
+      <p class="text-justify">Middle East finance executives report great confidence in the economic growth prospects for the year ahead. This optimistic climate is expected to boost business spending and investment levels thus shifting businesses in to growth mode. In 2018, the top priority for the senior executives is better meeting customers’ evolving needs with focus on new product development and mobile technology. Employment levels are also anticipated to rise. In the year ahead, more freelancers, part-time workers and temps are expected to join Middle East’s growing workforce. Visionary finance executives are taking great interest in next-generation technologies with investments in Robotics &amp; Automation and Artificial intelligence. 
         </p>
     </div>  
   </div>

@@ -24,13 +24,13 @@
     position: relative;
 }
 .overview-image{
-    width: 300px;
-    height: 300px;
-    -webkit-clip-path: url('#circle');
-    clip-path: url('#circle');
-    position: absolute;
-    left: 2.5px;
-    top: 2.5px;
+    width: 255px;
+    height: 255px;
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    margin-left: 2.5px;
+    margin-top: 2.5px;
+    margin: 2.5px auto;
 }
 .overview-image img{
     height: 100%;

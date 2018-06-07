@@ -19,33 +19,6 @@ $(document).ready(function() {
     socialIcons = $("#social-icons .nav-link");
     slickArrows = $('.slick-arrow');
 
-    // Initialize FullPage
-    $('#fullpage').fullpage({
-        anchors: ['home', 'overview', 'highlights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
-        menu: '#main-nav',
-        controlArrows: false,
-        sectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
-        loopHorizontal: false,
-        slidesNavigation: false,
-        fitToSection: true,
-        autoScrolling: true,
-        afterRender: function(){
-            startAnimation();
-            //document.getElementById('home-video').play();
-        },
-        onLeave: function(index, nextIndex, direction){
-            if( nextIndex%2 == 0 ){
-                socialIcons.css('color', darkBlue);
-                slickArrows.css('color', darkBlue);
-                console.log("blue");
-            }else{
-                socialIcons.css('color', white);
-                slickArrows.css('color', white);
-                console.log("white");
-            }
-        }
-    });
-
     /*$('#insights-content').on('init', function(event, slick){
         $('.slick-next').attr('style', 'float:right; right:-100px;');
         $('.slick-prev').attr('style', 'float:left; left:-100px;');
@@ -60,20 +33,6 @@ $(document).ready(function() {
         prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
                         <i class="fas fa-chevron-left fa-lg"></i>
                     </div>`   
-    }).on('afterChange', function(){
-        $('.slick-arrow').css('display', 'block');
-        $('.slick-disabled').css('display', 'none');
-    });
-
-    $('#insights-content').slick({
-        infinite: false,
-        nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
-                        <i class="fas fa-chevron-right fa-lg"></i>
-                    </div>`,
-        prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
-                        <i class="fas fa-chevron-left fa-lg"></i>
-                    </div>`,
-        slidesToShow: 3   
     }).on('afterChange', function(){
         $('.slick-arrow').css('display', 'block');
         $('.slick-disabled').css('display', 'none');
@@ -98,6 +57,48 @@ $(document).ready(function() {
 
     if(screenWidth > screenSmall){
 
+         // Initialize FullPage
+        $('#fullpage').fullpage({
+            anchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
+            menu: '#main-nav',
+            controlArrows: false,
+            sectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
+            normalScrollElementTouchThreshold:1,
+            loopHorizontal: false,
+            slidesNavigation: false,
+            fitToSection: true,
+            autoScrolling: true,
+            afterRender: function(){
+                startAnimation();
+                //document.getElementById('home-video').play();
+            },
+            onLeave: function(index, nextIndex, direction){
+                if( nextIndex%2 == 0 ){
+                    socialIcons.css('color', darkBlue);
+                    slickArrows.css('color', darkBlue);
+                    console.log("blue");
+                }else{
+                    socialIcons.css('color', white);
+                    slickArrows.css('color', white);
+                    console.log("white");
+                }
+            }
+        });
+
+        $('#insights-content').slick({
+            infinite: false,
+            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
+                            <i class="fas fa-chevron-right fa-lg"></i>
+                        </div>`,
+            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
+                            <i class="fas fa-chevron-left fa-lg"></i>
+                        </div>`,
+            slidesToShow: 3   
+        }).on('afterChange', function(){
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
         // Initialize popovers
         $('[data-toggle="popover"]').popover({
             placement: 'left',
@@ -116,11 +117,55 @@ $(document).ready(function() {
         });
     }else{
 
+         // Initialize FullPage
+        $('#fullpage').fullpage({
+            anchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
+            menu: '#main-nav',
+            controlArrows: false,
+            sectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
+            loopHorizontal: false,
+            slidesNavigation: false,
+            fitToSection: true,
+            autoScrolling: false,
+            afterRender: function(){
+                startAnimation();
+                //document.getElementById('home-video').play();
+            },
+            onLeave: function(index, nextIndex, direction){
+                if( nextIndex%2 == 0 ){
+                    socialIcons.css('color', darkBlue);
+                    slickArrows.css('color', darkBlue);
+                    console.log("blue");
+                }else{
+                    socialIcons.css('color', white);
+                    slickArrows.css('color', white);
+                    console.log("white");
+                }
+            }
+        });
+
+        $('#insights-content').slick({
+            infinite: false,
+            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
+                            <i class="fas fa-chevron-right fa-lg"></i>
+                        </div>`,
+            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
+                            <i class="fas fa-chevron-left fa-lg"></i>
+                        </div>`   
+        }).on('afterChange', function(){
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
         // Initialize popovers
         $('[data-toggle="popover"]').popover({
             placement: 'top',
             trigger: 'hover'
         });
+
+        var navItemsNum = $("#main-nav .nav-item").length; 
+        var navItemsWidth = screenWidth/navItemsNum;
+        $("#main-nav .nav-item").css('width', navItemsWidth+'px');
 
         //Animation for main navigation buttons
         TweenMax.staggerFromTo("#main-nav .nav-item", 0.2, {
@@ -182,7 +227,7 @@ function startAnimation(){
         overviewHR = $('#section-overview hr'),
         overviewSlides = $('#section-overview #overview-content'),
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
-        overviewImage = $('#section-overview .overview-image');
+        overviewImage = $('#section-overview .overview-image img');
     var overviewAnimation = new TimelineMax();
     firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
@@ -209,7 +254,7 @@ function startAnimation(){
     var insightsAnimation = new TimelineMax();
     firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
     insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
-    insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'100%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
+    insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'110%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
     var insightsScene = new ScrollMagic.Scene({
         triggerElement: insightsContent,
         triggerHook: 0.5

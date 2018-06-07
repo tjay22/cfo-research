@@ -11,9 +11,9 @@ export class NavHighlightsComponent implements OnInit {
 
   constructor() {
     this.links = [
-      { title: 'Insights', stlyeclass: 'icon-insights', linkhref: '#highlights/insights', iconname: 'fa-chart-pie'},
+      { title: 'Insights', stlyeclass: 'icon-insights', linkhref: '#insights/insights', iconname: 'fa-chart-pie'},
       //{ title: 'Videos', stlyeclass: 'icon-videos', linkhref: '#highlights/videos', svgname: 'video'},
-      { title: 'Report', stlyeclass: 'icon-report', linkhref: '#highlights/report', iconname: 'fa-file-alt'}      
+      { title: 'Report', stlyeclass: 'icon-report', linkhref: '#insights/report', iconname: 'fa-file-alt'}      
     ];
    }
 

@@ -69,3 +69,11 @@ a.download{
     color:$dark-blue;
     padding: 0rem 3rem;
 }
+
+@include media-breakpoint-down(sm){
+    #footer{
+        padding: 0 auto;
+        position: relative;
+        margin-bottom: 60px;
+    }
+}

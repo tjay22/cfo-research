@@ -1,15 +1,15 @@
-<div id="section-cps" class="container">
+<div id="section-cps" class="container" data-anchor="corporate-payment-solutions">
     <div class="heading-container">
       <div class="heading">
         <h1>American Express Corporate Solutions</h1>
       </div>
     </div>
     <div class="row">
-      <div class="cps-copy col">
+      <div class="cps-copy col-md-6">
         <p>American Express provides payments solutions to large corporations and mid-sized companies worldwide. We offer the convenience of putting all your travel, entertainment and purchasing expenses across one single programme, helping you to control spending and drive savings.</p>
         <p>A full range of products and services are made available including the Corporate Card and Business Travel Account to meet the travel and entertainment and B2B spending needs of our clients.</p>
       </div>
-      <div class="cps-form col" [class.invisible]="formFilled">
+      <div class="cps-form col-md-6" [class.invisible]="formFilled">
         <p>Interested in knowing more about American Express Corporate Solutions? Please fill the form and we will get back to you. </p>
         <form novalidate *ngIf="formActive" [formGroup]="cpsForm" (ngSubmit)="onSubmitForm()">
           <div class="form-group row">
@@ -89,7 +89,7 @@
         </form>
       </div>
   
-      <div class="confirmation col" [class.visible]="formFilled">
+      <div class="confirmation col-md-6" [class.visible]="formFilled">
         <p>Thank you for contacting us. We have received your message and will respond as soon as we can.</p>
       </div>
     </div>
