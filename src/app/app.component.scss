@@ -56,9 +56,15 @@
 #video-bg #home-video{
     position: relative;
 }
+.hidden{
+    display:none;
+}
 
 @include media-breakpoint-down(xs){
     #logo .amex-logo{
         width: 60px;
+    }
+    #social-icons{
+        right: 0px;
     }
 }

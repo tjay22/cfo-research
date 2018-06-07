@@ -10,6 +10,7 @@ var screenExtraLarge = 1200;
 var screenWidth, screenHeight;
 var socialIcons, slickArrows;
 var firstLoad = true;
+var fullpageCreated = false;
 
 $(document).ready(function() {
 
@@ -18,91 +19,35 @@ $(document).ready(function() {
     console.log(screenWidth + " x " + screenHeight);
     socialIcons = $("#social-icons .nav-link");
     slickArrows = $('.slick-arrow');
+    setupPage();
 
-    /*$('#insights-content').on('init', function(event, slick){
-        $('.slick-next').attr('style', 'float:right; right:-100px;');
-        $('.slick-prev').attr('style', 'float:left; left:-100px;');
-        $('.slick-disabled').css('display', 'none');
-    });*/
+});
 
-    $('#overview-content').slick({
-        infinite: false,
-        nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
-                        <i class="fas fa-chevron-right fa-lg"></i>
-                    </div>`,
-        prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
-                        <i class="fas fa-chevron-left fa-lg"></i>
-                    </div>`   
-    }).on('afterChange', function(){
-        $('.slick-arrow').css('display', 'block');
-        $('.slick-disabled').css('display', 'none');
-    });
+$( window ).resize(function() {
+    setTimeout(function(){ 
+        screenWidth = window.outerWidth;
+        screenHeight = window.outerHeight;
+        $('.mobile').css('display', 'none');
+        $('.desktop').css('display', 'block');
+        //$.fn.fullpage.destroy('all');
+        //fullpageCreated = false;
+        setupPage();
+    }, 500);
+});
 
-    $('#findings-content').slick({
-        infinite: false,
-        nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
-                        <i class="fas fa-chevron-right fa-lg"></i>
-                    </div>`,
-        prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
-                        <i class="fas fa-chevron-left fa-lg"></i>
-                    </div>`
-    }).on('afterChange', function(){
-        $('.slick-arrow').css('display', 'block');
-        $('.slick-disabled').css('display', 'none');
-    });
-
-    // Inject SVGs
-    /*var mySVGsToInject = document.querySelectorAll('.iconic-sprite');
-    SVGInjector(mySVGsToInject);*/
+function setupPage(){
 
     if(screenWidth > screenSmall){
 
-         // Initialize FullPage
-        $('#fullpage').fullpage({
-            anchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
-            menu: '#main-nav',
-            controlArrows: false,
-            sectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
-            normalScrollElementTouchThreshold:1,
-            loopHorizontal: false,
-            slidesNavigation: false,
-            fitToSection: true,
-            autoScrolling: true,
-            afterRender: function(){
-                startAnimation();
-                //document.getElementById('home-video').play();
-            },
-            onLeave: function(index, nextIndex, direction){
-                if( nextIndex%2 == 0 ){
-                    socialIcons.css('color', darkBlue);
-                    slickArrows.css('color', darkBlue);
-                    console.log("blue");
-                }else{
-                    socialIcons.css('color', white);
-                    slickArrows.css('color', white);
-                    console.log("white");
-                }
-            }
-        });
-
-        $('#insights-content').slick({
-            infinite: false,
-            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
-                            <i class="fas fa-chevron-right fa-lg"></i>
-                        </div>`,
-            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
-                            <i class="fas fa-chevron-left fa-lg"></i>
-                        </div>`,
-            slidesToShow: 3   
-        }).on('afterChange', function(){
-            $('.slick-arrow').css('display', 'block');
-            $('.slick-disabled').css('display', 'none');
-        });
-
-        // Initialize popovers
-        $('[data-toggle="popover"]').popover({
-            placement: 'left',
-            trigger: 'hover'
+        initPage({
+            screenSize: 'large',
+            fpAnchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
+            fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
+            fpScroll: 1,
+            fpAutoScrolling: true,
+            slickSlidesNum: 3,
+            popPlacement: 'left',
+            popTrigger: 'hover'
         });
 
         //Animation for main navigation buttons
@@ -117,50 +62,15 @@ $(document).ready(function() {
         });
     }else{
 
-         // Initialize FullPage
-        $('#fullpage').fullpage({
-            anchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
-            menu: '#main-nav',
-            controlArrows: false,
-            sectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
-            loopHorizontal: false,
-            slidesNavigation: false,
-            fitToSection: true,
-            autoScrolling: false,
-            afterRender: function(){
-                startAnimation();
-                //document.getElementById('home-video').play();
-            },
-            onLeave: function(index, nextIndex, direction){
-                if( nextIndex%2 == 0 ){
-                    socialIcons.css('color', darkBlue);
-                    slickArrows.css('color', darkBlue);
-                    console.log("blue");
-                }else{
-                    socialIcons.css('color', white);
-                    slickArrows.css('color', white);
-                    console.log("white");
-                }
-            }
-        });
-
-        $('#insights-content').slick({
-            infinite: false,
-            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
-                            <i class="fas fa-chevron-right fa-lg"></i>
-                        </div>`,
-            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
-                            <i class="fas fa-chevron-left fa-lg"></i>
-                        </div>`   
-        }).on('afterChange', function(){
-            $('.slick-arrow').css('display', 'block');
-            $('.slick-disabled').css('display', 'none');
-        });
-
-        // Initialize popovers
-        $('[data-toggle="popover"]').popover({
-            placement: 'top',
-            trigger: 'hover'
+        initPage({
+            screenSize: 'small',
+            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-kit', 'press-release', 'corporate-payment-solutions', 'contact-us'],
+            fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
+            fpScroll: 1,
+            fpAutoScrolling: false,
+            slickSlidesNum: 1,
+            popPlacement: 'top',
+            popTrigger: 'hover'
         });
 
         var navItemsNum = $("#main-nav .nav-item").length; 
@@ -178,7 +88,103 @@ $(document).ready(function() {
             console.log("navigation done");
         });
     }
-});
+
+}
+
+function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrolling, slickSlidesNum, popPlacement, popTrigger}){
+
+    if(fullpageCreated === false){
+        // Initialize FullPage
+        $('#fullpage').fullpage({
+            anchors: fpAnchors,
+            menu: '#main-nav',
+            controlArrows: false,
+            sectionsColor: fpSectionsColor,
+            normalScrollElementTouchThreshold: fpScroll,
+            loopHorizontal: false,
+            slidesNavigation: false,
+            fitToSection: true,
+            autoScrolling: fpAutoScrolling,
+            afterRender: function(){
+                startAnimation();
+                //document.getElementById('home-video').play();
+            },
+            onLeave: function(index, nextIndex, direction){
+                if( nextIndex%2 == 0 ){
+                    socialIcons.css('color', darkBlue);
+                    slickArrows.css('color', darkBlue);
+                }else{
+                    socialIcons.css('color', white);
+                    slickArrows.css('color', white);
+                }
+            }
+        });
+        fullpageCreated = true;
+
+        $('#overview-content').slick({
+            infinite: false,
+            nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
+                            <i class="fas fa-chevron-right fa-lg"></i>
+                        </div>`,
+            prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
+                            <i class="fas fa-chevron-left fa-lg"></i>
+                        </div>`   
+        }).on('afterChange', function(){
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+    
+        $('#findings-content').slick({
+            infinite: false,
+            nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
+                            <i class="fas fa-chevron-right fa-lg"></i>
+                        </div>`,
+            prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
+                            <i class="fas fa-chevron-left fa-lg"></i>
+                        </div>`
+        }).on('afterChange', function(){
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
+        $('#insights-content').slick({
+            infinite: false,
+            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
+                            <i class="fas fa-chevron-right fa-lg"></i>
+                        </div>`,
+            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
+                            <i class="fas fa-chevron-left fa-lg"></i>
+                        </div>`,
+            slidesToShow: slickSlidesNum,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        }).on('afterChange', function(){
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+    }else{
+        $.fn.fullpage.reBuild();
+    }
+    
+    // Initialize popovers
+    $('[data-toggle="popover"]').popover({
+        placement: popPlacement,
+        trigger: popTrigger
+    });    
+
+}
 
 function startAnimation(){
     //Scroll Animation

@@ -13,9 +13,9 @@ import { ReportsComponent } from './reports/reports.component';
 import { PresentationComponent } from './presentation/presentation.component';
 import { PressReleaseComponent } from './press-release/press-release.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { CpsComponent } from './cps/cps.component';
 
 import { DataService } from './shared/data.service';
-import { CpsComponent } from './cps/cps.component';
 
 @NgModule({
   declarations: [

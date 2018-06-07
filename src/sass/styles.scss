@@ -22,6 +22,14 @@ strong{
     opacity: 1;
     top:0px;
 }
+.section:nth-child(odd){
+    background-color: $dark-blue;
+    color: $white;
+}
+.section:nth-child(even){
+    background-color: $white;
+    color: $dark-blue;
+}
 
 /* GENERAL STYLES */
 .section .heading{

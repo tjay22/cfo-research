@@ -12,6 +12,8 @@ export class DataService {
   private formMobile = new BehaviorSubject<string>(null);
   private formCountry = new BehaviorSubject<string>('Bahrain');
   private formMessage = new BehaviorSubject<string>(null);
+  private screenWidth = new BehaviorSubject<number>(window.innerWidth);
+  private screenHeight = new BehaviorSubject<number>(window.innerHeight);
 
   currentFirstName = this.formFirstName.asObservable();
   currentLastName = this.formLastName.asObservable();
@@ -21,6 +23,8 @@ export class DataService {
   currentMobile = this.formMobile.asObservable();
   currentCountry = this.formCountry.asObservable();
   currentMessage = this.formMessage.asObservable();
+  currentScreenWidth = this.screenWidth.asObservable();
+  currentScreenHeight = this.screenHeight.asObservable();
 
   constructor() { }
 
@@ -54,6 +58,14 @@ export class DataService {
 
   changeMessage(val: string) {
     this.formMessage.next(val);
+  }
+
+  changeScreenWidth(width: number){
+    this.screenWidth.next(width);
+  }
+
+  changeScreenHeight(height: number){
+    this.screenHeight.next(height);
   }
 
 }

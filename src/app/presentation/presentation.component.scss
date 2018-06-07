@@ -1,8 +1,5 @@
 @import  '~sass/variables';
 
-#section-presentation{
-    color:$dark-blue;
-}
 #section-presentation .heading h1{
     position: relative;
 }
@@ -18,7 +15,7 @@
     width: 650px;
     height: 350px;
     margin: 0 auto;
-    background: $dark-blue;
+    background: $light-blue;
     color: $white;
     vertical-align: middle;
     padding: 3rem;
