@@ -1,5 +1,15 @@
 @import '~sass/styles';
 
+#console{
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+    padding: 1rem;
+    font-size: 12px;
+    background-color: rgba(0,0,0,0.8);
+    color: #ffffff;
+}
+
 #logo{
     width:100%;
     position: fixed;

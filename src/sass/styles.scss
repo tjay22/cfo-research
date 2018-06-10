@@ -1,5 +1,10 @@
 @import  '~sass/variables';
 
+html{
+    overflow: hidden;
+    width:100%;
+}
+
 body{
     background-color: $primary-color;
     color: $primary-text-color;
@@ -45,6 +50,9 @@ strong{
 }
 
 /* SLICK */
+.slick-slide{
+    padding:0rem 1rem;
+}
 .slick-arrow{
     display:block;
     width:30px;
@@ -57,17 +65,26 @@ strong{
 }
 .slick-next{
     float: right;
-    right: -50px;
+    right: -60px;
 }
 .slick-prev{
     float: left;
-    left: -50px;
+    left: -60px;
 }
 .slick-prev:before, .slick-next:before{
     display:none;
 }
 
 @include media-breakpoint-down(sm){
+    body{
+        font-size: 16px;
+    }
+    h1{
+        font-size: 1.7em;
+    }
+    h3{
+        font-size: 1.3em;
+    }
     .container{
         padding:$section-inner-padding-sm;
     }
@@ -87,6 +104,9 @@ strong{
 @include media-breakpoint-down(xs) {
     body{
         font-size: 16px;
+    }
+    .container{
+        padding:$section-inner-padding-xs;
     }
     h1{
         font-size: 1.7em;

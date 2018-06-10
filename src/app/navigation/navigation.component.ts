@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { DataService } from './../shared/data.service';
 
 @Component({
   selector: 'app-navigation',
@@ -10,8 +11,16 @@ export class NavigationComponent implements OnInit {
 
   links = [];
   linksMobile = [];
+  screenWidth;
+  screenHeight;
+  desktop = true;
+  mobile = false;
+  xs = 576;
+  sm = 768;
+  md = 992;
+  lg = 1200;
 
-  constructor() {
+  constructor(private data:DataService) {
     this.links = [
       { content: 'Home', icon: 'fa-home', linkhref: '#home', anchor: 'home'},
       { content: 'Overview', icon: 'fa-eye', linkhref: '#overview', anchor: 'overview'},
@@ -35,6 +44,27 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initFullPageSections();
+  }
+
+  onResize(event){
+    //console.log(event.target);
+    this.screenWidth = event.target.innerWidth;
+    this.screenHeight = event.target.innerHeight;
+    this.data.changeScreenWidth(this.screenWidth);
+    this.data.changeScreenHeight(this.screenHeight);
+    this.initFullPageSections();
+  }
+
+  initFullPageSections(){
+    //console.log('screenWidth'+this.screenWidth);
+    if (this.screenWidth > this.xs){
+      this.desktop = true;
+      this.mobile = false;
+    }else{
+      this.desktop = false;
+      this.mobile = true;
+    }
   }
 
 }

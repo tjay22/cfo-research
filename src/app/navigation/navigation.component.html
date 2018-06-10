@@ -6,7 +6,7 @@
 
   <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
     <ul class="navbar-nav mr-auto">
-      <li *ngFor="let link of links" [attr.data-menuanchor]="link.anchor" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
+      <li *ngFor="let link of links" [attr.data-menuanchor]="link.anchor" data-placement="left" data-trigger="hover" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
         <a class="nav-link" href="{{link.linkhref}}"> 
           <i class="fas {{link.icon}} fa-fw"></i>
         </a>

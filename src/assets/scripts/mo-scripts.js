@@ -11,41 +11,108 @@ var screenWidth, screenHeight;
 var socialIcons, slickArrows;
 var firstLoad = true;
 var fullpageCreated = false;
+var slickCreated = false;
+var scrollMagicCreated = false;
+
+var controller;
+var controller_h;
+var sectionFadeScene;
+var homeAnimation, homeScene;
+var overviewAnimation, overviewScene;
+var insightsAnimation, insightsScene;
+var reportAnimation, reportScene;
+var findingsAnimation, findingsScene;
+var prAnimation, prScene;
+var cpsAnimation, cpsScene;
+var contactUsAnimation, contactUsScene;
+
+var overviewSlick;
+var findingsSlick;
+var insightsSlick;
+
+var mobile = false;
+var screenResizeCount = 0;
+var resizeId;
+
 
 $(document).ready(function() {
 
-    screenWidth = window.outerWidth;
-    screenHeight = window.outerHeight;
-    console.log(screenWidth + " x " + screenHeight);
+    screenWidth = $(window).width();
+    screenHeight = $(window).height();
+    $('#console').append('<p>Document Ready: W('+screenWidth + ") x H(" + screenHeight + ")</p>");
+
+    (screenWidth > screenSmall) ? mobile = false : mobile = true;
+
+    $('#console').append("<p>document ready mobile: "+mobile+"</p>");
+
     socialIcons = $("#social-icons .nav-link");
     slickArrows = $('.slick-arrow');
+    $('[data-toggle="popover"]').popover({
+        placement : 'left',
+        trigger : 'hover'
+    });
     setupPage();
 
 });
 
 $( window ).resize(function() {
-    setTimeout(function(){ 
-        screenWidth = window.outerWidth;
-        screenHeight = window.outerHeight;
-        $('.mobile').css('display', 'none');
-        $('.desktop').css('display', 'block');
-        //$.fn.fullpage.destroy('all');
-        //fullpageCreated = false;
-        setupPage();
-    }, 500);
+
+    screenWidth = $(window).width();
+    screenHeight = $(window).height();
+    (screenWidth > screenSmall) ? mobile = false : mobile = true;
+
+    $('#console').html("");
+    $('#console').append('<p>Window Resize: W('+screenWidth + ") x H(" + screenHeight + ")</p>");
+    $('#console').append("<p>**** Window Resize: mobile = "+mobile+" ****</p>");
+
+    if(!mobile){
+        clearTimeout(resizeId);
+        resizeId = setTimeout(function(){ 
+            
+            screenResizeCount += 1;
+            screenWidth = window.outerWidth;
+            screenHeight = window.outerHeight;
+            //$('#console').append('<p>Screen has been resized '+ screenResizeCount +' times</p>');
+            $('#console').append("<p>===== Screen Resized "+ screenResizeCount +" times ====</p>");
+            //console.log(screenWidth + " x " + screenHeight);
+            /*overviewSlick = $('#overview-content').slick('unslick');
+            findingsSlick = $('#findings-content').slick('unslick');
+            insightsSlick = $('#insights-content').slick('unslick');*/
+            /*homeAnimation.progress(0); homeScene.setTween(homeAnimation);
+            overviewAnimation.progress(0); overviewScene.setTween(overviewAnimation);
+            insightsAnimation.progress(0); insightsScene.setTween(insightsAnimation);
+            reportAnimation.progress(0); reportScene.setTween(reportAnimation);
+            findingsAnimation.progress(0); findingsScene.setTween(findingsAnimation);
+            prAnimation.progress(0); prScene.setTween(prAnimation);
+            cpsAnimation.progress(0); cpsScene.setTween(cpsAnimation);
+            contactUsAnimation.progress(0); contactUsScene.setTween(contactUsAnimation);*/
+            $.fn.fullpage.destroy('all');
+            fullpageCreated = false;
+            setupPage();
+        }, 1000);
+    }else{
+        screenResizeCount += 1;
+    }
+    if(mobile && screenResizeCount > 0){
+        $('#console').append("<p>function not supported as browser is not on a mobile</p>");
+    }
 });
 
 function setupPage(){
 
-    if(screenWidth > screenSmall){
+    if(!mobile){
+
+        $('.mobile').css('display', 'none');
+        $('.desktop').css('display', 'block');
+        //$('#console').html('<p>ScreenWidth is bigger than 576px</p>');
 
         initPage({
             screenSize: 'large',
+            fpID: '#fullpage-desktop',
             fpAnchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
             fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
             fpScroll: 1,
             fpAutoScrolling: true,
-            slickSlidesNum: 3,
             popPlacement: 'left',
             popTrigger: 'hover'
         });
@@ -58,17 +125,21 @@ function setupPage(){
             x: 0,
             delay: 0.5
         }, 0.1, function(){
-            console.log("done");
+            $('#console').append("<p>desktop navigation done</p>");
         });
     }else{
 
+        //$('#console').html('<p>ScreenWidth is smaller than 576px</p>');
+        $('.mobile').css('display', 'block');
+        $('.desktop').css('display', 'none');
+
         initPage({
             screenSize: 'small',
+            fpID: '#fullpage-mobile',
             fpAnchors: ['home', 'overview', 'insights', 'report', 'press-kit', 'press-release', 'corporate-payment-solutions', 'contact-us'],
             fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
             fpScroll: 1,
             fpAutoScrolling: false,
-            slickSlidesNum: 1,
             popPlacement: 'top',
             popTrigger: 'hover'
         });
@@ -85,17 +156,18 @@ function setupPage(){
             y: 0,
             delay: 0.5
         }, 0.1, function(){
-            console.log("navigation done");
+            $('#console').append("<p>mobile navigation done</p>");
         });
     }
 
 }
 
-function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrolling, slickSlidesNum, popPlacement, popTrigger}){
+function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrolling, popPlacement, popTrigger}){
 
     if(fullpageCreated === false){
+
         // Initialize FullPage
-        $('#fullpage').fullpage({
+        $(fpID).fullpage({
             anchors: fpAnchors,
             menu: '#main-nav',
             controlArrows: false,
@@ -106,7 +178,35 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
             fitToSection: true,
             autoScrolling: fpAutoScrolling,
             afterRender: function(){
-                startAnimation();
+                if(scrollMagicCreated === false){
+                    $('#console').append("<p>ScrollMagic created on "+fpID+"</p>");
+                    startAnimation();
+                    scrollMagicCreated = true;
+                }else{
+                    $('#console').append("<p>ScrollMagic destroyed on "+fpID+"</p>");
+                    /*controller.destroy();
+                    controller_h.destroy();
+                    sectionFadeScene.destroy();
+                    homeScene.destroy();
+                    overviewScene.destroy();
+                    insightsScene.destroy();
+                    reportScene.destroy();
+                    findingsScene.destroy();
+                    prScene.destroy();
+                    cpsScene.destroy();
+                    contactUsScene.destroy();*/
+                    //controller, controller_h, sectionFadeScene, homeScene, homeAnimation, overviewScene, overviewAnimation, insightsScene, insightsAnimation, reportScene, reportAnimation, findingsScene, findingsAnimation, prScene, prAnimation, cpsScene, cpsAnimation, contactUsScene, contactUsAnimation = null;
+                    /*homeScene.progress(0);
+                    overviewScene.progress(0);
+                    insightsScene.progress(0);
+                    reportScene.progress(0);
+                    findingsScene.progress(0);
+                    prScene.progress(0);
+                    cpsScene.progress(0);
+                    contactUsScene.progress(0);*/
+                    startAnimation();
+                    //scrollMagicCreated = false;
+                }
                 //document.getElementById('home-video').play();
             },
             onLeave: function(index, nextIndex, direction){
@@ -119,9 +219,11 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
                 }
             }
         });
+        
+        $.fn.fullpage.moveTo(1, 0);
         fullpageCreated = true;
 
-        $('#overview-content').slick({
+        overviewSlick = $('#overview-content').not('.slick-initialized').slick({
             infinite: false,
             nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
                             <i class="fas fa-chevron-right fa-lg"></i>
@@ -134,7 +236,7 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
             $('.slick-disabled').css('display', 'none');
         });
     
-        $('#findings-content').slick({
+        findingsSlick = $('#findings-content').not('.slick-initialized').slick({
             infinite: false,
             nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
                             <i class="fas fa-chevron-right fa-lg"></i>
@@ -147,7 +249,7 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
             $('.slick-disabled').css('display', 'none');
         });
 
-        $('#insights-content').slick({
+        insightsSlick = $('#insights-content').not('.slick-initialized').slick({
             infinite: false,
             nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
                             <i class="fas fa-chevron-right fa-lg"></i>
@@ -155,16 +257,16 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
             prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
                             <i class="fas fa-chevron-left fa-lg"></i>
                         </div>`,
-            slidesToShow: slickSlidesNum,
+            slidesToShow: 3,
             responsive: [
                 {
-                    breakpoint: 1200,
+                    breakpoint: screenExtraLarge,
                     settings: {
                         slidesToShow: 3
                     }
                 },
                 {
-                    breakpoint: 768,
+                    breakpoint: screenLarge,
                     settings: {
                         slidesToShow: 1
                     }
@@ -174,26 +276,34 @@ function initPage({screenSize, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrol
             $('.slick-arrow').css('display', 'block');
             $('.slick-disabled').css('display', 'none');
         });
+
+        // Initialize popovers
+        /*$('[data-toggle="popover"]').data('placement', popPlacement);
+        $('[data-toggle="popover"]').data('trigger', popTrigger);
+        $('[data-toggle="popover"]').popover('update');*/
+        /*$('[data-toggle="popover"]').popover('update', {
+            placement: popPlacement,
+            trigger: popTrigger
+        });*/
+
     }else{
         $.fn.fullpage.reBuild();
-    }
-    
-    // Initialize popovers
-    $('[data-toggle="popover"]').popover({
-        placement: popPlacement,
-        trigger: popTrigger
-    });    
+        $('#console').append("<p>Full Page is false</p>");
+    }  
 
 }
 
 function startAnimation(){
+
     //Scroll Animation
-    var controller = new ScrollMagic.Controller();
-    var controller_h = new ScrollMagic.Controller({vertical:false});
+    controller = new ScrollMagic.Controller();
+    controller_h = new ScrollMagic.Controller({vertical:false});
+
+    $('#console').append("<p>Start Animation</p>");
 
     $('.section.fade').each(function(){
         // Create a scene for each project
-        var myScene = new ScrollMagic.Scene({
+        sectionFadeScene = new ScrollMagic.Scene({
             triggerElement: this,
             triggerHook: 0.8
         })
@@ -209,13 +319,13 @@ function startAnimation(){
         homeHR = $('#section-home hr'),
         homeSubtitle = $('#section-home h3');
     TweenMax.set(homeContent, {visibility:'visible'});
-    var homeAnimation = new TimelineMax();
+    homeAnimation = new TimelineMax();
     firstLoad ? homeAnimation.delay(0.5) : homeAnimation.delay(2);
     homeAnimation.from(homeVideo, 1, {opacity:0});
     homeAnimation.from(homeTitle, 1, {'top':'-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
     homeAnimation.from(homeHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
     homeAnimation.from(homeSubtitle, 1, {'left':'-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
-    var homeScene = new ScrollMagic.Scene({
+    homeScene = new ScrollMagic.Scene({
         triggerElement: 'body',
         triggerHook: 0.5
     })
@@ -224,6 +334,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Home Animation Done</p>");
     });
 
     /* Overview Animation */ 
@@ -234,7 +345,7 @@ function startAnimation(){
         overviewSlides = $('#section-overview #overview-content'),
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
         overviewImage = $('#section-overview .overview-image img');
-    var overviewAnimation = new TimelineMax();
+    overviewAnimation = new TimelineMax();
     firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewSubTitle, 1, {'left': '-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
@@ -242,7 +353,7 @@ function startAnimation(){
     overviewAnimation.from(overviewSlides, 1, {'right': '-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
     overviewAnimation.add(TweenMax.to(overviewSVGStroke, 1, {strokeDashoffset: 0, ease:Linear.easeNone}), "-=1");
     overviewAnimation.from(overviewImage, 1, {opacity:0, ease:Power4.easeOut});
-    var overviewScene = new ScrollMagic.Scene({
+    overviewScene = new ScrollMagic.Scene({
         triggerElement: overviewContent,
         triggerHook: 0.5
     })
@@ -251,17 +362,18 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Overview Animation Done</p>");
     });
 
     /* Insights Animation */
     var insightsContent = '#section-insights',
         insightsTitle = $('#section-insights .heading h1'),
         insightsSlides = $('#section-insights .insight');
-    var insightsAnimation = new TimelineMax();
+    insightsAnimation = new TimelineMax();
     firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
     insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'110%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
-    var insightsScene = new ScrollMagic.Scene({
+    insightsScene = new ScrollMagic.Scene({
         triggerElement: insightsContent,
         triggerHook: 0.5
     })
@@ -269,6 +381,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Insights Animation Done</p>");
     });
 
     /* Report Animation */
@@ -277,36 +390,39 @@ function startAnimation(){
         reportCopy = $('#section-report .report-copy'),
         reportForm = $('#section-report .report-form'),
         reportFormRows = $('#section-report .report-form .row');
-    var reportAnimation = new TimelineMax();
+    var reportController = mobile ? controller : controller_h    
+    reportAnimation = new TimelineMax();
     firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
     reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     reportAnimation.from(reportCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
     reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     reportAnimation.staggerFromTo(reportFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
-    var reportScene = new ScrollMagic.Scene({
+    reportScene = new ScrollMagic.Scene({
         triggerElement: reportContent
     })
     .setTween(reportAnimation)
-    .addTo(controller_h)
+    .addTo(reportController)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Report Animation Done</p>");
     });
 
     /* Key Findings Animation */
     var findingsContent = '#section-presentation',
         findingsTitle = $('#section-presentation .heading h1'),
         findingsSlides = $('#section-presentation #findings-content');
-    var findingsAnimation = new TimelineMax();
+    findingsAnimation = new TimelineMax();
     firstLoad ? findingsAnimation.delay(1) : findingsAnimation.delay(0);
     findingsAnimation.from(findingsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     findingsAnimation.from(findingsSlides, 1, {opacity:0}, "-=0.5");
-    var findingsScene = new ScrollMagic.Scene({
+    findingsScene = new ScrollMagic.Scene({
         triggerElement: findingsContent
     })
     .setTween(findingsAnimation)
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Findings Animation Done</p>");
     });
 
     /* Press Release Animation */
@@ -314,18 +430,20 @@ function startAnimation(){
         prTitle = $('#section-press-release .heading h1'),
         prEnglish = $('#section-press-release .english'),
         prArabic = $('#section-press-release .arabic');
-    var prAnimation = new TimelineMax();
+    var prController = mobile ? controller : controller_h    
+    prAnimation = new TimelineMax();
     firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
     prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
     prAnimation.from(prArabic, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
-    var prScene = new ScrollMagic.Scene({
+    prScene = new ScrollMagic.Scene({
         triggerElement: prContent
     })
     .setTween(prAnimation)
-    .addTo(controller_h)
+    .addTo(prController)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>PR Animation Done</p>");
     });
 
     /* CPS Animation */
@@ -334,19 +452,20 @@ function startAnimation(){
         cpsCopy = $('#section-cps .cps-copy'),
         cpsForm = $('#section-cps .cps-form'),
         cpsFormRows = $('#section-cps .cps-form .row');
-    var cpsAnimation = new TimelineMax();
+    cpsAnimation = new TimelineMax();
     firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
     cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     cpsAnimation.from(cpsCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
     cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     cpsAnimation.staggerFromTo(cpsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
-    var cpsScene = new ScrollMagic.Scene({
+    cpsScene = new ScrollMagic.Scene({
         triggerElement: cpsContent
     })
     .setTween(cpsAnimation)
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>CPS Animation Done</p>");
     });
 
     /* Contact Us Animation */
@@ -354,17 +473,18 @@ function startAnimation(){
         contactUsTitle = $('#section-contact-us .heading h1'),
         contactUsForm = $('#section-contact-us .contact-form'),
         contactUsFormRows = $('#section-contact-us .contact-form .row');
-    var contactUsAnimation = new TimelineMax();
+    contactUsAnimation = new TimelineMax();
     firstLoad ? contactUsAnimation.delay(1) : contactUsAnimation.delay(0);
     contactUsAnimation.from(contactUsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     contactUsAnimation.from(contactUsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     contactUsAnimation.staggerFromTo(contactUsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
-    var contactUsScene = new ScrollMagic.Scene({
+    contactUsScene = new ScrollMagic.Scene({
         triggerElement: contactUsContent
     })
     .setTween(contactUsAnimation)
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
+        $('#console').append("<p>Contact Us Animation Done</p>");
     });
 }

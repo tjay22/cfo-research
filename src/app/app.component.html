@@ -18,7 +18,7 @@
     </ul>
   </div>
   <app-navigation></app-navigation>
-  <div id="fullpage" *ngIf="desktop" [class.hidden]="!desktop" class="desktop">
+  <div id="fullpage-desktop" *ngIf="desktop" [class.hidden]="!desktop">
     <div class="section">
       <div id="video-fallback" data-anchor="home"></div>
       <app-home></app-home>
@@ -51,7 +51,7 @@
       <app-contact-us></app-contact-us>
     </div>  
   </div>
-  <div id="fullpage" *ngIf="!desktop" [class.hidden]="desktop" class="mobile">
+  <div id="fullpage-mobile" *ngIf="!desktop" [class.hidden]="desktop">
       <div class="section">
         <div id="video-fallback" data-anchor="home"></div>
         <app-home></app-home>
@@ -119,6 +119,8 @@
     </div>
   </div>
 </div>-->
-
+<div id="console">
+  
+</div>
 
 

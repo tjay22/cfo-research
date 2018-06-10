@@ -42,11 +42,11 @@ export class AppComponent implements OnInit {
   }
 
   initFullPageSections(){
-    console.log('screenWidth'+this.screenWidth);
-    if (this.screenWidth > this.sm){
+    //console.log('screenWidth'+this.screenWidth);
+    if (this.screenWidth > this.xs){
       this.desktop = true;
       this.mobile = false;
-
+      console.log("App Component: desktop = true");
       /*this.fpsections = [
         {
           fpname: 'home', 
@@ -100,6 +100,7 @@ export class AppComponent implements OnInit {
     }else{
       this.desktop = false;
       this.mobile = true;
+      console.log("App Component: desktop = false");
       this.fpsections = [
         {
           'home' : '<app-home></app-home>',
