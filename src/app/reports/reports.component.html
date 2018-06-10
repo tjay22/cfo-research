@@ -5,12 +5,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="report-copy col-md-6">
+    <div class="report-copy col-md-12 col-lg-6">
       <h3>The 2018 Global Business &amp; Spending Outlook</h3>
       <br>
-      <p>The cross-industry findings in the joint American Express and Institutional Investor study are based on a survey of 870 CFOs and other senior finance executives at companies with annual revenue of $500 million or more from more than 21 countries worldwide. And for the first time in its 11-year history, the study includes respondents from the Middle East region – particularly the UAE, Egypt, Saudi Arabia, and Qatar – adding to its holistic view of a dynamic global services economy.</p>
+      <p>The cross-industry findings in the joint American Express and Institutional Investor study are based on a survey of 870 CFOs and other senior finance executives at companies with annual revenue of $500 million or more from more than 21 countries worldwide. And for the first time in its 11-year history, the study includes respondents from the Middle East region adding to its holistic view of a dynamic global services economy.</p>
     </div>
-    <div class="report-form col-md-6" [class.invisible]="downloadable">
+    <div class="report-form col-md-12 col-lg-6" [class.invisible]="downloadable">
       <p>Please complete the form to access the report.</p>
       <form novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">
         <div class="form-group row">
@@ -90,12 +90,10 @@
       </form>
     </div>
 
-    <div class="download-report col-md-6" [class.visible]="downloadable">
+    <div class="download-report col-md-12 col-lg-6" [class.visible]="downloadable">
       <p>Thank you for completing the form. We have received your details. The report is now ready to be downloaded</p>
-      <a class="download btn btn-primary" href="../../assets/pdf/cfo_research.pdf" download="cfo_research.pdf"> Download Report 
-        <svg viewBox="0 0 8 8" class="icon">
-            <use xlink:href="#data-transfer-download" class="icon-next"></use>
-        </svg>
+      <a class="download btn btn-primary" href="../../assets/pdf/cfo_research.pdf" download="2018 Global Business & Spending Outlook.pdf"> Download Report 
+        <i class="fas fa-download"></i>
       </a>
     </div>
   </div>

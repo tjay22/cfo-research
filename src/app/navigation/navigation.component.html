@@ -1,4 +1,4 @@
-<nav id="main-nav" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light">
+<nav id="main-nav" *ngIf="desktop" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light"  (window:resize)="onResize($event)" [class.hidden]="!desktop">
 
   <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -7,6 +7,23 @@
   <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
     <ul class="navbar-nav mr-auto">
       <li *ngFor="let link of links" [attr.data-menuanchor]="link.anchor" data-placement="left" data-trigger="hover" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
+        <a class="nav-link" href="{{link.linkhref}}"> 
+          <i class="fas {{link.icon}} fa-fw"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<nav id="main-nav" *ngIf="!desktop" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light" [class.hidden]="desktop">
+
+  <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>-->
+
+  <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
+    <ul class="navbar-nav mr-auto">
+      <li *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" data-placement="left" data-trigger="hover" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
         <a class="nav-link" href="{{link.linkhref}}"> 
           <i class="fas {{link.icon}} fa-fw"></i>
         </a>

@@ -25,7 +25,7 @@ export class NavigationComponent implements OnInit {
       { content: 'Home', icon: 'fa-home', linkhref: '#home', anchor: 'home'},
       { content: 'Overview', icon: 'fa-eye', linkhref: '#overview', anchor: 'overview'},
       { content: 'Insights', icon: 'fa-chart-line', linkhref: '#insights', anchor: 'insights'},
-      { content: 'Press Kit', icon: 'fa-briefcase', linkhref: '#press-kit', anchor: 'press-kit'},
+      { content: 'Press Information', icon: 'fa-briefcase', linkhref: '#press-information', anchor: 'press-information'},
       { content: 'Corporate Payment Solutions', icon: 'fa-credit-card', linkhref: '#corporate-payment-solutions', anchor: 'corporate-payment-solutions'},
       { content: 'Contact Us', icon: 'fa-envelope', linkhref: '#contact-us', anchor: 'contact-us'}
     ];
@@ -34,8 +34,8 @@ export class NavigationComponent implements OnInit {
       { content: 'Home', icon: 'fa-home', linkhref: '#home', anchor: 'home'},
       { content: 'Overview', icon: 'fa-eye', linkhref: '#overview', anchor: 'overview'},
       { content: 'Insights', icon: 'fa-chart-line', linkhref: '#insights', anchor: 'highlights'},
-      { content: 'Report', icon: 'fa-document', linkhref: '#report', anchor: 'report'},
-      { content: 'Press Kit', icon: 'fa-briefcase', linkhref: '#press-kit', anchor: 'press-kit'},
+      { content: 'Report', icon: 'fa-file', linkhref: '#report', anchor: 'report'},
+      { content: 'Press Information', icon: 'fa-briefcase', linkhref: '#press-information', anchor: 'press-information'},
       { content: 'Press Release', icon: 'fa-bullhorn', linkhref: '#press-release', anchor: 'press-release'},
       { content: 'Corporate Payment Solutions', icon: 'fa-credit-card', linkhref: '#corporate-payment-solutions', anchor: 'corporate-payment-solutions'},
       { content: 'Contact Us', icon: 'fa-envelope', linkhref: '#contact-us', anchor: 'contact-us'}
@@ -44,7 +44,9 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initFullPageSections();
+    this.initNavigation();
+    this.screenWidth = this.data.currentScreenWidth;
+    this.screenHeight = this.data.currentScreenHeight;
   }
 
   onResize(event){
@@ -53,14 +55,14 @@ export class NavigationComponent implements OnInit {
     this.screenHeight = event.target.innerHeight;
     this.data.changeScreenWidth(this.screenWidth);
     this.data.changeScreenHeight(this.screenHeight);
-    this.initFullPageSections();
+    this.initNavigation();
   }
 
-  initFullPageSections(){
-    //console.log('screenWidth'+this.screenWidth);
+  initNavigation(){
     if (this.screenWidth > this.xs){
       this.desktop = true;
       this.mobile = false;
+      console.log("Navigation Component screenWidth: "+this.screenWidth);
     }else{
       this.desktop = false;
       this.mobile = true;

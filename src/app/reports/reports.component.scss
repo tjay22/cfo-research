@@ -63,3 +63,10 @@ a.download{
 #section-report .invisible{
     display:none;
 }
+
+@include media-breakpoint-down(sm){
+    #section-report .report-copy{
+        font-size: 1rem;
+        padding-right: 0rem;
+    }
+}

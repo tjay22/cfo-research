@@ -43,6 +43,9 @@ strong{
 .container{
     padding:$section-inner-padding;
 }
+.container .col{
+    margin-bottom: 1rem;
+}
 .arabic{
     direction: rtl;
     font-family: $font-arabic;
@@ -94,10 +97,10 @@ strong{
         font-size: 1.5rem;
     }
     .slick-next{
-        right: -25px;
+        right: -50px;
     }
     .slick-prev{
-        left: -25px;
+        left: -50px;
     }
 }
 
@@ -113,5 +116,12 @@ strong{
     }
     h3{
         font-size: 1.3em;
+    }
+
+    .slick-next{
+        right: -25px;
+    }
+    .slick-prev{
+        left: -25px;
     }
 }

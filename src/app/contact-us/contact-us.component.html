@@ -9,7 +9,7 @@
       <p>Have a query or a comment? Just send us a message using this form. </p>
       <form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12 col-lg-6">
 
               <div class="form-group row">
                 <div class="col-sm-6">
@@ -74,7 +74,7 @@
 
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-12 col-lg-6">
 
             <div class="form-group row">
               <div class="col-sm-12">
@@ -101,8 +101,7 @@
       </form>
     </div>
     <div class="confirmation col" [class.visible]="formFilled">
-      <p>Thank you for contacting us. We have received your message and will respond as soon as we can. 
-        </p>
+      <p>Thank you for contacting us. We have received your message and will respond as soon as we can.</p>
     </div>
   </div>
 </div>

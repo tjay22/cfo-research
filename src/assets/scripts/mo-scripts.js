@@ -1,13 +1,13 @@
 //import { TweenMax, TimelineMax, TimelineLite } from "gsap";
 
-var darkBlue = '#002337';
-var lightBlue = '#00a1bb';
-var white = '#fff';
+var darkBlue = "#002337";
+var lightBlue = "#00a1bb";
+var white = "#fff";
 var screenSmall = 576;
 var screenMedium = 768;
 var screenLarge = 992;
 var screenExtraLarge = 1200;
-var screenWidth, screenHeight;
+var screenWidth, prevScreenWidth, screenHeight, prevScreenHeight;
 var socialIcons, slickArrows;
 var firstLoad = true;
 var fullpageCreated = false;
@@ -39,14 +39,15 @@ $(document).ready(function() {
 
     screenWidth = $(window).width();
     screenHeight = $(window).height();
-    $('#console').append('<p>Document Ready: W('+screenWidth + ") x H(" + screenHeight + ")</p>");
+    prevScreenWidth = screenWidth;
+    $('#console').append("<p>Document Ready: W("+screenWidth + ") x H(" + screenHeight + ")</p>");
 
     (screenWidth > screenSmall) ? mobile = false : mobile = true;
 
-    $('#console').append("<p>document ready mobile: "+mobile+"</p>");
+    $("#console").append("<p>document ready mobile: "+mobile+"</p>");
 
     socialIcons = $("#social-icons .nav-link");
-    slickArrows = $('.slick-arrow');
+    slickArrows = $(".slick-arrow");
     $('[data-toggle="popover"]').popover({
         placement : 'left',
         trigger : 'hover'
@@ -61,19 +62,18 @@ $( window ).resize(function() {
     screenHeight = $(window).height();
     (screenWidth > screenSmall) ? mobile = false : mobile = true;
 
-    $('#console').html("");
-    $('#console').append('<p>Window Resize: W('+screenWidth + ") x H(" + screenHeight + ")</p>");
-    $('#console').append("<p>**** Window Resize: mobile = "+mobile+" ****</p>");
+    $("#console").html("");
+    $("#console").append("<p>Window Resize: W("+screenWidth + ") x H(" + screenHeight + ")</p>");
+    $("#console").append("<p>**** Window Resize: mobile = "+mobile+" ****</p>");
 
-    if(!mobile){
+    if(!mobile && screenWidth != prevScreenWidth){
         clearTimeout(resizeId);
         resizeId = setTimeout(function(){ 
-            
             screenResizeCount += 1;
             screenWidth = window.outerWidth;
             screenHeight = window.outerHeight;
             //$('#console').append('<p>Screen has been resized '+ screenResizeCount +' times</p>');
-            $('#console').append("<p>===== Screen Resized "+ screenResizeCount +" times ====</p>");
+            $("#console").append("<p>===== Screen Resized "+ screenResizeCount +" times ====</p>");
             //console.log(screenWidth + " x " + screenHeight);
             /*overviewSlick = $('#overview-content').slick('unslick');
             findingsSlick = $('#findings-content').slick('unslick');
@@ -90,11 +90,9 @@ $( window ).resize(function() {
             fullpageCreated = false;
             setupPage();
         }, 1000);
-    }else{
-        screenResizeCount += 1;
     }
     if(mobile && screenResizeCount > 0){
-        $('#console').append("<p>function not supported as browser is not on a mobile</p>");
+        $("#console").append("<p>function not supported as browser is not on a mobile</p>");
     }
 });
 
@@ -107,9 +105,9 @@ function setupPage(){
         //$('#console').html('<p>ScreenWidth is bigger than 576px</p>');
 
         initPage({
-            screenSize: 'large',
+            'screenSize': 'large',
             fpID: '#fullpage-desktop',
-            fpAnchors: ['home', 'overview', 'insights', 'press-kit', 'corporate-payment-solutions', 'contact-us'],
+            fpAnchors: ['home', 'overview', 'insights', 'press-information', 'corporate-payment-solutions', 'contact-us'],
             fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white],
             fpScroll: 1,
             fpAutoScrolling: true,
@@ -125,7 +123,7 @@ function setupPage(){
             x: 0,
             delay: 0.5
         }, 0.1, function(){
-            $('#console').append("<p>desktop navigation done</p>");
+            $("#console").append("<p>desktop navigation done</p>");
         });
     }else{
 
@@ -136,7 +134,7 @@ function setupPage(){
         initPage({
             screenSize: 'small',
             fpID: '#fullpage-mobile',
-            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-kit', 'press-release', 'corporate-payment-solutions', 'contact-us'],
+            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-information', 'press-release', 'corporate-payment-solutions', 'contact-us'],
             fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
             fpScroll: 1,
             fpAutoScrolling: false,
@@ -156,13 +154,21 @@ function setupPage(){
             y: 0,
             delay: 0.5
         }, 0.1, function(){
-            $('#console').append("<p>mobile navigation done</p>");
+            $("#console").append("<p>mobile navigation done</p>");
         });
     }
 
 }
 
-function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAutoScrolling, popPlacement, popTrigger}){
+function initPage(_ref){
+    var screenSize = _ref.screenSize,
+        fpID = _ref.fpID,
+        fpAnchors = _ref.fpAnchors,
+        fpSectionsColor = _ref.fpSectionsColor,
+        fpScroll = _ref.fpScroll,
+        fpAutoScrolling = _ref.fpAutoScrolling,
+        popPlacement = _ref.popPlacement,
+        popTrigger = _ref.popTrigger;
 
     if(fullpageCreated === false){
 
@@ -179,11 +185,11 @@ function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAut
             autoScrolling: fpAutoScrolling,
             afterRender: function(){
                 if(scrollMagicCreated === false){
-                    $('#console').append("<p>ScrollMagic created on "+fpID+"</p>");
+                    $("#console").append("<p>ScrollMagic created on "+fpID+"</p>");
                     startAnimation();
                     scrollMagicCreated = true;
                 }else{
-                    $('#console').append("<p>ScrollMagic destroyed on "+fpID+"</p>");
+                    $("#console").append("<p>ScrollMagic destroyed on "+fpID+"</p>");
                     /*controller.destroy();
                     controller_h.destroy();
                     sectionFadeScene.destroy();
@@ -224,6 +230,45 @@ function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAut
         fullpageCreated = true;
 
         overviewSlick = $('#overview-content').not('.slick-initialized').slick({
+            infinite: false,
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inheirt;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>"
+        }).on('afterChange', function () {
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
+        findingsSlick = $('#findings-content').not('.slick-initialized').slick({
+            infinite: false,
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>"
+        }).on('afterChange', function () {
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
+        insightsSlick = $('#insights-content').not('.slick-initialized').slick({
+            infinite: false,
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>",
+            slidesToShow: 3,
+            responsive: [{
+                breakpoint: screenExtraLarge,
+                settings: {
+                    slidesToShow: 3
+                }
+            }, {
+                breakpoint: screenLarge,
+                settings: {
+                    slidesToShow: 1
+                }
+            }]
+        }).on('afterChange', function () {
+            $('.slick-arrow').css('display', 'block');
+            $('.slick-disabled').css('display', 'none');
+        });
+
+        /*overviewSlick = $('#overview-content').not('.slick-initialized').slick({
             infinite: false,
             nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
                             <i class="fas fa-chevron-right fa-lg"></i>
@@ -275,7 +320,7 @@ function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAut
         }).on('afterChange', function(){
             $('.slick-arrow').css('display', 'block');
             $('.slick-disabled').css('display', 'none');
-        });
+        });*/
 
         // Initialize popovers
         /*$('[data-toggle="popover"]').data('placement', popPlacement);
@@ -288,7 +333,7 @@ function initPage({screenSize, fpID, fpAnchors, fpSectionsColor, fpScroll, fpAut
 
     }else{
         $.fn.fullpage.reBuild();
-        $('#console').append("<p>Full Page is false</p>");
+        $("#console").append("<p>Full Page is false</p>");
     }  
 
 }
@@ -299,7 +344,7 @@ function startAnimation(){
     controller = new ScrollMagic.Controller();
     controller_h = new ScrollMagic.Controller({vertical:false});
 
-    $('#console').append("<p>Start Animation</p>");
+    $("#console").append("<p>Start Animation</p>");
 
     $('.section.fade').each(function(){
         // Create a scene for each project
@@ -334,7 +379,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Home Animation Done</p>");
+        $("#console").append("<p>Home Animation Done</p>");
     });
 
     /* Overview Animation */ 
@@ -362,7 +407,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Overview Animation Done</p>");
+        $("#console").append("<p>Overview Animation Done</p>");
     });
 
     /* Insights Animation */
@@ -381,7 +426,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Insights Animation Done</p>");
+        $("#console").append("<p>Insights Animation Done</p>");
     });
 
     /* Report Animation */
@@ -394,7 +439,7 @@ function startAnimation(){
     reportAnimation = new TimelineMax();
     firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
     reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
-    reportAnimation.from(reportCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
+    reportAnimation.from(reportCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     reportAnimation.staggerFromTo(reportFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
     reportScene = new ScrollMagic.Scene({
@@ -404,7 +449,7 @@ function startAnimation(){
     .addTo(reportController)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Report Animation Done</p>");
+        $("#console").append("<p>Report Animation Done</p>");
     });
 
     /* Key Findings Animation */
@@ -422,7 +467,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Findings Animation Done</p>");
+        $("#console").append("<p>Findings Animation Done</p>");
     });
 
     /* Press Release Animation */
@@ -443,7 +488,7 @@ function startAnimation(){
     .addTo(prController)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>PR Animation Done</p>");
+        $("#console").append("<p>PR Animation Done</p>");
     });
 
     /* CPS Animation */
@@ -455,7 +500,7 @@ function startAnimation(){
     cpsAnimation = new TimelineMax();
     firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
     cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
-    cpsAnimation.from(cpsCopy, 1, {left:'-100%', ease:Back.easeInOut}, "-=0.5");
+    cpsAnimation.from(cpsCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     cpsAnimation.staggerFromTo(cpsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
     cpsScene = new ScrollMagic.Scene({
@@ -465,7 +510,7 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>CPS Animation Done</p>");
+        $("#console").append("<p>CPS Animation Done</p>");
     });
 
     /* Contact Us Animation */
@@ -485,6 +530,6 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        $('#console').append("<p>Contact Us Animation Done</p>");
+        $("#console").append("<p>Contact Us Animation Done</p>");
     });
 }

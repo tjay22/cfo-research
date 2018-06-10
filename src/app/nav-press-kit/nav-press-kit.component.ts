@@ -12,8 +12,8 @@ export class NavPressKitComponent implements OnInit {
   constructor() {
 
     this.links = [
-      { title: 'Key Findings', stlyeclass: 'icon-presentation', linkhref: '#press-kit/presentation', iconname: 'fa-desktop'},
-      { title: 'Press Release', stlyeclass: 'icon-press-kit', linkhref: '#press-kit/press-release', iconname: 'fa-bullhorn'}     
+      { title: 'Key Findings', stlyeclass: 'icon-presentation', linkhref: '#press-information/presentation', iconname: 'fa-desktop'},
+      { title: 'Press Release', stlyeclass: 'icon-press-kit', linkhref: '#press-information/press-release', iconname: 'fa-bullhorn'}     
     ];
 
   }
