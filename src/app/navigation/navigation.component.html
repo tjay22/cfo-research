@@ -15,19 +15,44 @@
   </div>
 </nav>
 
-<nav id="main-nav" *ngIf="!desktop" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light" [class.hidden]="desktop">
+<nav id="mobile-nav" *ngIf="!desktop" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light" [class.hidden]="desktop">
 
-  <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>-->
+    <div id='piemenu' data-wheelnav
+    data-wheelnav-slicepath='DonutSlice'
+    data-wheelnav-spreader data-wheelnav-spreaderpath='PieSpreader'
+    data-wheelnav-navangle='225'
+    data-wheelnav-titleheight='45'
+    data-wheelnav-cssmode 
+    data-wheelnav-init>
+      <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item" [attr.data-wheelnav-navitemtext]="link.icon" onmouseup='alert("link.anchor");'>
+        <div class=""><i class="fas {{link.icon}} fa-lg"></i></div>
+      </div>
+   </div>
 
-  <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
+  <div id="nav-container">
+    <div id="corner">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMobile" aria-controls="navbarMobile" aria-expanded="false" aria-label="Toggle navigation">
+          <i id="menu-toggle" class="fa fa-bars fa-lg fa-"></i>
+      </button>
+    </div>
+  </div>
+
+  <!--<div id="navbar-items">
+    <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
+      <a class="nav-link" href="{{link.linkhref}}"> 
+        <i class="fas {{link.icon}} fa-lg"></i>
+      </a>
+    </div>
+  </div>-->
+
+  <!--<div id="navbar-items" class="collapse navbar-collapse">
+  <div id="navbar-items">
     <ul class="navbar-nav mr-auto">
-      <li *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" data-placement="left" data-trigger="hover" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
+      <li *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
         <a class="nav-link" href="{{link.linkhref}}"> 
           <i class="fas {{link.icon}} fa-fw"></i>
         </a>
       </li>
     </ul>
-  </div>
+  </div>-->
 </nav>

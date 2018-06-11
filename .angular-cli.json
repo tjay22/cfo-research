@@ -41,6 +41,8 @@
         "../node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js",
         "../node_modules/slick-carousel/slick/slick.min.js",
         "./assets/icons/fontawesome-all.min.js",
+        "./assets/scripts/raphael.min.js",
+        "./assets/scripts/wheelnav.min.js",
         "./assets/scripts/mo-scripts.js"
       ],
       "environmentSource": "environments/environment.ts",

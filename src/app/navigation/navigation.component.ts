@@ -44,9 +44,11 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.data.currentScreenWidth.subscribe((value) => this.screenWidth = value );
+    this.data.currentScreenHeight.subscribe((value) => this.screenHeight = value );
+    console.log("Navigation onInit Width: "+this.screenWidth);
+    console.log("Navigation onInit Height: "+this.screenHeight);
     this.initNavigation();
-    this.screenWidth = this.data.currentScreenWidth;
-    this.screenHeight = this.data.currentScreenHeight;
   }
 
   onResize(event){
@@ -62,7 +64,6 @@ export class NavigationComponent implements OnInit {
     if (this.screenWidth > this.xs){
       this.desktop = true;
       this.mobile = false;
-      console.log("Navigation Component screenWidth: "+this.screenWidth);
     }else{
       this.desktop = false;
       this.mobile = true;

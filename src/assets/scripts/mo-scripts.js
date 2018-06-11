@@ -92,6 +92,7 @@ $( window ).resize(function() {
         }, 1000);
     }
     if(mobile && screenResizeCount > 0){
+        setupPage();
         $("#console").append("<p>function not supported as browser is not on a mobile</p>");
     }
 });
@@ -142,9 +143,62 @@ function setupPage(){
             popTrigger: 'hover'
         });
 
-        var navItemsNum = $("#main-nav .nav-item").length; 
+        /*var piemenu = new wheelnav('piemenu');
+        piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
+        piemenu.initPercent = 0.1;
+        piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+        piemenu.createWheel();*/
+
+        var navRadius = $('#mobile-nav #navbar-items').width()/2.5;
+        var navAngle = 0;
+        var navRotation = 90;
+        var navWidth = $('#mobile-nav #navbar-items').width();
+        var navHeight = $('#mobile-nav #navbar-items').height();
+        console.log("navWidth: "+navWidth);
+        console.log("navHeight: "+navHeight);
+        var navItemsNum = $("#mobile-nav #navbar-items .nav-item").length; 
         var navItemsWidth = screenWidth/navItemsNum;
-        $("#main-nav .nav-item").css('width', navItemsWidth+'px');
+        var navItemsAngleSize = (2*Math.PI)/navItemsNum;
+        var navItemsRotation = 360/navItemsNum;
+        $("#mobile-nav #navbar-items .nav-item").each(function(){
+            var x = Math.round(navWidth/2 + navRadius * Math.cos(navAngle) - $(this).width()/2),
+                y = Math.round(navHeight/2 + navRadius * Math.sin(navAngle) - $(this).height()/2);
+            $(this).css({
+                left: x + 'px',
+                top: y + 'px',
+                transform: 'rotate('+navRotation+'deg)'
+            });
+            $(this).children(".nav-link").css({
+                transform: 'rotate('+ -navRotation +'deg)'
+            });
+            navAngle += navItemsAngleSize;
+            navRotation += navItemsRotation;
+            console.log("navRotation: "+navRotation);
+            console.log("xPos: "+x);
+            console.log("yPos: "+y);
+        });
+        /*var element;
+        document.addEventListener('touchstart', function(event) {
+            event.preventDefault();
+            var touch = event.touches[0];
+            element = document.elementFromPoint(touch.pageX,touch.pageY);
+        }, false);
+
+        document.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+            var touch = event.touches[0];
+            if (element !== document.elementFromPoint(touch.pageX,touch.pageY)) {
+                touchleave();
+            }
+        }, false);
+
+        function touchleave() { 
+            console.log ("You're not touching the element anymore");
+        }*/
+
+        var piemenu = new wheelnav('piemenu');
+        piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+        piemenu.createWheel();
 
         //Animation for main navigation buttons
         TweenMax.staggerFromTo("#main-nav .nav-item", 0.2, {

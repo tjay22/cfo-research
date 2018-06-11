@@ -1,5 +1,7 @@
 @import '~sass/styles';
 
+/* DESKTOP NAV */
+
 #main-nav.cfo-fixed{
     width: 50px;
     right: 0;
@@ -50,6 +52,65 @@
 .bs-popover-auto[x-placement^=top] .arrow::after, .bs-popover-top .arrow::after{
     border-top-color:  rgba($dark-blue,.43);
 }
+
+/* MOBILE NAV */
+
+#mobile-nav #check { display: none; }
+
+#mobile-nav #nav-container{
+    width:150px;
+    height: 150px;
+    background-color: rgba($light-blue,.5);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    margin-right: -75px;
+    margin-bottom: -75px;
+    color: $white;
+    z-index: 1050;
+}
+#mobile-nav #nav-container button{
+    border:none;
+    outline: none;
+    width: 75px;
+    height: 75px;
+    margin: 7px 10px;
+}
+#mobile-nav #nav-container button #menu-toggle{
+    color: $white;
+}
+#mobile-nav #navbar-items{
+    position: fixed;
+    bottom:0;
+    right: 0;
+    width:250px;
+    height: 250px;
+    border-radius: 50%;
+    transform-origin: 50%;
+    margin-right: -125px;
+    margin-bottom: -125px;
+    background-color: rgba($dark-blue,.8);
+}
+#mobile-nav #navbar-items .nav-item{
+    position: absolute;
+}
+#mobile-nav #navbar-items .nav-item a{
+    color: $white;
+}
+
+#piemenu > svg { width: 100%; height: 100%; }
+#piemenu { height: 400px; width: 400px; margin:auto; }
+@media (max-width: 400px) { #piemenu { height: 300px; width: 300px; } }
+
+[class|=wheelnav-piemenu-slice-basic] { fill: #497F4C; stroke: none; }
+[class|=wheelnav-piemenu-slice-selected] { fill: #497F4C; stroke: none; }
+[class|=wheelnav-piemenu-slice-hover] { fill: #497F4C;  stroke: none; fill-opacity: 0.77; cursor: pointer; }
+
+[class|=wheelnav-piemenu-title-basic] { fill: #333; stroke: none; }
+[class|=wheelnav-piemenu-title-selected] { fill: #fff; stroke: none; }
+[class|=wheelnav-piemenu-title-hover] { fill: #222; stroke: none; cursor: pointer; }
+
 
 /*@include media-breakpoint-up(sm) { ... }
 @include media-breakpoint-up(md) { ... }
