@@ -31,14 +31,14 @@ export class NavigationComponent implements OnInit {
     ];
 
     this.linksMobile = [
-      { content: 'Home', icon: 'fa-home', linkhref: '#home', anchor: 'home'},
-      { content: 'Overview', icon: 'fa-eye', linkhref: '#overview', anchor: 'overview'},
-      { content: 'Insights', icon: 'fa-chart-line', linkhref: '#insights', anchor: 'highlights'},
-      { content: 'Report', icon: 'fa-file', linkhref: '#report', anchor: 'report'},
-      { content: 'Press Information', icon: 'fa-briefcase', linkhref: '#press-information', anchor: 'press-information'},
-      { content: 'Press Release', icon: 'fa-bullhorn', linkhref: '#press-release', anchor: 'press-release'},
-      { content: 'Corporate Payment Solutions', icon: 'fa-credit-card', linkhref: '#corporate-payment-solutions', anchor: 'corporate-payment-solutions'},
-      { content: 'Contact Us', icon: 'fa-envelope', linkhref: '#contact-us', anchor: 'contact-us'}
+      { content: 'Home', icon: 'fa-home', linkhref: '#home', anchor: 'home', svgicon: 'home'},
+      { content: 'Overview', icon: 'fa-eye', linkhref: '#overview', anchor: 'overview', svgicon: 'eye'},
+      { content: 'Insights', icon: 'fa-chart-line', linkhref: '#insights', anchor: 'insights', svgicon: 'chart-line'},
+      { content: 'Report', icon: 'fa-file', linkhref: '#report', anchor: 'report', svgicon: 'file'},
+      { content: 'Press Information', icon: 'fa-briefcase', linkhref: '#press-information', anchor: 'press-information', svgicon: 'briefcase'},
+      { content: 'Press Release', icon: 'fa-bullhorn', linkhref: '#press-release', anchor: 'press-release', svgicon: 'bullhorn'},
+      { content: 'Corporate Payment Solutions', icon: 'fa-credit-card', linkhref: '#corporate-payment-solutions', anchor: 'corporate-payment-solutions', svgicon: 'credit-card'},
+      { content: 'Contact Us', icon: 'fa-envelope', linkhref: '#contact-us', anchor: 'contact-us', svgicon: 'envelope'}
     ];
 
   }

@@ -52,6 +52,9 @@ $(document).ready(function() {
         placement : 'left',
         trigger : 'hover'
     });
+
+    var SVGsToInject = document.querySelectorAll('.svg-sprite');
+    SVGInjector(SVGsToInject);
     setupPage();
 
 });
@@ -143,62 +146,11 @@ function setupPage(){
             popTrigger: 'hover'
         });
 
-        /*var piemenu = new wheelnav('piemenu');
-        piemenu.sliceInitPathFunction = piemenu.slicePathFunction;
-        piemenu.initPercent = 0.1;
-        piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-        piemenu.createWheel();*/
-
-        var navRadius = $('#mobile-nav #navbar-items').width()/2.5;
-        var navAngle = 0;
-        var navRotation = 90;
-        var navWidth = $('#mobile-nav #navbar-items').width();
-        var navHeight = $('#mobile-nav #navbar-items').height();
-        console.log("navWidth: "+navWidth);
-        console.log("navHeight: "+navHeight);
-        var navItemsNum = $("#mobile-nav #navbar-items .nav-item").length; 
-        var navItemsWidth = screenWidth/navItemsNum;
-        var navItemsAngleSize = (2*Math.PI)/navItemsNum;
-        var navItemsRotation = 360/navItemsNum;
-        $("#mobile-nav #navbar-items .nav-item").each(function(){
-            var x = Math.round(navWidth/2 + navRadius * Math.cos(navAngle) - $(this).width()/2),
-                y = Math.round(navHeight/2 + navRadius * Math.sin(navAngle) - $(this).height()/2);
-            $(this).css({
-                left: x + 'px',
-                top: y + 'px',
-                transform: 'rotate('+navRotation+'deg)'
-            });
-            $(this).children(".nav-link").css({
-                transform: 'rotate('+ -navRotation +'deg)'
-            });
-            navAngle += navItemsAngleSize;
-            navRotation += navItemsRotation;
-            console.log("navRotation: "+navRotation);
-            console.log("xPos: "+x);
-            console.log("yPos: "+y);
+        createCircularMenu({
+            container: 'circularmenu',
+            svgId: 'svg-menu',
+            type: 'donut'
         });
-        /*var element;
-        document.addEventListener('touchstart', function(event) {
-            event.preventDefault();
-            var touch = event.touches[0];
-            element = document.elementFromPoint(touch.pageX,touch.pageY);
-        }, false);
-
-        document.addEventListener('touchmove', function(event) {
-            event.preventDefault();
-            var touch = event.touches[0];
-            if (element !== document.elementFromPoint(touch.pageX,touch.pageY)) {
-                touchleave();
-            }
-        }, false);
-
-        function touchleave() { 
-            console.log ("You're not touching the element anymore");
-        }*/
-
-        var piemenu = new wheelnav('piemenu');
-        piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-        piemenu.createWheel();
 
         //Animation for main navigation buttons
         TweenMax.staggerFromTo("#main-nav .nav-item", 0.2, {
@@ -390,6 +342,194 @@ function initPage(_ref){
         $("#console").append("<p>Full Page is false</p>");
     }  
 
+}
+
+function createCircularMenu(_ref){
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svgLinkNS = 'http://www.w3.org/1999/xlink';
+    var element = _ref.container,
+        svgId = _ref.svgId,
+        type = _ref.type;
+
+    // Using CSS
+    var navRadius = $('#mobile-nav #navbar-items').width()/2.5;
+    var navAngle = 0;
+    var navRotation = 90;
+    var navWidth = $('#mobile-nav #navbar-items').width();
+    var navHeight = $('#mobile-nav #navbar-items').height();
+    console.log("navWidth: "+navWidth);
+    console.log("navHeight: "+navHeight);
+    var navItemsNum = $("#mobile-nav #navbar-items .nav-item").length; 
+    var navItemsAngleSize = (2*Math.PI)/navItemsNum;
+    var navItemsRotation = 360/navItemsNum;
+
+    $("#mobile-nav #navbar-items .nav-item").each(function(){
+        var x = Math.round(navWidth/2 + navRadius * Math.cos(navAngle) - $(this).width()/2),
+            y = Math.round(navHeight/2 + navRadius * Math.sin(navAngle) - $(this).height()/2);
+        $(this).css({
+            left: x + 'px',
+            top: y + 'px',
+            transform: 'rotate('+navRotation+'deg)'
+        });
+        $(this).children(".nav-link").css({
+            transform: 'rotate('+ -navRotation +'deg)'
+        });
+        navAngle += navItemsAngleSize;
+        navRotation += navItemsRotation;
+        console.log("navRotation: "+navRotation);
+        console.log("xPos: "+x);
+        console.log("yPos: "+y);
+    });
+
+    // Using SVG
+    var cmAngleofRotation = 0;
+    var cmWidth = $( "#"+element ).width();
+    var cmHeight = $( "#"+element ).height();
+    var cmRadius = cmWidth/2;
+    var cmInnerRadius = cmRadius-80;
+    var cmCenterX = cmWidth/2;
+    var cmCenterY = cmHeight/2;
+    var cmItemsLength = $( "#"+element + " .nav-item").length;
+    var cmAngleInDegrees = 360/cmItemsLength;
+    var cmAngleInRadians = -cmAngleInDegrees * Math.PI / 180.0;
+    var x = cmCenterX + cmRadius * Math.cos(cmAngleInRadians);
+    var y = cmCenterY + cmRadius * Math.sin(cmAngleInRadians);
+    var count = 0;
+    
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute('xmlns', svgNS);
+    svg.setAttribute('xmlns:xlink', svgLinkNS);
+    svg.setAttributeNS(null, 'width', cmWidth);
+    svg.setAttributeNS(null, 'height', cmHeight);
+    svg.setAttributeNS(null, 'viewBox', '0 0 '+cmWidth+' '+cmHeight);
+    svg.setAttributeNS(null, 'id', svgId);
+
+    document.getElementById(element).appendChild(svg);
+
+    var svggroup = document.createElementNS(svgNS, "g");
+    svggroup.setAttributeNS(null, 'id', 'slice-container');
+
+    document.getElementById(svgId).appendChild(svggroup);
+
+    $("#"+element + " .nav-item").each(function(index){
+
+        var svgIcon = $(this).find('.nav-link');
+        var svgIconID = svgIcon.attr('data-icon');
+        var anchor = svgIcon.attr('data-anchor');
+        index += 1;
+
+        /*var icongroup = document.createElementNS(svgNS,"g");
+        icongroup.setAttribute('id', svgIconID);
+        icongroup.setAttribute('class', 'icon icon-'+index);
+
+        var svggroup = document.createElementNS(svgNS,"g");
+        svggroup.setAttribute('id', 'slice-'+index);
+        svggroup.setAttribute('class', 'slice slice-'+index);*/
+
+        var svglink = document.createElementNS(svgNS, 'a');
+        svglink.setAttributeNS(null, 'id', 'svg-link-'+index);
+        svglink.setAttributeNS(null, 'data-menuanchor', '#'+anchor);
+        svglink.setAttributeNS(svgLinkNS, 'xlink:href', '#'+anchor);
+        svglink.setAttributeNS(svgLinkNS, 'xlink:title', anchor);
+        svglink.setAttributeNS(null, 'role', 'link');
+        svglink.setAttributeNS(null, 'data-svg-origin', cmRadius+" "+cmRadius);
+        svglink.setAttributeNS(null, 'transform', 'rotate('+cmAngleofRotation+', '+cmRadius+', '+cmRadius+')');
+        console.log(svglink);
+
+        document.getElementById('slice-container').appendChild(svglink);
+
+        var svgpath = document.createElementNS(svgNS, "path");
+        svgpath.setAttributeNS(null, 'fill', darkBlue);
+        svgpath.setAttributeNS(null, 'stroke', '#eee');
+        svgpath.setAttributeNS(null, 'stroke-width', '2');
+        if(type == "pie"){
+            svgpath.setAttributeNS(null, 'd', 'M'+cmCenterX+','+cmCenterY+' l'+cmRadius+',0 A'+cmRadius+','+cmRadius+' 0 0,0 '+x+','+y+' z');
+        }else{
+            svgpath.setAttributeNS(null, 'd', annularSector(cmCenterX, cmCenterY, 0, cmAngleInDegrees, cmInnerRadius, cmRadius));
+        }
+        //svgpath.setAttribute('transform', 'rotate('+cmAngleofRotation+', '+cmRadius+', '+cmRadius+')');
+
+        document.getElementById('svg-link-'+index).appendChild(svgpath);
+
+        var svgicon = document.createElementNS(svgNS, "use");
+        svgicon.setAttributeNS(null, 'id', 'svg-icon-'+index);
+        svgicon.setAttributeNS(svgLinkNS, 'xlink:href', 'assets/svg/fa-solid.svg#'+svgIconID);
+        svgicon.setAttributeNS(svgLinkNS, 'xlink:href', '#'+svgIconID);
+        svgicon.setAttributeNS(null, 'width', '30');
+        svgicon.setAttributeNS(null, 'height', '30');
+
+        //var svgIconCode = '<use xlink:href="#'+svgIconID+'" width="30" height="30"></use>';
+        document.getElementById('svg-link-'+index).appendChild(svgicon);
+        //console.log("svgIconID: "+svgIconCode);
+        
+        cmAngleofRotation += cmAngleInDegrees;
+
+        if(count >= cmItemsLength-1){
+            setTimeout(function(){
+                //$('#'+element).html(svg);
+                $('svg#test').html('<![CDATA['+svggroup+']]>');
+                console.log("svg bbox x"+svg.getBBox().x);
+            }, 5000);
+        }else{
+            count++;
+        }
+    });
+
+    
+
+    /*var element;
+    document.addEventListener('touchstart', function(event) {
+        event.preventDefault();
+        var touch = event.touches[0];
+        element = document.elementFromPoint(touch.pageX,touch.pageY);
+    }, false);
+
+    document.addEventListener('touchmove', function(event) {
+        event.preventDefault();
+        var touch = event.touches[0];
+        if (element !== document.elementFromPoint(touch.pageX,touch.pageY)) {
+            touchleave();
+        }
+    }, false);
+
+    function touchleave() { 
+        console.log ("You're not touching the element anymore");
+    }*/
+
+    /*var piemenu = new wheelnav('piemenu');
+    piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+    piemenu.createWheel();*/
+}
+
+
+function deg2rad(deg) {
+	return deg * Math.PI / 180;
+}
+
+function annularSector(centerX, centerY, startAngle, endAngle, innerRadius, outerRadius) {
+	startAngle = deg2rad(startAngle + 180);
+	endAngle = deg2rad(endAngle + 180);
+	
+	var p = [
+        [centerX + innerRadius * Math.cos(startAngle), centerY + innerRadius * Math.sin(startAngle)],
+        [centerX + outerRadius * Math.cos(startAngle), centerY + outerRadius * Math.sin(startAngle)],
+        [centerX + outerRadius * Math.cos(endAngle), centerY + outerRadius * Math.sin(endAngle)],
+        [centerX + innerRadius * Math.cos(endAngle), centerY + innerRadius * Math.sin(endAngle)]
+	];
+	
+    var angleDiff = endAngle - startAngle,
+        largeArc = (angleDiff % (Math.PI * 2)) > Math.PI ? 1 : 0;
+	
+	var commands = [];
+	
+	commands.push("M" + p[0].join());
+	commands.push("L" + p[1].join());
+	commands.push("A" + [outerRadius, outerRadius].join() + " 0 " + largeArc + " 1 " + p[2].join());
+	commands.push("L" + p[3].join());
+	commands.push("A" + [innerRadius, innerRadius].join() + " 0 " + largeArc + " 0 " + p[0].join());
+	commands.push("z");
+	
+	return commands.join(" ");
 }
 
 function startAnimation(){

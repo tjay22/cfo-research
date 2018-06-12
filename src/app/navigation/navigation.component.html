@@ -17,7 +17,7 @@
 
 <nav id="mobile-nav" *ngIf="!desktop" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light" [class.hidden]="desktop">
 
-    <div id='piemenu' data-wheelnav
+    <!--<div id='piemenu' data-wheelnav
     data-wheelnav-slicepath='DonutSlice'
     data-wheelnav-spreader data-wheelnav-spreaderpath='PieSpreader'
     data-wheelnav-navangle='225'
@@ -27,23 +27,38 @@
       <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item" [attr.data-wheelnav-navitemtext]="link.icon" onmouseup='alert("link.anchor");'>
         <div class=""><i class="fas {{link.icon}} fa-lg"></i></div>
       </div>
+   </div>-->
+
+   <div id="circularmenu">
+      <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
+        <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor"> 
+          <!--<i id="{{link.anchor}}" class="fas {{link.icon}} fa-sm"></i>-->
+        </a>
+      </div>
+      <svg id="test" width="300" height="300">
+
+
+      </svg>
    </div>
 
   <div id="nav-container">
     <div id="corner">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMobile" aria-controls="navbarMobile" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-items" aria-controls="navbar-items" aria-expanded="false" aria-label="Toggle navigation">
           <i id="menu-toggle" class="fa fa-bars fa-lg fa-"></i>
       </button>
     </div>
   </div>
 
-  <!--<div id="navbar-items">
+  <div id="navbar-items">
     <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
       <a class="nav-link" href="{{link.linkhref}}"> 
-        <i class="fas {{link.icon}} fa-lg"></i>
+        <!--<svg>
+            <use attr.xlink:href="#{{link.svgicon}}"></use>
+        </svg>
+        <i class="fas {{link.icon}} fa-lg"></i>-->
       </a>
     </div>
-  </div>-->
+  </div>
 
   <!--<div id="navbar-items" class="collapse navbar-collapse">
   <div id="navbar-items">
