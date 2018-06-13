@@ -36,8 +36,14 @@ var mobile = false;
 var screenResizeCount = 0;
 var resizeId;
 
+var sliceRotation = [];
+var sliceArray = [];
+var sectorAngle;
+
 
 $(document).ready(function() {
+
+    checkIE();
 
     screenWidth = $(window).width();
     screenHeight = $(window).height();
@@ -174,9 +180,7 @@ function initPage(_ref){
         fpAnchors = _ref.fpAnchors,
         fpSectionsColor = _ref.fpSectionsColor,
         fpScroll = _ref.fpScroll,
-        fpAutoScrolling = _ref.fpAutoScrolling,
-        popPlacement = _ref.popPlacement,
-        popTrigger = _ref.popTrigger;
+        fpAutoScrolling = _ref.fpAutoScrolling;
 
     if(fullpageCreated === false){
 
@@ -195,7 +199,7 @@ function initPage(_ref){
                 if(scrollMagicCreated === false){
                     $("#console").append("<p>ScrollMagic created on "+fpID+"</p>");
                     startAnimation();
-                    scrollMagicCreated = true;
+                    scrollMagicCreated = true;                    
                 }else{
                     $("#console").append("<p>ScrollMagic destroyed on "+fpID+"</p>");
                     /*controller.destroy();
@@ -231,6 +235,21 @@ function initPage(_ref){
                     socialIcons.css('color', white);
                     slickArrows.css('color', white);
                 }
+            },
+            afterLoad: function(anchorLink, index){
+                console.log(anchorLink);
+
+                for(var i=0; i<sliceRotation.length; i++){
+                    if(sliceRotation[i].link == anchorLink){
+                        var mobileNav = $('#circularmenu');
+                        var mobileNavTweenTurn = new TimelineMax({pause:true});
+                        var newRotation = (sliceRotation[i].deg + (sectorAngle/2)) - 90;
+                        console.log("degree: "+sliceRotation[i].deg);
+                        console.log("newRotation: "+newRotation);
+                        mobileNavTweenTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
+                    }
+                }
+
             }
         });
         
@@ -346,6 +365,68 @@ function initPage(_ref){
 
 }
 
+function checkIE(){
+    // Get IE or Edge browser version
+    var version = detectIE();
+
+    if (version === false) {
+    console.log('<s>IE/Edge</s>');
+    } else if (version >= 12) {
+    console.log('Edge ' + version);
+    } else {
+    console.log('IE ' + version);
+    }
+
+    // add details to debug result
+    console.log(window.navigator.userAgent);
+
+    /**
+     * detect IE
+     * returns version of IE or false, if browser is not Internet Explorer
+     */
+    function detectIE() {
+    var ua = window.navigator.userAgent;
+
+    // Test values; Uncomment to check result …
+
+    // IE 10
+    // ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
+    
+    // IE 11
+    // ua = 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko';
+    
+    // Edge 12 (Spartan)
+    // ua = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0';
+    
+    // Edge 13
+    // ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586';
+
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    }
+
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    var edge = ua.indexOf('Edge/');
+    if (edge > 0) {
+        // Edge (IE 12+) => return version number
+        return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+
+        $('.overview-image svg').css('display', 'none');
+    }
+
+    // other browser
+    return false;
+    }
+}
+
 function createCircularMenu(_ref){
     var svgNS = "http://www.w3.org/2000/svg";
     var svgLinkNS = 'http://www.w3.org/1999/xlink';
@@ -354,7 +435,7 @@ function createCircularMenu(_ref){
         type = _ref.type;
 
     // Using CSS
-    var navRadius = $('#mobile-nav #navbar-items').width()/2.5;
+    /*var navRadius = $('#mobile-nav #navbar-items').width()/2.5;
     var navAngle = 0;
     var navRotation = 90;
     var navWidth = $('#mobile-nav #navbar-items').width();
@@ -381,7 +462,7 @@ function createCircularMenu(_ref){
         console.log("navRotation: "+navRotation);
         console.log("xPos: "+x);
         console.log("yPos: "+y);
-    });
+    });*/
 
     // Using SVG
     var cmAngleofRotation = 0;
@@ -399,6 +480,7 @@ function createCircularMenu(_ref){
     var iconWidth = 20;
     var iconHeight = 20;
     var count = 0;
+    sectorAngle = cmAngleInDegrees;
     
     var svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute('xmlns', svgNS);
@@ -433,6 +515,7 @@ function createCircularMenu(_ref){
 
         var svglink = document.createElementNS(svgNS, 'a');
         svglink.setAttributeNS(null, 'id', 'svg-link-'+index);
+        svglink.setAttributeNS(null, 'class', 'slice');
         svglink.setAttributeNS(null, 'data-menuanchor', '#'+anchor);
         svglink.setAttributeNS(svgLinkNS, 'xlink:href', '#'+anchor);
         svglink.setAttributeNS(svgLinkNS, 'xlink:title', content);
@@ -460,8 +543,8 @@ function createCircularMenu(_ref){
         document.getElementById('svg-link-'+index).appendChild(svgpath);
 
         //var cmAngleIconRotation = (cmAngleInDegrees/2)+(iconWidth/4);
-        var cmPieAngleRotation = 90-(cmAngleInDegrees/2);
-        var cmDonutAngleRotation = (cmAngleInDegrees/2)-95;
+        var cmPieAngleRotation = 45+(cmAngleInDegrees/2);
+        var cmDonutAngleRotation = (cmAngleInDegrees/2)-90;
         var xPos = (cmWidth/2)-(iconWidth/2);
         var yPos = (cmHeight/2)-(iconHeight/2);
         console.log("xPos: "+xPos);
@@ -476,38 +559,86 @@ function createCircularMenu(_ref){
         svgicon.setAttributeNS(null, 'x', xPos); //35
         svgicon.setAttributeNS(null, 'y', yPos); //95
         if(type == "pie"){
+            //svgicon.setAttribute('transform', 'rotate('+cmPieAngleRotation+', '+svgpath.getPointAtLength(0).x+', '+svgpath.getPointAtLength(0).y+') translate(0,-100)');
             svgicon.setAttribute('transform', 'rotate('+cmPieAngleRotation+', '+svgpath.getPointAtLength(0).x+', '+svgpath.getPointAtLength(0).y+') translate(0,-100)');
         }else if(type == "donut"){
-            svgicon.setAttribute('transform', 'rotate('+cmDonutAngleRotation+', '+xPos+', '+yPos+') translate(-5,-105)');
+            svgicon.setAttribute('transform', 'rotate('+cmDonutAngleRotation+', '+xPos+', '+yPos+') translate(-15,-90)');
         }
         
-        //svgicon.setAttribute('transform', 'rotate('+cmAngleIconRotation+', '+svgpath.getPointAtLength(50).x+', '+svgpath.getPointAtLength(50).y+') translate(0, 0)');
-        //svgicon.setAttributeNS(null, 'style', 'position:absolute');
-        //svgicon.setAttribute('transform', 'rotate('+cmAngleIconRotation+', '+cmRadius+', '+cmRadius+')');
-        console.log("svglink bbox width: "+svglink.getBBox().width);
+        /*console.log("svglink bbox width: "+svglink.getBBox().width);
         console.log("svglink bbox height: "+svglink.getBBox().height);
         console.log("svgpath bbox width: "+svgpath.getBBox().width);
         console.log("svgpath bbox height: "+svgpath.getBBox().height);
         console.log("svgicon bbox width: "+svgicon.getBBox().width);
         console.log("svgicon bbox height: "+svgicon.getBBox().height);
         console.log("svgpath point: "+svgpath.getPointAtLength(0).x);
-        console.log("svgpath point: "+svgpath.getPointAtLength(0).y);
+        console.log("svgpath point: "+svgpath.getPointAtLength(0).y);*/
 
-        $('#svg-icon-'+index+' svg').css('transform-origin', '50% 50%');
-        $('#svg-icon-'+index+' svg').css('transform', 'rotate(-90deg)');
+        //$('#svg-icon-'+index+' svg').css('transform-origin', '50% 50%');
+        //$('#svg-icon-'+index+' svg').css('transform', 'rotate(-90deg)');
 
-        //var svgIconCode = '<use xlink:href="#'+svgIconID+'" width="30" height="30"></use>';
         document.getElementById('svg-link-'+index).appendChild(svgicon);
         //console.log("svgIconID: "+svgIconCode);
+
+        sliceRotation.push({
+            link: anchor,
+            deg: cmAngleofRotation
+        });
+        sliceArray.push(cmAngleofRotation);
         
         cmAngleofRotation += cmAngleInDegrees;
 
         if(count >= cmItemsLength-1){
             $('#'+element).html(svg);
-            setTimeout(function(){
-                console.log("svg bbox x"+svg.getBBox().x);
-            }, 1000);
+
+            var mobileNavButton = $('#mobile-nav #nav-container'),
+                mobileNavButtonIcon = $('#mobile-nav #nav-container button'),
+                mobileNav = $('#circularmenu'),
+                mobileNavSlices = $('#circularmenu a.slice'),
+                menuToggleBars = $('#mobile-nav #menu-toggle'),
+                menuToggleClose = $('#mobile-nav #menu-toggle-close');
+
+            var mobileNavTweenFirstTurn = new TimelineMax({pause:true});
+            var newRotation = (0 + (sectorAngle/2)) - 90;
+            mobileNavTweenFirstTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
+                        
+            var mobileNavTweenShow = new TimelineMax({pause:true});
+            mobileNavTweenShow.to(mobileNavButton, 0.5, {'margin-bottom': '-50px'});
+            mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {'margin-top': '0px'}, '-=0.5');
+            mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}), '-=1';
+            mobileNavTweenShow.to(menuToggleBars, 1, {opacity:0, 'margin-bottom':-100, ease:Strong.easeOut}, '-=1.5');
+            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':0, 'display':'block', ease:Strong.easeOut}, '-=1.5');
+            mobileNavTweenShow.staggerFrom(mobileNavSlices, 1, {
+                rotation:-90,
+                svgOrigin: cmCenterX+" "+cmCenterY,
+                ease: 'Strong.easeOut'
+            }, 0.1, '-=1', function(){
+                console.log("mobile navigation animation done");
+            });
+
+            if(mobileNav.hasClass('active')){
+                mobileNavTweenShow.play();
+                console.log("navigation opened");
+            }else{
+                mobileNavTweenShow.reverse();
+                console.log("navigation closed");
+            }
+
+            $('.navbar-toggler').on('click', function(){
+                //mobileNavTweenShow.progress(0);
+                mobileNav.toggleClass('active');
+                if(mobileNav.hasClass('active')){
+                    mobileNavTweenShow.play();
+                    console.log("navigation opened");
+                }else{
+                    mobileNavTweenShow.reverse();
+                    console.log("navigation closed");
+                }
+                
+            });
         }else{
+            console.log("sliceRotation: "+sliceRotation[count].deg);
+            console.log("sliceRotation: "+sliceRotation[count].link);
             count++;
         }
     });
@@ -532,10 +663,6 @@ function createCircularMenu(_ref){
     function touchleave() { 
         console.log ("You're not touching the element anymore");
     }*/
-
-    /*var piemenu = new wheelnav('piemenu');
-    piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-    piemenu.createWheel();*/
 }
 
 
@@ -573,34 +700,7 @@ function startAnimation(){
 
     //Scroll Animation
     controller = new ScrollMagic.Controller();
-    controller_h = new ScrollMagic.Controller({vertical:false});
-
-    var mobileNav = $('#circularmenu');
-    var mobileNavTweenShow = new TimelineMax();
-    mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1});
-
-    //var mobileNavTweenHide = new TimelineMax();
-    //mobileNavTweenHide.fromTo(mobileNav, 1, {opacity:1}, {opacity:0});
-    if(mobileNav.hasClass('active')){
-        mobileNavTweenShow.play();
-        console.log("navigation opened");
-    }else{
-        mobileNavTweenShow.reverse();
-        console.log("navigation closed");
-    }
-
-    $('.navbar-toggler').on('click', function(){
-        //mobileNavTweenShow.progress(0);
-        mobileNav.toggleClass('active');
-        if(mobileNav.hasClass('active')){
-            mobileNavTweenShow.play();
-            console.log("navigation opened");
-        }else{
-            mobileNavTweenShow.reverse();
-            console.log("navigation closed");
-        }
-        
-    });
+    controller_h = new ScrollMagic.Controller({vertical:false});   
 
     $("#console").append("<p>Start Animation</p>");
 

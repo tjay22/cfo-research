@@ -1,0 +1,8 @@
+.overview-image{
+    -webkit-clip-path: none;
+    clip-path: none;
+}
+.overview-image svg,
+.overview-image svg circle{
+    display:none;
+}

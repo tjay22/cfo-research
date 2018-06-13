@@ -8,11 +8,12 @@
     <div class="report-copy col-md-12 col-lg-6">
       <h3>The 2018 Global Business &amp; Spending Outlook</h3>
       <br>
-      <p>The cross-industry findings in the joint American Express and Institutional Investor study are based on a survey of 870 CFOs and other senior finance executives at companies with annual revenue of $500 million or more from more than 21 countries worldwide. And for the first time in its 11-year history, the study includes respondents from the Middle East region adding to its holistic view of a dynamic global services economy.</p>
+      <p>An annual report that reflects on the perspectives of senior finance executives at large companies worldwide. For more than a decade, this annual study has examined how executives around the world assess their country's prospects for economic growth and their companies’ plans for spending and investment in the year to come. Executives in the Middle East are included in the survey for the first time in its 11-year history, adding to its holistic view of a dynamic global economy.</p>
     </div>
     <div class="report-form col-md-12 col-lg-6" [class.invisible]="downloadable">
       <p>Please complete the form to access the report.</p>
-      <form novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">
+      <!--<form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">-->
+        <form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="reportForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()">
         <div class="form-group row">
           <div class="col-sm-6">
             <input type="text" class="form-control" id="first-name" placeholder="First Name" formControlName="firstName" value="{{ firstName }}">
@@ -55,6 +56,13 @@
           </div>
         </div>
         <div class="form-group row">
+          <div class="col-sm-12">
+            <select class="form-control" id="country" formControlName="country" (change)="setCountryCode(this.reportForm.value.country)">
+              <option *ngFor="let option of countryItems" value="{{option.name}}">{{ option.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
           <div class="col-sm-3">
             <input type="text" class="form-control" id="country-code" placeholder="Code" formControlName="countryCode" disabled>
           </div>
@@ -64,13 +72,6 @@
               <div *ngIf="phoneControl.errors.required && (phoneControl.touched || phoneControl.dirty)" class="alert alert-danger">Required</div>
               <div *ngIf="phoneControl.errors.pattern" class="alert alert-danger">Please enter a valid number</div>
             </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-12">
-            <select class="form-control" id="country" formControlName="country" (change)="setCountryCode(this.reportForm.value.country)">
-              <option *ngFor="let option of countryItems" value="{{option.name}}">{{ option.name }}</option>
-            </select>
           </div>
         </div>
         <div class="form-group row">

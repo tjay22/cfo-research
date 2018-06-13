@@ -7,7 +7,8 @@
   <div class="row contact-form">
     <div class="col-md-12">
       <p>Have a query or a comment? Just send us a message using this form. </p>
-      <form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">
+      <!--<form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">-->
+      <form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="contactForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()"> 
         <div class="row">
           <div class="col-md-12 col-lg-6">
 
@@ -53,6 +54,13 @@
                 </div>
               </div>
               <div class="form-group row">
+                <div class="col-sm-12">
+                  <select class="form-control" id="country" formControlName="country" (change)="setCountryCode(this.contactForm.value.country)">
+                    <option *ngFor="let option of countryItems" value="{{option.name}}">{{ option.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="country-code" placeholder="Code" formControlName="countryCode" disabled>
                 </div>
@@ -64,14 +72,6 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group row">
-                <div class="col-sm-12">
-                  <select class="form-control" id="country" formControlName="country" (change)="setCountryCode(this.contactForm.value.country)">
-                    <option *ngFor="let option of countryItems" value="{{option.name}}">{{ option.name }}</option>
-                  </select>
-                </div>
-              </div>
-
           </div>
 
           <div class="col-md-12 col-lg-6">
