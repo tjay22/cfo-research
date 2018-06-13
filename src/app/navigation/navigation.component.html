@@ -31,34 +31,30 @@
 
    <div id="circularmenu">
       <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
-        <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor"> 
+        <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor" [attr.data-content]="link.content"> 
           <!--<i id="{{link.anchor}}" class="fas {{link.icon}} fa-sm"></i>-->
         </a>
       </div>
-      <svg id="test" width="300" height="300">
-
-
-      </svg>
    </div>
 
   <div id="nav-container">
     <div id="corner">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-items" aria-controls="navbar-items" aria-expanded="false" aria-label="Toggle navigation">
-          <i id="menu-toggle" class="fa fa-bars fa-lg fa-"></i>
+      <button class="navbar-toggler" type="button" data-toggle="active" data-target="#circularmenu" aria-controls="circularmenu" aria-expanded="false" aria-label="Toggle navigation">
+          <i id="menu-toggle" class="fa fa-bars fa-sm"></i>
       </button>
     </div>
   </div>
 
-  <div id="navbar-items">
+  <!--<div id="navbar-items">
     <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
       <a class="nav-link" href="{{link.linkhref}}"> 
-        <!--<svg>
+        <svg>
             <use attr.xlink:href="#{{link.svgicon}}"></use>
         </svg>
-        <i class="fas {{link.icon}} fa-lg"></i>-->
+        <i class="fas {{link.icon}} fa-lg"></i>
       </a>
     </div>
-  </div>
+  </div>-->
 
   <!--<div id="navbar-items" class="collapse navbar-collapse">
   <div id="navbar-items">

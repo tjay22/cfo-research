@@ -1,6 +1,8 @@
 //import { TweenMax, TimelineMax, TimelineLite } from "gsap";
 
 var darkBlue = "#002337";
+var mobNavBlue1 = "#173749";
+var mobNavBlue2 = "#2e4b5b";
 var lightBlue = "#00a1bb";
 var white = "#fff";
 var screenSmall = 576;
@@ -394,6 +396,8 @@ function createCircularMenu(_ref){
     var cmAngleInRadians = -cmAngleInDegrees * Math.PI / 180.0;
     var x = cmCenterX + cmRadius * Math.cos(cmAngleInRadians);
     var y = cmCenterY + cmRadius * Math.sin(cmAngleInRadians);
+    var iconWidth = 20;
+    var iconHeight = 20;
     var count = 0;
     
     var svg = document.createElementNS(svgNS, "svg");
@@ -416,6 +420,7 @@ function createCircularMenu(_ref){
         var svgIcon = $(this).find('.nav-link');
         var svgIconID = svgIcon.attr('data-icon');
         var anchor = svgIcon.attr('data-anchor');
+        var content = svgIcon.attr('data-content');
         index += 1;
 
         /*var icongroup = document.createElementNS(svgNS,"g");
@@ -430,7 +435,7 @@ function createCircularMenu(_ref){
         svglink.setAttributeNS(null, 'id', 'svg-link-'+index);
         svglink.setAttributeNS(null, 'data-menuanchor', '#'+anchor);
         svglink.setAttributeNS(svgLinkNS, 'xlink:href', '#'+anchor);
-        svglink.setAttributeNS(svgLinkNS, 'xlink:title', anchor);
+        svglink.setAttributeNS(svgLinkNS, 'xlink:title', content);
         svglink.setAttributeNS(null, 'role', 'link');
         svglink.setAttributeNS(null, 'data-svg-origin', cmRadius+" "+cmRadius);
         svglink.setAttributeNS(null, 'transform', 'rotate('+cmAngleofRotation+', '+cmRadius+', '+cmRadius+')');
@@ -439,24 +444,57 @@ function createCircularMenu(_ref){
         document.getElementById('slice-container').appendChild(svglink);
 
         var svgpath = document.createElementNS(svgNS, "path");
-        svgpath.setAttributeNS(null, 'fill', darkBlue);
+        svgpath.setAttributeNS(null, 'id', 'svg-path-'+index);
+        index%2 == 0 ? svgpath.setAttributeNS(null, 'fill', mobNavBlue1) : svgpath.setAttributeNS(null, 'fill', mobNavBlue2);        
+        svgpath.setAttributeNS(null, 'fill-opacity', '0.8');
         svgpath.setAttributeNS(null, 'stroke', '#eee');
-        svgpath.setAttributeNS(null, 'stroke-width', '2');
+        svgpath.setAttributeNS(null, 'stroke-opacity', '0.3');
+        svgpath.setAttributeNS(null, 'stroke-width', '1');
         if(type == "pie"){
             svgpath.setAttributeNS(null, 'd', 'M'+cmCenterX+','+cmCenterY+' l'+cmRadius+',0 A'+cmRadius+','+cmRadius+' 0 0,0 '+x+','+y+' z');
-        }else{
+        }else if (type == "donut"){
             svgpath.setAttributeNS(null, 'd', annularSector(cmCenterX, cmCenterY, 0, cmAngleInDegrees, cmInnerRadius, cmRadius));
         }
         //svgpath.setAttribute('transform', 'rotate('+cmAngleofRotation+', '+cmRadius+', '+cmRadius+')');
 
         document.getElementById('svg-link-'+index).appendChild(svgpath);
 
+        //var cmAngleIconRotation = (cmAngleInDegrees/2)+(iconWidth/4);
+        var cmPieAngleRotation = 90-(cmAngleInDegrees/2);
+        var cmDonutAngleRotation = (cmAngleInDegrees/2)-95;
+        var xPos = (cmWidth/2)-(iconWidth/2);
+        var yPos = (cmHeight/2)-(iconHeight/2);
+        console.log("xPos: "+xPos);
+        console.log("yPos: "+yPos);
         var svgicon = document.createElementNS(svgNS, "use");
         svgicon.setAttributeNS(null, 'id', 'svg-icon-'+index);
-        svgicon.setAttributeNS(svgLinkNS, 'xlink:href', 'assets/svg/fa-solid.svg#'+svgIconID);
         svgicon.setAttributeNS(svgLinkNS, 'xlink:href', '#'+svgIconID);
-        svgicon.setAttributeNS(null, 'width', '30');
-        svgicon.setAttributeNS(null, 'height', '30');
+        svgicon.setAttributeNS(svgLinkNS, 'xlink:href', '#'+svgIconID);
+        svgicon.setAttributeNS(null, 'width', iconWidth);
+        svgicon.setAttributeNS(null, 'height', iconHeight);
+        svgicon.setAttributeNS(null, 'fill', white);
+        svgicon.setAttributeNS(null, 'x', xPos); //35
+        svgicon.setAttributeNS(null, 'y', yPos); //95
+        if(type == "pie"){
+            svgicon.setAttribute('transform', 'rotate('+cmPieAngleRotation+', '+svgpath.getPointAtLength(0).x+', '+svgpath.getPointAtLength(0).y+') translate(0,-100)');
+        }else if(type == "donut"){
+            svgicon.setAttribute('transform', 'rotate('+cmDonutAngleRotation+', '+xPos+', '+yPos+') translate(-5,-105)');
+        }
+        
+        //svgicon.setAttribute('transform', 'rotate('+cmAngleIconRotation+', '+svgpath.getPointAtLength(50).x+', '+svgpath.getPointAtLength(50).y+') translate(0, 0)');
+        //svgicon.setAttributeNS(null, 'style', 'position:absolute');
+        //svgicon.setAttribute('transform', 'rotate('+cmAngleIconRotation+', '+cmRadius+', '+cmRadius+')');
+        console.log("svglink bbox width: "+svglink.getBBox().width);
+        console.log("svglink bbox height: "+svglink.getBBox().height);
+        console.log("svgpath bbox width: "+svgpath.getBBox().width);
+        console.log("svgpath bbox height: "+svgpath.getBBox().height);
+        console.log("svgicon bbox width: "+svgicon.getBBox().width);
+        console.log("svgicon bbox height: "+svgicon.getBBox().height);
+        console.log("svgpath point: "+svgpath.getPointAtLength(0).x);
+        console.log("svgpath point: "+svgpath.getPointAtLength(0).y);
+
+        $('#svg-icon-'+index+' svg').css('transform-origin', '50% 50%');
+        $('#svg-icon-'+index+' svg').css('transform', 'rotate(-90deg)');
 
         //var svgIconCode = '<use xlink:href="#'+svgIconID+'" width="30" height="30"></use>';
         document.getElementById('svg-link-'+index).appendChild(svgicon);
@@ -465,11 +503,10 @@ function createCircularMenu(_ref){
         cmAngleofRotation += cmAngleInDegrees;
 
         if(count >= cmItemsLength-1){
+            $('#'+element).html(svg);
             setTimeout(function(){
-                //$('#'+element).html(svg);
-                $('svg#test').html('<![CDATA['+svggroup+']]>');
                 console.log("svg bbox x"+svg.getBBox().x);
-            }, 5000);
+            }, 1000);
         }else{
             count++;
         }
@@ -537,6 +574,33 @@ function startAnimation(){
     //Scroll Animation
     controller = new ScrollMagic.Controller();
     controller_h = new ScrollMagic.Controller({vertical:false});
+
+    var mobileNav = $('#circularmenu');
+    var mobileNavTweenShow = new TimelineMax();
+    mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1});
+
+    //var mobileNavTweenHide = new TimelineMax();
+    //mobileNavTweenHide.fromTo(mobileNav, 1, {opacity:1}, {opacity:0});
+    if(mobileNav.hasClass('active')){
+        mobileNavTweenShow.play();
+        console.log("navigation opened");
+    }else{
+        mobileNavTweenShow.reverse();
+        console.log("navigation closed");
+    }
+
+    $('.navbar-toggler').on('click', function(){
+        //mobileNavTweenShow.progress(0);
+        mobileNav.toggleClass('active');
+        if(mobileNav.hasClass('active')){
+            mobileNavTweenShow.play();
+            console.log("navigation opened");
+        }else{
+            mobileNavTweenShow.reverse();
+            console.log("navigation closed");
+        }
+        
+    });
 
     $("#console").append("<p>Start Animation</p>");
 
