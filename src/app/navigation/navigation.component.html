@@ -28,13 +28,15 @@
         <div class=""><i class="fas {{link.icon}} fa-lg"></i></div>
       </div>
    </div>-->
-
+   <div id="nav-name">
+     <div class="title"></div>
+   </div>
    <div id="circularmenu">
-      <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
-        <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor" [attr.data-content]="link.content"> 
-          <!--<i id="{{link.anchor}}" class="fas {{link.icon}} fa-sm"></i>-->
-        </a>
-      </div>
+    <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
+      <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor" [attr.data-content]="link.content"> 
+        <!--<i id="{{link.anchor}}" class="fas {{link.icon}} fa-sm"></i>-->
+      </a>
+    </div>
    </div>
 
   <div id="nav-container">

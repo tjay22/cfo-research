@@ -37,9 +37,9 @@ var screenResizeCount = 0;
 var resizeId;
 
 var sliceRotation = [];
-var sliceArray = [];
 var sectorAngle;
-
+var currentAnchor;
+var mobileNavRadius;
 
 $(document).ready(function() {
 
@@ -239,17 +239,8 @@ function initPage(_ref){
             afterLoad: function(anchorLink, index){
                 console.log(anchorLink);
 
-                for(var i=0; i<sliceRotation.length; i++){
-                    if(sliceRotation[i].link == anchorLink){
-                        var mobileNav = $('#circularmenu');
-                        var mobileNavTweenTurn = new TimelineMax({pause:true});
-                        var newRotation = (sliceRotation[i].deg + (sectorAngle/2)) - 90;
-                        console.log("degree: "+sliceRotation[i].deg);
-                        console.log("newRotation: "+newRotation);
-                        mobileNavTweenTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
-                    }
-                }
-
+                currentAnchor = anchorLink;
+                animateMobileWheel(currentAnchor);
             }
         });
         
@@ -295,60 +286,6 @@ function initPage(_ref){
             $('.slick-disabled').css('display', 'none');
         });
 
-        /*overviewSlick = $('#overview-content').not('.slick-initialized').slick({
-            infinite: false,
-            nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
-                            <i class="fas fa-chevron-right fa-lg"></i>
-                        </div>`,
-            prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
-                            <i class="fas fa-chevron-left fa-lg"></i>
-                        </div>`   
-        }).on('afterChange', function(){
-            $('.slick-arrow').css('display', 'block');
-            $('.slick-disabled').css('display', 'none');
-        });
-    
-        findingsSlick = $('#findings-content').not('.slick-initialized').slick({
-            infinite: false,
-            nextArrow: `<div class="slick-button slick-next" style="color:`+darkBlue+`;">
-                            <i class="fas fa-chevron-right fa-lg"></i>
-                        </div>`,
-            prevArrow: `<div class="slick-button slick-prev" style="color:`+darkBlue+`;">
-                            <i class="fas fa-chevron-left fa-lg"></i>
-                        </div>`
-        }).on('afterChange', function(){
-            $('.slick-arrow').css('display', 'block');
-            $('.slick-disabled').css('display', 'none');
-        });
-
-        insightsSlick = $('#insights-content').not('.slick-initialized').slick({
-            infinite: false,
-            nextArrow: `<div class="slick-button slick-next" style="color:`+white+`">
-                            <i class="fas fa-chevron-right fa-lg"></i>
-                        </div>`,
-            prevArrow: `<div class="slick-button slick-prev" style="color:`+white+`">
-                            <i class="fas fa-chevron-left fa-lg"></i>
-                        </div>`,
-            slidesToShow: 3,
-            responsive: [
-                {
-                    breakpoint: screenExtraLarge,
-                    settings: {
-                        slidesToShow: 3
-                    }
-                },
-                {
-                    breakpoint: screenLarge,
-                    settings: {
-                        slidesToShow: 1
-                    }
-                }
-            ]
-        }).on('afterChange', function(){
-            $('.slick-arrow').css('display', 'block');
-            $('.slick-disabled').css('display', 'none');
-        });*/
-
         // Initialize popovers
         /*$('[data-toggle="popover"]').data('placement', popPlacement);
         $('[data-toggle="popover"]').data('trigger', popTrigger);
@@ -363,6 +300,26 @@ function initPage(_ref){
         $("#console").append("<p>Full Page is false</p>");
     }  
 
+}
+
+function animateMobileWheel(anchor){
+    for(var i=0; i<sliceRotation.length; i++){
+        if(sliceRotation[i].link == anchor){
+            var mobileNav = $('#circularmenu'),
+                mobileNavName = $('#nav-name');
+            var mobileNavTweenTurn = new TimelineMax({pause:true});
+            var newRotation = (sliceRotation[i].deg + (sectorAngle/2)) - 90;
+            $('#nav-name .title').html(sliceRotation[i].name);
+            console.log("degree: "+sliceRotation[i].deg);
+            console.log("newRotation: "+newRotation);
+            console.log("content: "+sliceRotation[i].name);
+            mobileNavTweenTurn.set(mobileNavName, {display: 'block', bottom:mobileNavRadius+5, opacity:0})
+            mobileNavTweenTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center", ease:Strong.easeOut});
+            if(mobileNav.hasClass('active') && (sliceRotation[i].name != currentAnchor)){
+                mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 0}, {opacity: 1}, "-=1");
+            }
+        }
+    }
 }
 
 function checkIE(){
@@ -481,6 +438,7 @@ function createCircularMenu(_ref){
     var iconHeight = 20;
     var count = 0;
     sectorAngle = cmAngleInDegrees;
+    mobileNavRadius = cmRadius;
     
     var svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute('xmlns', svgNS);
@@ -504,14 +462,6 @@ function createCircularMenu(_ref){
         var anchor = svgIcon.attr('data-anchor');
         var content = svgIcon.attr('data-content');
         index += 1;
-
-        /*var icongroup = document.createElementNS(svgNS,"g");
-        icongroup.setAttribute('id', svgIconID);
-        icongroup.setAttribute('class', 'icon icon-'+index);
-
-        var svggroup = document.createElementNS(svgNS,"g");
-        svggroup.setAttribute('id', 'slice-'+index);
-        svggroup.setAttribute('class', 'slice slice-'+index);*/
 
         var svglink = document.createElementNS(svgNS, 'a');
         svglink.setAttributeNS(null, 'id', 'svg-link-'+index);
@@ -564,75 +514,61 @@ function createCircularMenu(_ref){
         }else if(type == "donut"){
             svgicon.setAttribute('transform', 'rotate('+cmDonutAngleRotation+', '+xPos+', '+yPos+') translate(-15,-90)');
         }
-        
-        /*console.log("svglink bbox width: "+svglink.getBBox().width);
-        console.log("svglink bbox height: "+svglink.getBBox().height);
-        console.log("svgpath bbox width: "+svgpath.getBBox().width);
-        console.log("svgpath bbox height: "+svgpath.getBBox().height);
-        console.log("svgicon bbox width: "+svgicon.getBBox().width);
-        console.log("svgicon bbox height: "+svgicon.getBBox().height);
-        console.log("svgpath point: "+svgpath.getPointAtLength(0).x);
-        console.log("svgpath point: "+svgpath.getPointAtLength(0).y);*/
-
-        //$('#svg-icon-'+index+' svg').css('transform-origin', '50% 50%');
-        //$('#svg-icon-'+index+' svg').css('transform', 'rotate(-90deg)');
 
         document.getElementById('svg-link-'+index).appendChild(svgicon);
-        //console.log("svgIconID: "+svgIconCode);
 
         sliceRotation.push({
             link: anchor,
-            deg: cmAngleofRotation
+            deg: cmAngleofRotation,
+            name: content
         });
-        sliceArray.push(cmAngleofRotation);
         
         cmAngleofRotation += cmAngleInDegrees;
 
         if(count >= cmItemsLength-1){
             $('#'+element).html(svg);
+            $('#'+element).css('margin-left', -cmRadius);
 
             var mobileNavButton = $('#mobile-nav #nav-container'),
                 mobileNavButtonIcon = $('#mobile-nav #nav-container button'),
+                mobileNavName = $('#nav-name'),
                 mobileNav = $('#circularmenu'),
                 mobileNavSlices = $('#circularmenu a.slice'),
                 menuToggleBars = $('#mobile-nav #menu-toggle'),
                 menuToggleClose = $('#mobile-nav #menu-toggle-close');
 
-            var mobileNavTweenFirstTurn = new TimelineMax({pause:true});
-            var newRotation = (0 + (sectorAngle/2)) - 90;
-            mobileNavTweenFirstTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
+            // var mobileNavTweenFirstTurn = new TimelineMax({pause:true});
+            // var newRotation = (0 + (sectorAngle/2)) - 90;
+            // mobileNavTweenFirstTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
                         
             var mobileNavTweenShow = new TimelineMax({pause:true});
+            mobileNavTweenShow.set(mobileNav, {rotation:-sectorAngle, bottom: -cmRadius});
             mobileNavTweenShow.to(mobileNavButton, 0.5, {'margin-bottom': '-50px'});
             mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {'margin-top': '0px'}, '-=0.5');
-            mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}), '-=1';
-            mobileNavTweenShow.to(menuToggleBars, 1, {opacity:0, 'margin-bottom':-100, ease:Strong.easeOut}, '-=1.5');
-            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':0, 'display':'block', ease:Strong.easeOut}, '-=1.5');
+            mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}, '-=1');
+            mobileNavTweenShow.fromTo(mobileNavName, 0.5, {bottom:-50}, {bottom:mobileNavRadius+5}, '-=1');
+            mobileNavTweenShow.to(menuToggleBars, 1, {opacity:0, 'margin-bottom':-100, ease:Strong.easeOut}, '-=1');
+            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':0, 'display':'block', ease:Strong.easeOut}, '-=1');
             mobileNavTweenShow.staggerFrom(mobileNavSlices, 1, {
-                rotation:-90,
+                rotation:0,
                 svgOrigin: cmCenterX+" "+cmCenterY,
                 ease: 'Strong.easeOut'
             }, 0.1, '-=1', function(){
-                console.log("mobile navigation animation done");
+                animateMobileWheel(currentAnchor);
             });
 
             if(mobileNav.hasClass('active')){
                 mobileNavTweenShow.play();
-                console.log("navigation opened");
             }else{
                 mobileNavTweenShow.reverse();
-                console.log("navigation closed");
             }
 
             $('.navbar-toggler').on('click', function(){
-                //mobileNavTweenShow.progress(0);
                 mobileNav.toggleClass('active');
                 if(mobileNav.hasClass('active')){
                     mobileNavTweenShow.play();
-                    console.log("navigation opened");
                 }else{
                     mobileNavTweenShow.reverse();
-                    console.log("navigation closed");
                 }
                 
             });
