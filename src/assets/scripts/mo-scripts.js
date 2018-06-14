@@ -13,9 +13,9 @@ var screenWidth, prevScreenWidth, screenHeight, prevScreenHeight;
 var socialIcons, slickArrows;
 var firstLoad = true;
 var fullpageCreated = false;
-var slickCreated = false;
-var scrollMagicCreated = false;
 
+// ScrollMagic Variables
+var scrollMagicCreated = false;
 var controller;
 var controller_h;
 var sectionFadeScene;
@@ -28,6 +28,8 @@ var prAnimation, prScene;
 var cpsAnimation, cpsScene;
 var contactUsAnimation, contactUsScene;
 
+// Slick Variables
+var slickCreated = false;
 var overviewSlick;
 var findingsSlick;
 var insightsSlick;
@@ -35,11 +37,12 @@ var insightsSlick;
 var mobile = false;
 var screenResizeCount = 0;
 var resizeId;
-
 var sliceRotation = [];
 var sectorAngle;
-var currentAnchor;
+var currentAnchor = "home";
 var mobileNavRadius;
+var touchStartX, touchStartY, touchMoveX, touchMoveY, currentRotation;
+window.blockMenuHeaderScroll = false;
 
 $(document).ready(function() {
 
@@ -226,6 +229,10 @@ function initPage(_ref){
                     //scrollMagicCreated = false;
                 }
                 //document.getElementById('home-video').play();
+                $("#scroll-initiator").click(function(){
+                    console.log("clicked");
+                    $.fn.fullpage.moveTo(2, 0);
+                });
             },
             onLeave: function(index, nextIndex, direction){
                 if( nextIndex%2 == 0 ){
@@ -286,15 +293,6 @@ function initPage(_ref){
             $('.slick-disabled').css('display', 'none');
         });
 
-        // Initialize popovers
-        /*$('[data-toggle="popover"]').data('placement', popPlacement);
-        $('[data-toggle="popover"]').data('trigger', popTrigger);
-        $('[data-toggle="popover"]').popover('update');*/
-        /*$('[data-toggle="popover"]').popover('update', {
-            placement: popPlacement,
-            trigger: popTrigger
-        });*/
-
     }else{
         $.fn.fullpage.reBuild();
         $("#console").append("<p>Full Page is false</p>");
@@ -309,14 +307,20 @@ function animateMobileWheel(anchor){
                 mobileNavName = $('#nav-name');
             var mobileNavTweenTurn = new TimelineMax({pause:true});
             var newRotation = (sliceRotation[i].deg + (sectorAngle/2)) - 90;
+            currentRotation = -newRotation;
             $('#nav-name .title').html(sliceRotation[i].name);
-            console.log("degree: "+sliceRotation[i].deg);
-            console.log("newRotation: "+newRotation);
-            console.log("content: "+sliceRotation[i].name);
-            mobileNavTweenTurn.set(mobileNavName, {display: 'block', bottom:mobileNavRadius+5, opacity:0})
+            console.log("sliceRotation[i].link: "+sliceRotation[i].link);
+            console.log("currentAnchor: "+currentAnchor);
+            mobileNavTweenTurn.set(mobileNavName, {display: 'block', bottom:mobileNavRadius+10, opacity:0})
             mobileNavTweenTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center", ease:Strong.easeOut});
-            if(mobileNav.hasClass('active') && (sliceRotation[i].name != currentAnchor)){
+            if(mobileNav.hasClass('active') && (sliceRotation[i].link != currentAnchor)){
                 mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 0}, {opacity: 1}, "-=1");
+            }else if(mobileNav.hasClass('active') && (sliceRotation[i].link == currentAnchor)){
+                if(firstLoad){
+                    mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 0}, {opacity: 1}, "-=1");
+                    firstLoad = false;
+                }
+                mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 1}, {opacity: 1}, "-=1");
             }
         }
     }
@@ -472,7 +476,6 @@ function createCircularMenu(_ref){
         svglink.setAttributeNS(null, 'role', 'link');
         svglink.setAttributeNS(null, 'data-svg-origin', cmRadius+" "+cmRadius);
         svglink.setAttributeNS(null, 'transform', 'rotate('+cmAngleofRotation+', '+cmRadius+', '+cmRadius+')');
-        console.log(svglink);
 
         document.getElementById('slice-container').appendChild(svglink);
 
@@ -509,7 +512,6 @@ function createCircularMenu(_ref){
         svgicon.setAttributeNS(null, 'x', xPos); //35
         svgicon.setAttributeNS(null, 'y', yPos); //95
         if(type == "pie"){
-            //svgicon.setAttribute('transform', 'rotate('+cmPieAngleRotation+', '+svgpath.getPointAtLength(0).x+', '+svgpath.getPointAtLength(0).y+') translate(0,-100)');
             svgicon.setAttribute('transform', 'rotate('+cmPieAngleRotation+', '+svgpath.getPointAtLength(0).x+', '+svgpath.getPointAtLength(0).y+') translate(0,-100)');
         }else if(type == "donut"){
             svgicon.setAttribute('transform', 'rotate('+cmDonutAngleRotation+', '+xPos+', '+yPos+') translate(-15,-90)');
@@ -545,10 +547,10 @@ function createCircularMenu(_ref){
             mobileNavTweenShow.set(mobileNav, {rotation:-sectorAngle, bottom: -cmRadius});
             mobileNavTweenShow.to(mobileNavButton, 0.5, {'margin-bottom': '-50px'});
             mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {'margin-top': '0px'}, '-=0.5');
-            mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}, '-=1');
-            mobileNavTweenShow.fromTo(mobileNavName, 0.5, {bottom:-50}, {bottom:mobileNavRadius+5}, '-=1');
+            mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}, '-=0.5');
+            mobileNavTweenShow.fromTo(mobileNavName, 0.5, {bottom:-50}, {bottom:mobileNavRadius+10}, '-=1');
             mobileNavTweenShow.to(menuToggleBars, 1, {opacity:0, 'margin-bottom':-100, ease:Strong.easeOut}, '-=1');
-            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':0, 'display':'block', ease:Strong.easeOut}, '-=1');
+            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':5, 'display':'block', ease:Strong.easeOut}, '-=1');
             mobileNavTweenShow.staggerFrom(mobileNavSlices, 1, {
                 rotation:0,
                 svgOrigin: cmCenterX+" "+cmCenterY,
@@ -579,26 +581,44 @@ function createCircularMenu(_ref){
         }
     });
 
-    
-
-    /*var element;
-    document.addEventListener('touchstart', function(event) {
-        event.preventDefault();
+    document.getElementById('circularmenu').addEventListener('touchstart', function(event) {
         var touch = event.touches[0];
-        element = document.elementFromPoint(touch.pageX,touch.pageY);
+        //$('#console').html(touch.pageX,touch.pageY+'<br>');
+        blockMenuHeaderScroll = true;
+        touchStartX = touch.pageX;
+        touchStartY = touch.pageY;
+        console.log('start: '+touch.pageX+','+touch.pageY);
     }, false);
-
-    document.addEventListener('touchmove', function(event) {
-        event.preventDefault();
+    document.getElementById('circularmenu').addEventListener('touchmove', function(event) {
         var touch = event.touches[0];
-        if (element !== document.elementFromPoint(touch.pageX,touch.pageY)) {
-            touchleave();
+        touchMoveX = touch.pageX;
+        touchMoveY = touch.pageY;
+        if (blockMenuHeaderScroll)
+        {
+            $('body').css('overflow', 'hidden');
         }
+        console.log('currentRotation: '+currentRotation);
+        if(touchMoveX < touchStartX){
+            currentRotation -= 5;
+            $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
+            touchStartX = touchMoveX;
+            console.log('animate to left');
+        }else{
+            currentRotation += 5;
+            $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
+            touchStartX = touchMoveX;
+            console.log('animate to right');
+        }
+        //$('#console').append(touch.pageX,touch.pageY+'<br>');
+        console.log('move: '+touch.pageX+','+touch.pageY);
     }, false);
+    document.getElementById('circularmenu').addEventListener('touchend', function(event) {
+        blockMenuHeaderScroll = false;
+        $('body').css('overflow', 'scroll');
+        //$('#console').append(touch.pageX,touch.pageY+'<br>');
+        console.log('touch ended');
 
-    function touchleave() { 
-        console.log ("You're not touching the element anymore");
-    }*/
+    }, false);
 }
 
 

@@ -23,6 +23,7 @@
 }
 
 #scroll-initiator{
+    cursor: pointer;
     position: absolute;
     bottom: 50px;
     width: 100%;
@@ -49,5 +50,26 @@
 @include media-breakpoint-down(xs){
     .section-body{
         max-width: 100%;
+    }
+    #scroll-initiator{
+        text-align: right;
+        bottom: 0px;
+        padding: 0rem 1rem;
+        animation-name: scroll-initiate-m;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        -webkit-animation-name: scroll-initiate-m;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-direction: alternate;
+    }
+    @keyframes scroll-initiate-m {
+        from {bottom: 30px;}
+        to {bottom: 20px;}
+    }
+    @-webkit-keyframes scroll-initiate-m {
+        from {bottom: 30px;}
+        to {bottom: 20px;}
     }
 }
