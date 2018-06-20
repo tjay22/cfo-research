@@ -40,12 +40,33 @@ var resizeId;
 var sliceRotation = [];
 var sectorAngle;
 var currentAnchor = "home";
+var currentRotation = 0;
 var mobileNavRadius;
-var touchStartX, touchStartY, touchMoveX, touchMoveY, currentRotation;
-window.blockMenuHeaderScroll = false;
+var touchStartX, touchStartY, touchMoveX, touchMoveY, rotationStopPoint;
 
 $(document).ready(function() {
 
+    // var preload = new createjs.LoadQueue();
+    // preload.addEventListener("complete", handleFileComplete);
+    // preload.loadFile("assets/icons/fontawesome-all.min.js");
+    // preload.loadFile("assets/fonts/BentonSans-Bold.otf");
+    // preload.loadFile("assets/fonts/BentonSans-Book.otf");
+    // preload.loadFile("assets/fonts/BentonSans-Light.otf");
+    // preload.loadFile("assets/fonts/BentonSans-Medium.otf");
+    // preload.loadFile("assets/fonts/BentonSans-Regular.otf");
+    // preload.loadFile("assets/jpg/introduction.jpg");
+    // preload.loadFile("assets/jpg/overview.jpg");
+    // preload.loadFile("assets/png/logo-amex.png");
+    // preload.loadFile("assets/video/home_bg.mp4");
+    // preload.loadFile("assets/video/home_bg.ogg");
+    // preload.loadFile("assets/video/home_bg.webm");
+
+    handleFileComplete();
+
+});
+
+function handleFileComplete() {
+    //console.log("files loaded");
     checkIE();
 
     screenWidth = $(window).width();
@@ -67,8 +88,7 @@ $(document).ready(function() {
     var SVGsToInject = document.querySelectorAll('.svg-sprite');
     SVGInjector(SVGsToInject);
     setupPage();
-
-});
+}
 
 $( window ).resize(function() {
 
@@ -301,18 +321,20 @@ function initPage(_ref){
 }
 
 function animateMobileWheel(anchor){
+    //console.log(sliceRotation);
     for(var i=0; i<sliceRotation.length; i++){
         if(sliceRotation[i].link == anchor){
             var mobileNav = $('#circularmenu'),
                 mobileNavName = $('#nav-name');
             var mobileNavTweenTurn = new TimelineMax({pause:true});
-            var newRotation = (sliceRotation[i].deg + (sectorAngle/2)) - 90;
-            currentRotation = -newRotation;
+            //var newRotation = -(sliceRotation[i].deg + rotationStopPoint);
+            var newRotation = sliceRotation[i].stoppoint;
+            $('#console').append('currentRotation before wheel turn: '+currentRotation);
             $('#nav-name .title').html(sliceRotation[i].name);
             console.log("sliceRotation[i].link: "+sliceRotation[i].link);
             console.log("currentAnchor: "+currentAnchor);
             mobileNavTweenTurn.set(mobileNavName, {display: 'block', bottom:mobileNavRadius+10, opacity:0})
-            mobileNavTweenTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center", ease:Strong.easeOut});
+            mobileNavTweenTurn.fromTo(mobileNav, 1, {rotation:currentRotation}, {directionalRotation:newRotation+"_short", ease:Strong.easeOut});
             if(mobileNav.hasClass('active') && (sliceRotation[i].link != currentAnchor)){
                 mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 0}, {opacity: 1}, "-=1");
             }else if(mobileNav.hasClass('active') && (sliceRotation[i].link == currentAnchor)){
@@ -321,7 +343,10 @@ function animateMobileWheel(anchor){
                     firstLoad = false;
                 }
                 mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 1}, {opacity: 1}, "-=1");
+                currentRotation = newRotation;
+                $('#console').append('<p>newRotation after wheel turn: '+newRotation+'</p>');
             }
+            
         }
     }
 }
@@ -443,6 +468,7 @@ function createCircularMenu(_ref){
     var count = 0;
     sectorAngle = cmAngleInDegrees;
     mobileNavRadius = cmRadius;
+    rotationStopPoint = (sectorAngle/2)-90;
     
     var svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute('xmlns', svgNS);
@@ -519,10 +545,12 @@ function createCircularMenu(_ref){
 
         document.getElementById('svg-link-'+index).appendChild(svgicon);
 
+        var stopPointTemp = -(cmAngleofRotation + rotationStopPoint);
         sliceRotation.push({
             link: anchor,
             deg: cmAngleofRotation,
-            name: content
+            name: content,
+            stoppoint: stopPointTemp
         });
         
         cmAngleofRotation += cmAngleInDegrees;
@@ -563,14 +591,28 @@ function createCircularMenu(_ref){
                 mobileNavTweenShow.play();
             }else{
                 mobileNavTweenShow.reverse();
+                currentRotation = 0;
             }
 
             $('.navbar-toggler').on('click', function(){
                 mobileNav.toggleClass('active');
                 if(mobileNav.hasClass('active')){
+                    //$('body').bind('touchmove', function(e){e.preventDefault()});
+                    //$('body').addClass('stop-scrolling')
                     mobileNavTweenShow.play();
+                    $('#console').append('<p>nav button clicked: open</p>');
+                    window.document.body.addEventListener('touchstart', rotateStart, false);
+                    window.document.body.addEventListener('touchmove', rotateMove, false);
+                    window.document.body.addEventListener('touchend', rotateEnd, false);
                 }else{
+                    //$('body').unbind('touchmove');
+                    //$('body').removeClass('stop-scrolling')
                     mobileNavTweenShow.reverse();
+                    $('#console').append('<p>nav button clicked: close</p>');
+                    window.document.body.removeEventListener('touchstart', rotateStart, false);
+                    window.document.body.removeEventListener('touchmove', rotateMove, false);
+                    window.document.body.removeEventListener('touchend', rotateEnd, false);
+                    currentRotation = 0;
                 }
                 
             });
@@ -580,45 +622,64 @@ function createCircularMenu(_ref){
             count++;
         }
     });
+}
 
-    document.getElementById('circularmenu').addEventListener('touchstart', function(event) {
-        var touch = event.touches[0];
-        //$('#console').html(touch.pageX,touch.pageY+'<br>');
-        blockMenuHeaderScroll = true;
-        touchStartX = touch.pageX;
-        touchStartY = touch.pageY;
-        console.log('start: '+touch.pageX+','+touch.pageY);
-    }, false);
-    document.getElementById('circularmenu').addEventListener('touchmove', function(event) {
-        var touch = event.touches[0];
-        touchMoveX = touch.pageX;
-        touchMoveY = touch.pageY;
-        if (blockMenuHeaderScroll)
-        {
-            $('body').css('overflow', 'hidden');
+var rotateStart = function(event){
+    var touch = event.touches[0];
+    //$('#console').html(touch.pageX,touch.pageY+'<br>');
+    touchStartX = touch.pageX;
+    touchStartY = touch.pageY;
+    //console.log('start: '+touch.pageX+','+touch.pageY);
+    $("#console").append('<p>start: '+touch.pageX+','+touch.pageY+'</p>');
+}
+var rotateMove = function(event){
+    var touch = event.touches[0];
+    touchMoveX = touch.pageX;
+    if(touchMoveX < touchStartX){
+        currentRotation -= 5;
+        (currentRotation > -(rotationStopPoint)) ? currentRotation -= 360 : currentRotation = currentRotation;
+        (currentRotation < -(360+rotationStopPoint)) ? currentRotation += 360  : currentRotation = currentRotation;
+        $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
+        //console.log("============= LEFT ==============");
+        for(var j=0; j<sliceRotation.length; j++){
+            $('#nav-name .title').html(checkTitle(j, "left"));
         }
-        console.log('currentRotation: '+currentRotation);
-        if(touchMoveX < touchStartX){
-            currentRotation -= 5;
-            $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
-            touchStartX = touchMoveX;
-            console.log('animate to left');
-        }else{
-            currentRotation += 5;
-            $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
-            touchStartX = touchMoveX;
-            console.log('animate to right');
+        touchStartX = touchMoveX;
+        $('#console').append('<p>currentRotation on move left: '+currentRotation+'</p>');
+    }else{
+        currentRotation += 5;
+        (currentRotation > -(rotationStopPoint)) ? currentRotation -= 360 : currentRotation = currentRotation;
+        (currentRotation < -(360+rotationStopPoint)) ? currentRotation += 360  : currentRotation = currentRotation;
+        $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
+        //console.log("============= RIGHT ==============");
+        for(var j=0; j<sliceRotation.length; j++){
+            $('#nav-name .title').html(checkTitle(j, "right"));
         }
-        //$('#console').append(touch.pageX,touch.pageY+'<br>');
-        console.log('move: '+touch.pageX+','+touch.pageY);
-    }, false);
-    document.getElementById('circularmenu').addEventListener('touchend', function(event) {
-        blockMenuHeaderScroll = false;
-        $('body').css('overflow', 'scroll');
-        //$('#console').append(touch.pageX,touch.pageY+'<br>');
-        console.log('touch ended');
+        touchStartX = touchMoveX;
+        $('#console').append('<p>currentRotation on rotate right: '+currentRotation+'</p>');
+    }
+    //$('#console').append(touch.pageX,touch.pageY+'<br>');
+    //console.log('move: '+touch.pageX+','+touch.pageY);
+    $("#console").append('move: '+touch.pageX+','+touch.pageY+'</p>');
+}
+var rotateEnd = function(event){
+    $("#console").append('<p>touch ended</p>');
+    $('#console').append('<p>currentRotation on end: '+currentRotation+'</p>');
+}
 
-    }, false);
+function checkTitle(index, dir){
+    var k = index;
+    k += 1;
+    (k>sliceRotation.length-1) ? k = 0 : k=k;
+    //console.log("j: "+index+", currentRotation: "+currentRotation+", sliceRotation.stoppoint: "+sliceRotation[index].stoppoint+", sliceRotation.stoppoint+1: "+sliceRotation[k].stoppoint);
+    if(currentRotation <= sliceRotation[index].stoppoint+(sectorAngle/2)  && dir=="left"){
+        return sliceRotation[index].name;
+        console.log("sliceRotation.name: "+sliceRotation[index].name);
+    }
+    if(currentRotation <= sliceRotation[index].stoppoint+(sectorAngle/2)  && dir=="right"){
+        return sliceRotation[index].name;
+        console.log("sliceRotation.name: "+sliceRotation[index].name);
+    }
 }
 
 
@@ -679,7 +740,7 @@ function startAnimation(){
         homeSubtitle = $('#section-home h3');
     TweenMax.set(homeContent, {visibility:'visible'});
     homeAnimation = new TimelineMax();
-    firstLoad ? homeAnimation.delay(0.5) : homeAnimation.delay(2);
+    //firstLoad ? homeAnimation.delay(0.5) : homeAnimation.delay(2);
     homeAnimation.from(homeVideo, 1, {opacity:0});
     homeAnimation.from(homeTitle, 1, {'top':'-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
     homeAnimation.from(homeHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -705,7 +766,7 @@ function startAnimation(){
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
         overviewImage = $('#section-overview .overview-image img');
     overviewAnimation = new TimelineMax();
-    firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
+    //firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewSubTitle, 1, {'left': '-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -729,9 +790,9 @@ function startAnimation(){
         insightsTitle = $('#section-insights .heading h1'),
         insightsSlides = $('#section-insights .insight');
     insightsAnimation = new TimelineMax();
-    firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
+    //firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
     insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
-    insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'110%', ease:Ease.easeOut}, {y:'0%', delay:0.5}, 0.1);
+    insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'110%', ease:Ease.easeOut}, {y:'0%', delay:0}, 0.1);
     insightsScene = new ScrollMagic.Scene({
         triggerElement: insightsContent,
         triggerHook: 0.5
@@ -751,7 +812,7 @@ function startAnimation(){
         reportFormRows = $('#section-report .report-form .row');
     var reportController = mobile ? controller : controller_h    
     reportAnimation = new TimelineMax();
-    firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
+    //firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
     reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     reportAnimation.from(reportCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -771,7 +832,7 @@ function startAnimation(){
         findingsTitle = $('#section-presentation .heading h1'),
         findingsSlides = $('#section-presentation #findings-content');
     findingsAnimation = new TimelineMax();
-    firstLoad ? findingsAnimation.delay(1) : findingsAnimation.delay(0);
+    //firstLoad ? findingsAnimation.delay(1) : findingsAnimation.delay(0);
     findingsAnimation.from(findingsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     findingsAnimation.from(findingsSlides, 1, {opacity:0}, "-=0.5");
     findingsScene = new ScrollMagic.Scene({
@@ -791,7 +852,7 @@ function startAnimation(){
         prArabic = $('#section-press-release .arabic');
     var prController = mobile ? controller : controller_h    
     prAnimation = new TimelineMax();
-    firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
+    //firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
     prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
     prAnimation.from(prArabic, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
@@ -812,7 +873,7 @@ function startAnimation(){
         cpsForm = $('#section-cps .cps-form'),
         cpsFormRows = $('#section-cps .cps-form .row');
     cpsAnimation = new TimelineMax();
-    firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
+    //firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
     cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     cpsAnimation.from(cpsCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -833,7 +894,7 @@ function startAnimation(){
         contactUsForm = $('#section-contact-us .contact-form'),
         contactUsFormRows = $('#section-contact-us .contact-form .row');
     contactUsAnimation = new TimelineMax();
-    firstLoad ? contactUsAnimation.delay(1) : contactUsAnimation.delay(0);
+    //firstLoad ? contactUsAnimation.delay(1) : contactUsAnimation.delay(0);
     contactUsAnimation.from(contactUsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     contactUsAnimation.from(contactUsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     contactUsAnimation.staggerFromTo(contactUsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);

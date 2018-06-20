@@ -9,6 +9,7 @@ export class DataService {
   private formCompany = new BehaviorSubject<string>(null);
   private formDesignation = new BehaviorSubject<string>(null);
   private formEmail = new BehaviorSubject<string>(null);
+  private formCountryCode = new BehaviorSubject<string>('+(973)');
   private formMobile = new BehaviorSubject<string>(null);
   private formCountry = new BehaviorSubject<string>('Bahrain');
   private formMessage = new BehaviorSubject<string>(null);
@@ -20,6 +21,7 @@ export class DataService {
   currentCompany = this.formCompany.asObservable();
   currentDesignation = this.formDesignation.asObservable();
   currentEmail = this.formEmail.asObservable();
+  currentCountryCode = this.formCountryCode.asObservable();
   currentMobile = this.formMobile.asObservable();
   currentCountry = this.formCountry.asObservable();
   currentMessage = this.formMessage.asObservable();
@@ -46,6 +48,10 @@ export class DataService {
 
   changeEmail(val: string) {
     this.formEmail.next(val);
+  }
+
+  changeCountryCode(val: string) {
+    this.formCountryCode.next(val);
   }
 
   changeMobile(val: string) {

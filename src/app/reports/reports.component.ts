@@ -21,6 +21,7 @@ export class ReportsComponent implements OnInit {
   designationControl;
   emailControl;
   countryControl;
+  countryCodeControl;
   phoneControl;
   downloadable = false;
 
@@ -29,6 +30,7 @@ export class ReportsComponent implements OnInit {
   company: string;
   designation: string;
   email: string;
+  countryCode: string;
   mobile: string;
   country: string;
   message: string;
@@ -76,56 +78,63 @@ export class ReportsComponent implements OnInit {
       lead_source: this.formBuilder.control('Partner Aquisition Campaign'),
       '00N20000001DX1u': this.formBuilder.control('CFOSurveyResults'),
       rating: this.formBuilder.control('Hot')
-    });
+    }, {updateOn: 'submit'});
 
    this.firstNameControl =  this.reportForm.get('firstName');
    this.firstNameControl.valueChanges
       .subscribe(value => {
         value && value.toLowerCase().trim();
         this.data.changeFirstName(value);
-      });
+      }, {updateOn: 'submit'});
 
     this.lastNameControl =  this.reportForm.get('lastName');
     this.lastNameControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeLastName(value);
-        });
+        }, {updateOn: 'submit'});
     
     this.companyControl =  this.reportForm.get('company');
     this.companyControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeCompany(value);
-        });
+        }, {updateOn: 'submit'});
     
     this.designationControl =  this.reportForm.get('designation');
     this.designationControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeDesignation(value);
-        });
+        }, {updateOn: 'submit'});
         
     this.emailControl =  this.reportForm.get('email');
     this.emailControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeEmail(value);
-        });
+        }, {updateOn: 'submit'});
     
     this.countryControl =  this.reportForm.get('country');
     this.countryControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeCountry(value);
-        });
+        }, {updateOn: 'submit'});
+
+    this.countryCodeControl =  this.reportForm.get('countryCode');
+    this.countryCodeControl.valueChanges
+        .subscribe(value => {
+          value && value.toLowerCase().trim();
+          this.data.changeCountryCode(value);
+        }, {updateOn: 'submit'});    
     
     this.phoneControl =  this.reportForm.get('mobile');
     this.phoneControl.valueChanges
         .subscribe(value => {
           value && value.toLowerCase().trim();
           this.data.changeMobile(value);
-        });    
+        }, {updateOn: 'submit'});    
     
         
   }
@@ -137,6 +146,7 @@ export class ReportsComponent implements OnInit {
     this.data.currentCompany.subscribe((value) => this.company = value );
     this.data.currentDesignation.subscribe((value) => this.designation = value );
     this.data.currentEmail.subscribe((value) => this.email = value );
+    this.data.currentCountryCode.subscribe((value) => this.countryCode = value );
     this.data.currentMobile.subscribe((value) => this.mobile = value );
     this.data.currentCountry.subscribe((value) => this.country = value );
     this.data.currentMessage.subscribe((value) => this.message = value );
@@ -146,29 +156,75 @@ export class ReportsComponent implements OnInit {
     //this.data.currentFirstName.subscribe(formFirstName => this.firstName = formFirstName );
   }
 
-  onSubmitForm(){
-    console.log(this.reportForm.value);
-    //let headers = new Headers({ 'Content-Type': 'application/json' });
-    //let options = new RequestOptions({ headers: headers });
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
+  isFieldValid(field: string) {
+    return !this.reportForm.get(field).valid && this.reportForm.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field)
     };
-    this.http.post('https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', JSON.stringify(this.reportForm.value), httpOptions)
-      .subscribe(
-        (val) => {
-          this.downloadable = true;
-          console.log("POST call successful value returned in body", 
-                      val);
-        },
-        response => {
-            console.log("POST call in error", response);
-        },
-        () => {
-            console.log("The POST observable is now completed.");
-        }
-      );
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {         //{1}
+    Object.keys(formGroup.controls).forEach(field => {  //{2}
+      const control = formGroup.get(field);             //{3}
+      if (control instanceof FormControl) {             //{4}
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {        //{5}
+        this.validateAllFormFields(control);            //{6}
+      }
+    });
+  }
+
+  onSubmitForm(){
+    this.reportForm.setValue({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      company: this.company,
+      designation: this.designation,
+      email: this.email,
+      country: this.country,
+      countryCode: this.countryCode,
+      mobile: this.mobile,
+      lead_source: 'Partner Aquisition Campaign',
+      '00N20000001DX1u': 'CFOSurveyResults',
+      rating: 'Hot'
+    });
+    this.validateAllFormFields(this.reportForm);
+
+    if (this.reportForm.valid) {
+      this.downloadable = true;
+      console.log(this.reportForm.value);
+
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      //let url = 'http://192.168.15.191:4200/'
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      };
+      this.http.post(url, JSON.stringify(this.reportForm.value), httpOptions)
+        .subscribe(
+          (val) => {
+            this.downloadable = true;
+            console.log("POST call successful value returned in body", 
+                        val);
+          },
+          response => {
+              console.log("POST call in error", response);
+          },
+          () => {
+              console.log("The POST observable is now completed.");
+          }
+        );
+    } else {
+      this.validateAllFormFields(this.reportForm);
+      //console.log("form not valid");
+    }
   }
 
   setCountryCode(value){

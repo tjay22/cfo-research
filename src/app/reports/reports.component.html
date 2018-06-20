@@ -12,8 +12,8 @@
     </div>
     <div class="report-form col-md-12 col-lg-6" [class.invisible]="downloadable">
       <p>Please complete the form to access the report.</p>
-      <!--<form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">-->
-        <form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="reportForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()">
+      <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">
+      <!--<form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="reportForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()">-->
         <div class="form-group row">
           <div class="col-sm-6">
             <input type="text" class="form-control" id="first-name" placeholder="First Name" formControlName="firstName" value="{{ firstName }}">
@@ -85,7 +85,8 @@
             <select id="rating" name="rating" formControlName="rating" style="display:none;">
               <option value="Hot">Hot</option>
             </select>
-            <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!reportForm.valid">Submit</button>
+            <!--<button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!reportForm.valid">Submit</button>-->
+            <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12">Submit</button>
           </div>
         </div>
       </form>

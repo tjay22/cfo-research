@@ -8,7 +8,7 @@
     <div class="col-md-12">
       <p>Have a query or a comment? Just send us a message using this form. </p>
       <!--<form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">-->
-      <form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="contactForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()"> 
+      <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()"> 
         <div class="row">
           <div class="col-md-12 col-lg-6">
 
@@ -92,7 +92,7 @@
                 <select id="rating" name="rating" formControlName="rating" style="display:none;">
                   <option value="Hot">Hot</option>
                 </select>
-                <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12" [disabled]="!contactForm.valid">Submit</button>
+                <button type="submit" class="submit-btn btn btn-primary mb-2 col-sm-12">Submit</button>
               </div>
             </div>
           </div>
