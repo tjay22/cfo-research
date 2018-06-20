@@ -55,6 +55,7 @@
     min-height: 100%;
     background: url('/assets/jpg/introduction.jpg');
     background-size: cover;
+    background-position: 50% center;
 }
 #video-bg{
     position: absolute;
@@ -69,6 +70,25 @@
 }
 .hidden{
     display:none;
+}
+
+.modal-dialog{
+    max-width: 800px;
+}
+.modal-dialog img{
+    width:auto;
+}
+.modal-body{
+    padding:0rem;
+    text-align: center;
+    background-color: $dark-blue;
+}
+.modal-body button.close{
+    position: absolute;
+    right:10px;
+    top:10px;
+    color: $white;
+    text-shadow: 0 1px 0 #000;
 }
 
 @include media-breakpoint-down(xs){

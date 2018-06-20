@@ -200,7 +200,8 @@ export class ReportsComponent implements OnInit {
 
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
-      let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      let url = 'http://denzeltech.com/ogilvy_listener/index.php';
+      //let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
       //let url = 'http://192.168.15.191:4200/'
       const httpOptions = {
         headers: new HttpHeaders({

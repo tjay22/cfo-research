@@ -5,25 +5,10 @@
     </div>
   </div>
   <div id="findings-content">
-    <div class="col findings-slide">
+    <div *ngFor="let slide of slides" class="col findings-slide">
       <div class="inner-slide">
-        Slide 1
+        <img src="{{ slide }}">
       </div>
-    </div>
-    <div class="col findings-slide">
-      <div class="inner-slide">
-        Slide 2
-      </div>
-    </div>
-    <div class="col findings-slide">
-      <div class="inner-slide">
-        Slide 3
-      </div>
-    </div>
-    <div class="col findings-slide">
-      <div class="inner-slide">
-        Slide 4
-      </div>
-    </div>  
+    </div> 
   </div>
 </div>

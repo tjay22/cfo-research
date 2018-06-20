@@ -13,15 +13,29 @@
     text-align:center;
 }
 .insight-image{
-    min-width: 100%;
-    min-height: 250px;
+    max-width: 100%;
+    //min-height: 250px;
     background: #8b8d8e;
+}
+.insight-image img{
+    width: 100%;
 }
 .insight-title{
     background: $light-blue;
     color: $white;
     padding: 1rem;
 }
+.insight-title .btn-primary{
+    background-color:transparent;
+    outline: none;
+    border-color: rgba($white, 0.5);
+}
 #section-insights .slick-arrow{
     color: $white;
+}
+
+@include media-breakpoint-down(xs){
+    .insight-title .btn-primary{
+        font-size: 0.9rem;
+    }
 }

@@ -15,7 +15,7 @@
 #section-contact-us .contact-form select,
 #section-contact-us .contact-form textarea,
 #section-contact-us .contact-form button{
-    font-size:1rem;
+    font-size:0.9rem;
 }
 #section-contact-us .heading-container{
     margin-bottom: $heading-bottom-margin;
@@ -42,7 +42,7 @@ a.btn-primary{
 #section-contact-us .confirmation{
     display: none;
     text-align: center;
-    color: $yellow;
+    color: $dark-yellow;
 }
 button.btn-primary .icon,
 a.btn-primary .icon{

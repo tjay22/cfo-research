@@ -12,11 +12,17 @@
     text-align: center;
 }
 #section-presentation .inner-slide{
-    width: 650px;
-    height: 350px;
+    width: 100%;
+    text-align: center;
+}
+#section-presentation .inner-slide img{
+    max-width: 75%;
     margin: 0 auto;
-    background: $light-blue;
-    color: $white;
-    vertical-align: middle;
-    padding: 3rem;
+}
+
+@include media-breakpoint-down(xs){
+    #section-presentation .inner-slide img{
+        max-width: 100%;
+        margin: 0 auto;
+    }
 }
