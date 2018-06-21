@@ -1,24 +1,49 @@
 @import  'functions', 'mixins';
 
 @font-face {
-    font-family: BentonSansLight;
-    src: url(/assets/fonts/BentonSans-Light.otf) format('opentype');
+    font-family: 'BentonSansLight';
+    src: url('/assets/fonts/eot/BentonSans-Light.eot');
+    src: url('/assets/fonts/eot/BentonSans-Light.eot?#iefix') format('embedded-opentype'), 
+        url('/assets/fonts/woff2/BentonSans-Light.woff2') format('woff2'),
+        url('/assets/fonts/woff/BentonSans-Light.woff') format('woff'),
+        url('/assets/fonts/ttf/BentonSans-Light.ttf') format('truetype'),
+        url('/assets/fonts/otf/BentonSans-Light.otf') format('opentype');
+}
+// @font-face {
+//     font-family: 'BentonSansBook';
+//     src: url('/assets/fonts/eot/BentonSans-Book.eot');
+//     src: url('/assets/fonts/eot/BentonSans-Book.eot?#iefix') format('embedded-opentype'),
+//         url('/assets/fonts/woff2/BentonSans-Book.woff2') format('woff2'),
+//         url('/assets/fonts/woff/BentonSans-Book.woff') format('woff'),
+//         url('/assets/fonts/ttf/BentonSans-Book.ttf') format('truetype'),
+//         url('/assets/fonts/otf/BentonSans-Book.otf') format('opentype');
+// }
+// @font-face {
+//     font-family: 'BentonSansRegular';
+//     src: url('/assets/fonts/eot/BentonSans-Regular.eot');
+//     src: url('/assets/fonts/eot/BentonSans-Regular.eot?#iefix') format('embedded-opentype'),
+//         url('/assets/fonts/woff2/BentonSans-Regular.woff2') format('woff2'),
+//         url('/assets/fonts/woff/BentonSans-Regular.woff') format('woff'),
+//         url('/assets/fonts/ttf/BentonSans-Regular.ttf') format('truetype'),
+//         url('/assets/fonts/otf/BentonSans-Regular.otf') format('opentype');
+// }
+@font-face {
+    font-family: 'BentonSansMedium';
+    src: url('/assets/fonts/eot/BentonSans-Medium.eot');
+    src: url('/assets/fonts/eot/BentonSans-Medium.eot?#iefix') format('embedded-opentype'),
+        url('/assets/fonts/woff2/BentonSans-Medium.woff2') format('woff2'),
+        url('/assets/fonts/woff/BentonSans-Medium.woff') format('woff'),
+        url('/assets/fonts/ttf/BentonSans-Medium.ttf') format('truetype'),
+        url('/assets/fonts/otf/BentonSans-Medium.otf') format('opentype');
 }
 @font-face {
-    font-family: BentonSansBook;
-    src: url(/assets/fonts/BentonSans-Book.otf) format('opentype');
-}
-@font-face {
-    font-family: BentonSansRegular;
-    src: url(/assets/fonts/BentonSans-Regular.otf) format('opentype');
-}
-@font-face {
-    font-family: BentonSansMedium;
-    src: url(/assets/fonts/BentonSans-Medium.otf) format('opentype');
-}
-@font-face {
-    font-family: BentonSansBold;
-    src: url(/assets/fonts/BentonSans-Bold.otf) format('opentype');
+    font-family: 'BentonSansBold';
+    src: url('/assets/fonts/eot/BentonSans-Bold.eot');
+    src: url('/assets/fonts/eot/BentonSans-Bold.eot?#iefix') format('embedded-opentype'),
+        url('/assets/fonts/woff2/BentonSans-Bold.woff2') format('woff2'),
+        url('/assets/fonts/woff/BentonSans-Bold.woff') format('woff'),
+        url('/assets/fonts/ttf/BentonSans-Bold.ttf') format('truetype'),
+        url('/assets/fonts/otf/BentonSans-Bold.otf') format('opentype');;
 }
 @font-face {
     font-family: Cairo;
@@ -33,8 +58,9 @@ $dark-yellow: #a96e00;
 $color-facebook: #3b5998;
 $color-linkedin: #0077b5;
 
-$font-stack: BentonSansLight, 'Arial';
-$font-stack-bold: BentonSansBold, 'Arial';
+$font-stack: 'BentonSansLight', 'Arial';
+$font-stack-medium: 'BentonSansMedium', 'Arial';
+$font-stack-bold: 'BentonSansBold', 'Arial';
 $font-arabic: Cairo;
 $primary-color: $dark-blue;
 $secondary-color: $light-blue;

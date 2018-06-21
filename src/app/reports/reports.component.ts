@@ -70,14 +70,16 @@ export class ReportsComponent implements OnInit {
       email: this.formBuilder.control(this.email,
         Validators.compose([Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
       ),
-      countryCode: this.formBuilder.control('+(973)'),
+      countryCode: this.formBuilder.control('+971'),
       mobile: this.formBuilder.control(this.mobile,
         Validators.compose([Validators.required, Validators.pattern('^[-+()0-9 ]*$')])
       ),
-      country: this.formBuilder.control('Bahrain'),
+      country: this.formBuilder.control('United Arab Emirates'),
       lead_source: this.formBuilder.control('Partner Aquisition Campaign'),
       '00N20000001DX1u': this.formBuilder.control('CFOSurveyResults'),
-      rating: this.formBuilder.control('Hot')
+      rating: this.formBuilder.control('Hot'),
+      oid: this.formBuilder.control('00D200000006Adm'),
+      retURL: this.formBuilder.control('https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html')
     }, {updateOn: 'submit'});
 
    this.firstNameControl =  this.reportForm.get('firstName');
@@ -200,14 +202,19 @@ export class ReportsComponent implements OnInit {
 
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
-      let url = 'http://denzeltech.com/ogilvy_listener/index.php';
-      //let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      //let url = 'http://denzeltech.com/ogilvy_listener/index.php';
+      let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
       //let url = 'http://192.168.15.191:4200/'
       const httpOptions = {
         headers: new HttpHeaders({
-          'Content-Type':  'application/json'
+          //'Content-Type':  'application/json'
+          //'Content-Type':  'multipart/form-data'
+          //'Content-Type':  'application/form-data'
+          'Content-Type':  'application/x-www-form-urlencoded; charset=UTF-8'
+          //'Content-Type':  'text/plain'
         })
       };
+      console.log('8:25pm');
       this.http.post(url, JSON.stringify(this.reportForm.value), httpOptions)
         .subscribe(
           (val) => {
@@ -236,6 +243,8 @@ export class ReportsComponent implements OnInit {
         let countryCodeControl = this.reportForm.get('countryCode') as FormControl;
         countryCodeControl.setValue(this.countryItems[i].dial_code);
 
+        this.data.currentCountry = this.countryItems[i].name;
+        this.data.currentCountryCode = this.countryItems[i].dial_code;
       }
     }
   }

@@ -9,7 +9,7 @@
 
   <style>
     #preloader{
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -36,12 +36,15 @@
       text-align: center;
       color: #ffffff;
     }
-  </style>
-  <!--[if IE]>
-    #preloader .inner-div svg{
-      display:none;
+    @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+      #preloader .inner-div svg{
+        display:none;
+      }
+      .popover-body{
+        font-family: Arial;
+      }
     }
-  <![endif]-->
+  </style>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>

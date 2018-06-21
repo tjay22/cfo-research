@@ -49,20 +49,15 @@ $(document).ready(function() {
     var preload = new createjs.LoadQueue();
     //preload.addEventListener("complete", filesLoaded);
     preload.loadFile("assets/icons/fontawesome-all.min.js");
-    preload.loadFile("assets/fonts/BentonSans-Bold.otf");
-    preload.loadFile("assets/fonts/BentonSans-Book.otf");
-    preload.loadFile("assets/fonts/BentonSans-Light.otf");
-    preload.loadFile("assets/fonts/BentonSans-Medium.otf");
-    preload.loadFile("assets/fonts/BentonSans-Regular.otf");
     preload.loadFile("assets/jpg/introduction.jpg");
     preload.loadFile("assets/jpg/overview.jpg");
     preload.loadFile("assets/png/logo-amex.png");
     preload.loadFile("assets/infographics/cfo_research.jpg");
-    preload.loadFile("assets/infographics/economic_growth.png");
-    preload.loadFile("assets/infographics/employment_trends_2018.png");
-    preload.loadFile("assets/infographics/next_gen_technologies.png");
-    preload.loadFile("assets/infographics/risk_and_disruption.png");
-    preload.loadFile("assets/infographics/spending_and_investment_plans_2018.png");
+    preload.loadFile("assets/infographics/economic_growth.jpg");
+    preload.loadFile("assets/infographics/employment_trends_2018.jpg");
+    preload.loadFile("assets/infographics/next_gen_technologies.jpg");
+    preload.loadFile("assets/infographics/risk_and_disruption.jpg");
+    preload.loadFile("assets/infographics/spending_and_investment_plans_2018.jpg");
 
     handleFileComplete();
 
@@ -79,8 +74,10 @@ function handleFileComplete() {
         var imgURL = $(this).data('content');
         var imgString = '<img src="'+imgURL+'" style="max-width:100%;">';
         $('#infograph_modal .modal-body .modal-image').html(imgString);
+        //$('#infograph_modal').modal('show');
         $('#infograph_modal').modal('show');
     })
+    
 
     screenWidth = $(window).width();
     screenHeight = $(window).height();
@@ -393,6 +390,13 @@ function checkIE(){
     if (msie > 0) {
         // IE 10 or older => return version number
         styleForIE();
+
+        $('#infograph_modal').on('shown.bs.modal', function(){
+            var imgHeight = $('#infograph_modal .modal-image img').height();
+            $('#infograph_modal .modal-body').height(imgHeight);
+            //console.log('imgHeight: '+imgHeight);
+            $('#infograph_modal').modal('handleUpdate');
+        });
     }
 
     var trident = ua.indexOf('Trident/');
@@ -413,6 +417,9 @@ function checkIE(){
 }
 
 function styleForIE(){
+    $('body, .popover, .popover-body, .btn').css({
+        'font-family': 'BentonSansLight'
+    });
     $('.overview-image').css({
         '-webkit-clip-path': 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
         'clip-path': 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)'
@@ -552,12 +559,8 @@ function createCircularMenu(_ref){
                 mobileNavName = $('#nav-name'),
                 mobileNav = $('#circularmenu'),
                 mobileNavSlices = $('#circularmenu a.slice'),
-                menuToggleBars = $('#mobile-nav #menu-toggle'),
-                menuToggleClose = $('#mobile-nav #menu-toggle-close');
-
-            // var mobileNavTweenFirstTurn = new TimelineMax({pause:true});
-            // var newRotation = (0 + (sectorAngle/2)) - 90;
-            // mobileNavTweenFirstTurn.to(mobileNav, 1, {rotation:-newRotation, transformOrigin:"center center"});
+                menuToggleBars = $('#nav-container #menu-toggle'),
+                menuToggleClose = $('#nav-container #menu-toggle-close');
                         
             var mobileNavTweenShow = new TimelineMax({pause:true});
             mobileNavTweenShow.set(mobileNav, {rotation:-sectorAngle, bottom: -cmRadius});
@@ -565,8 +568,10 @@ function createCircularMenu(_ref){
             mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {'margin-top': '0px'}, '-=0.5');
             mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}, '-=0.5');
             mobileNavTweenShow.fromTo(mobileNavName, 0.5, {bottom:-50}, {bottom:mobileNavRadius+10}, '-=1');
-            mobileNavTweenShow.to(menuToggleBars, 1, {opacity:0, 'margin-bottom':-100, ease:Strong.easeOut}, '-=1');
-            mobileNavTweenShow.to(menuToggleClose, 1, {opacity:1, 'margin-bottom':5, 'display':'block', ease:Strong.easeOut}, '-=1');
+            //mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {opacity:0}, '-=0.5');
+            //mobileNavTweenShow.to(menuToggleClose, 0.5, {opacity:1}, '-=0.5');
+            //mobileNavTweenShow.to(menuToggleBars, 0.5, {css: {marginBottom: '-100px'}, ease:Strong.easeOut}, '-=1');
+            //mobileNavTweenShow.to(menuToggleClose, 0.5, {css: {marginBottom: '5px'}, ease:Strong.easeOut}, '-=1');
             mobileNavTweenShow.staggerFrom(mobileNavSlices, 1, {
                 rotation:0,
                 svgOrigin: cmCenterX+" "+cmCenterY,
@@ -576,8 +581,10 @@ function createCircularMenu(_ref){
             });
 
             if(mobileNav.hasClass('active')){
+                $('.navbar-toggler').addClass('clicked');
                 mobileNavTweenShow.play();
             }else{
+                $('.navbar-toggler').removeClass('clicked');
                 mobileNavTweenShow.reverse();
                 currentRotation = 0;
             }
@@ -585,6 +592,7 @@ function createCircularMenu(_ref){
             $('.navbar-toggler').on('click', function(){
                 mobileNav.toggleClass('active');
                 if(mobileNav.hasClass('active')){
+                    $('#icon-bars').addClass('clicked');
                     //$('body').bind('touchmove', function(e){e.preventDefault()});
                     //$('body').addClass('stop-scrolling')
                     mobileNavTweenShow.play();
@@ -595,6 +603,7 @@ function createCircularMenu(_ref){
                 }else{
                     //$('body').unbind('touchmove');
                     //$('body').removeClass('stop-scrolling')
+                    $('#icon-bars').removeClass('clicked');
                     mobileNavTweenShow.reverse();
                     //$('#console').append('<p>nav button clicked: close</p>');
                     window.document.body.removeEventListener('touchstart', rotateStart, false);
@@ -838,13 +847,13 @@ function startAnimation(){
     var prContent = '#section-press-release',
         prTitle = $('#section-press-release .heading h1'),
         prEnglish = $('#section-press-release .english'),
-        prArabic = $('#section-press-release .arabic');
+        prButtons = $('#section-press-release .buttons');
     var prController = mobile ? controller : controller_h    
     prAnimation = new TimelineMax();
     //firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
     prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
-    prAnimation.from(prArabic, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
+    prAnimation.from(prButtons, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
     prScene = new ScrollMagic.Scene({
         triggerElement: prContent
     })

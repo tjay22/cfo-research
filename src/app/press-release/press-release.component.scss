@@ -8,7 +8,8 @@
 #section-press-release .heading{
     margin-bottom: $heading-bottom-margin;
 }
-#section-press-release .heading h1{
+#section-press-release .heading h1,
+#section-press-release .buttons{
     position: relative;
 }
 #section-press-release h4{
@@ -20,6 +21,20 @@
     color: $white;
     font-size: 0.9rem;
 }
-#section-press-release .arabic{
-    font-size:1.2rem;
+#section-press-release .english-btn{
+    font-size:1.1rem;
+    text-align: left;
+    direction: ltr;
+}
+#section-press-release .arabic-btn{
+    font-size:1.1rem;
+    text-align: right;
+    direction: rtl;
+}
+
+@include media-breakpoint-down(sm){
+    #section-press-release .buttons .btn{
+        display:block;
+        margin-bottom: 10px;
+    }
 }

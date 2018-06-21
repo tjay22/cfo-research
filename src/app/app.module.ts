@@ -17,6 +17,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { CpsComponent } from './cps/cps.component';
 
 import { DataService } from './shared/data.service';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DataService } from './shared/data.service';
     PresentationComponent,
     PressReleaseComponent,
     ContactUsComponent,
-    CpsComponent
+    CpsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

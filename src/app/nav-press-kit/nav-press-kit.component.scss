@@ -43,3 +43,9 @@
 .nav-press-kit .icon use{
     fill:$dark-blue;
 }
+.nav-container{
+    display:flex !important;
+    flex-basis:auto;
+    align-items: center;
+    flex-grow:1;
+}

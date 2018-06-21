@@ -24,7 +24,7 @@ a.btn-primary{
     background-color: $yellow;
     border-color: $yellow;
     color: $dark-blue;
-    font-family: BentonSansMedium;
+    font-family: $font-stack-medium;
 }
 #section-cps .errors{
     font-size: 0.8rem;

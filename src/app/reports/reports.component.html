@@ -1,3 +1,6 @@
+<div id="header-container">
+  <app-header></app-header>
+</div>
 <div id="section-report" class="container">
   <div class="heading-container">
     <div class="heading">
@@ -13,6 +16,8 @@
     <div class="report-form col-md-12 col-lg-6" [class.invisible]="downloadable">
       <p>Please complete the form to access the report.</p>
       <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">
+        <input type="hidden" name="oid" formControlName="oid"  value="00D200000006Adm">
+        <input type="hidden" name="retURL" formControlName="retURL"  value="https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html">
       <!--<form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="reportForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()">-->
         <div class="form-group row">
           <div class="col-sm-6">
@@ -76,7 +81,7 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-12">
-            <select id="lead_source" name="lead_source"formControlName="lead_source" style="display:none;">
+            <select id="lead_source" name="lead_source" formControlName="lead_source" style="display:none;">
               <option value="Partner Aquisition Campaign" selected="selected">CFO Survey</option>
             </select>
             <select id="00N20000001DX1u" name="00N20000001DX1u" title="Sub-Source" formControlName="00N20000001DX1u" style="display:none;">

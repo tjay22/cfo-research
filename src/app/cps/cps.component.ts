@@ -57,11 +57,11 @@ export class CpsComponent implements OnInit {
       email: this.formBuilder.control(this.email,
         Validators.compose([Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')])
       ),
-      countryCode: this.formBuilder.control('+(973)'),
+      countryCode: this.formBuilder.control('+971'),
       mobile: this.formBuilder.control(this.mobile,
         Validators.compose([Validators.required, Validators.pattern('^[-+()0-9 ]*$')])
       ),
-      country: this.formBuilder.control('Bahrain'),
+      country: this.formBuilder.control('United Arab Emirates'),
       lead_source: this.formBuilder.control('Partner Aquisition Campaign'),
       '00N20000001DX1u': this.formBuilder.control('CFOSurveyResults'),
       rating: this.formBuilder.control('Hot')

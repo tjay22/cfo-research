@@ -9,9 +9,9 @@ export class DataService {
   private formCompany = new BehaviorSubject<string>(null);
   private formDesignation = new BehaviorSubject<string>(null);
   private formEmail = new BehaviorSubject<string>(null);
-  private formCountryCode = new BehaviorSubject<string>('+(973)');
+  private formCountryCode = new BehaviorSubject<string>('+971');
   private formMobile = new BehaviorSubject<string>(null);
-  private formCountry = new BehaviorSubject<string>('Bahrain');
+  private formCountry = new BehaviorSubject<string>('United Arab Emirates');
   private formMessage = new BehaviorSubject<string>(null);
   private screenWidth = new BehaviorSubject<number>(window.innerWidth);
   private screenHeight = new BehaviorSubject<number>(window.innerHeight);
@@ -27,6 +27,14 @@ export class DataService {
   currentMessage = this.formMessage.asObservable();
   currentScreenWidth = this.screenWidth.asObservable();
   currentScreenHeight = this.screenHeight.asObservable();
+
+  xs = 576;
+  sm = 768;
+  md = 992;
+  lg = 1200;
+
+  desktop = true;
+  mobile = false;
 
   constructor() { }
 
