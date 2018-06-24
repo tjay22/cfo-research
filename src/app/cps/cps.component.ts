@@ -167,10 +167,10 @@ export class CpsComponent implements OnInit {
 
     if (this.cpsForm.valid) {
       const data = new HttpParams()
-        .set("firstName", this.firstName)
-        .set("lastName", this.lastName)
+        .set("first_name", this.firstName)
+        .set("last_name", this.lastName)
         .set("company", this.company)
-        .set("designation", this.designation)
+        .set("saluation", this.designation)
         .set("email", this.email)
         .set("country", this.country)
         .set("countryCode", this.countryCode)
