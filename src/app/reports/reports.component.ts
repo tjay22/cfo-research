@@ -192,7 +192,9 @@ export class ReportsComponent implements OnInit {
       mobile: this.mobile,
       lead_source: 'Partner Aquisition Campaign',
       '00N20000001DX1u': 'CFOSurveyResults',
-      rating: 'Hot'
+      rating: 'Hot',
+      oid: '00D200000006Adm',
+      retURL: 'https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html'
     });
     this.validateAllFormFields(this.reportForm);
 
@@ -203,18 +205,20 @@ export class ReportsComponent implements OnInit {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
       //let url = 'http://denzeltech.com/ogilvy_listener/index.php';
-      let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      //let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      let url = 'http://localhost/cfo-research/src/receive_data.php';
       //let url = 'http://192.168.15.191:4200/'
       const httpOptions = {
         headers: new HttpHeaders({
           //'Content-Type':  'application/json'
           //'Content-Type':  'multipart/form-data'
           //'Content-Type':  'application/form-data'
+          'Access-Control-Allow-Origin': '*',
           'Content-Type':  'application/x-www-form-urlencoded; charset=UTF-8'
           //'Content-Type':  'text/plain'
         })
       };
-      console.log('8:25pm');
+      console.log('10:09pm');
       this.http.post(url, JSON.stringify(this.reportForm.value), httpOptions)
         .subscribe(
           (val) => {
