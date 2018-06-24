@@ -43,7 +43,9 @@ export class PresentationComponent implements OnInit {
       'assets/presentation/slide30.jpeg',
       'assets/presentation/slide31.jpeg',
       'assets/presentation/slide32.jpeg',
-      'assets/presentation/slide33.jpeg'
+      'assets/presentation/slide33.jpeg',
+      'assets/presentation/slide34.jpeg',
+      'assets/presentation/slide35.jpeg'
     ];
   }
 

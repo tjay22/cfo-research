@@ -45,7 +45,8 @@
 .popover-body{
     color:$white;
 }
-.bs-popover-auto[x-placement^=left] .arrow::after, .bs-popover-left .arrow::after{
+.bs-popover-auto[x-placement^=left] .arrow::after, .bs-popover-left .arrow::after,
+.popover.bs-popover-auto[x-placement^=left] .arrow::after, .popover.bs-popover-left .arrow::after{
     border-left-color:  rgba($dark-blue,.43);
 }
 .bs-popover-auto[x-placement^=top] .arrow::after, .bs-popover-top .arrow::after{

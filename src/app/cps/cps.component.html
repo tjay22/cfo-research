@@ -16,6 +16,7 @@
         <p>Interested in knowing more about American Express Corporate Solutions? Please fill the form and we will get back to you. </p>
         <!--<form novalidate *ngIf="formActive" [formGroup]="cpsForm" (ngSubmit)="onSubmitForm()">-->
         <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="cpsForm" (ngSubmit)="onSubmitForm()">
+          <input type="hidden" name="oid" formControlName="oid"  value="00D200000006Adm">
           <div class="form-group row">
             <div class="col-sm-6">
               <input type="text" class="form-control" id="first-name" placeholder="First Name" formControlName="firstName" value="{{ firstName }}">

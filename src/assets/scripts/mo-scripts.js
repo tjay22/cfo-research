@@ -106,30 +106,12 @@ $( window ).resize(function() {
     screenHeight = $(window).height();
     (screenWidth > screenSmall) ? mobile = false : mobile = true;
 
-    // $("#console").html("");
-    // $("#console").append("<p>Window Resize: W("+screenWidth + ") x H(" + screenHeight + ")</p>");
-    // $("#console").append("<p>**** Window Resize: mobile = "+mobile+" ****</p>");
-
     if(!mobile && screenWidth != prevScreenWidth){
         clearTimeout(resizeId);
         resizeId = setTimeout(function(){ 
             screenResizeCount += 1;
             screenWidth = window.outerWidth;
             screenHeight = window.outerHeight;
-            //$('#console').append('<p>Screen has been resized '+ screenResizeCount +' times</p>');
-            //$("#console").append("<p>===== Screen Resized "+ screenResizeCount +" times ====</p>");
-            //console.log(screenWidth + " x " + screenHeight);
-            /*overviewSlick = $('#overview-content').slick('unslick');
-            findingsSlick = $('#findings-content').slick('unslick');
-            insightsSlick = $('#insights-content').slick('unslick');*/
-            /*homeAnimation.progress(0); homeScene.setTween(homeAnimation);
-            overviewAnimation.progress(0); overviewScene.setTween(overviewAnimation);
-            insightsAnimation.progress(0); insightsScene.setTween(insightsAnimation);
-            reportAnimation.progress(0); reportScene.setTween(reportAnimation);
-            findingsAnimation.progress(0); findingsScene.setTween(findingsAnimation);
-            prAnimation.progress(0); prScene.setTween(prAnimation);
-            cpsAnimation.progress(0); cpsScene.setTween(cpsAnimation);
-            contactUsAnimation.progress(0); contactUsScene.setTween(contactUsAnimation);*/
             $.fn.fullpage.destroy('all');
             fullpageCreated = false;
             setupPage();
@@ -137,7 +119,6 @@ $( window ).resize(function() {
     }
     if(mobile && screenResizeCount > 0){
         setupPage();
-        //$("#console").append("<p>function not supported as browser is not on a mobile</p>");
     }
 });
 
@@ -172,7 +153,6 @@ function setupPage(){
 
     }else{
 
-        //$('#console').html('<p>ScreenWidth is smaller than 576px</p>');
         $('.mobile').css('display', 'block');
         $('.desktop').css('display', 'none');
 
@@ -192,17 +172,6 @@ function setupPage(){
             svgId: 'svg-menu',
             type: 'donut'
         });
-
-        //Animation for main navigation buttons
-        /*TweenMax.staggerFromTo("#main-nav .nav-item", 0.2, {
-            y: 50,
-            ease: 'Strong.easeInOut'
-        }, {
-            y: 0,
-            delay: 0.5
-        }, 0.1, function(){
-            $("#console").append("<p>mobile navigation done</p>");
-        });*/
     }
 
 }
@@ -230,35 +199,11 @@ function initPage(_ref){
             autoScrolling: fpAutoScrolling,
             afterRender: function(){
                 if(scrollMagicCreated === false){
-                    //$("#console").append("<p>ScrollMagic created on "+fpID+"</p>");
                     startAnimation();
                     scrollMagicCreated = true;                    
                 }else{
-                    //$("#console").append("<p>ScrollMagic destroyed on "+fpID+"</p>");
-                    /*controller.destroy();
-                    controller_h.destroy();
-                    sectionFadeScene.destroy();
-                    homeScene.destroy();
-                    overviewScene.destroy();
-                    insightsScene.destroy();
-                    reportScene.destroy();
-                    findingsScene.destroy();
-                    prScene.destroy();
-                    cpsScene.destroy();
-                    contactUsScene.destroy();*/
-                    //controller, controller_h, sectionFadeScene, homeScene, homeAnimation, overviewScene, overviewAnimation, insightsScene, insightsAnimation, reportScene, reportAnimation, findingsScene, findingsAnimation, prScene, prAnimation, cpsScene, cpsAnimation, contactUsScene, contactUsAnimation = null;
-                    /*homeScene.progress(0);
-                    overviewScene.progress(0);
-                    insightsScene.progress(0);
-                    reportScene.progress(0);
-                    findingsScene.progress(0);
-                    prScene.progress(0);
-                    cpsScene.progress(0);
-                    contactUsScene.progress(0);*/
                     startAnimation();
-                    //scrollMagicCreated = false;
                 }
-                //document.getElementById('home-video').play();
                 $("#scroll-initiator").click(function(){
                     console.log("clicked");
                     $.fn.fullpage.moveTo(2, 0);
@@ -325,21 +270,17 @@ function initPage(_ref){
 
     }else{
         $.fn.fullpage.reBuild();
-        //$("#console").append("<p>Full Page is false</p>");
     }  
 
 }
 
 function animateMobileWheel(anchor){
-    //console.log(sliceRotation);
     for(var i=0; i<sliceRotation.length; i++){
         if(sliceRotation[i].link == anchor){
             var mobileNav = $('#circularmenu'),
                 mobileNavName = $('#nav-name');
             var mobileNavTweenTurn = new TimelineMax({pause:true});
-            //var newRotation = -(sliceRotation[i].deg + rotationStopPoint);
             var newRotation = sliceRotation[i].stoppoint;
-            //$('#console').append('currentRotation before wheel turn: '+currentRotation);
             $('#nav-name .title').html(sliceRotation[i].name);
             console.log("sliceRotation[i].link: "+sliceRotation[i].link);
             console.log("currentAnchor: "+currentAnchor);
@@ -354,7 +295,6 @@ function animateMobileWheel(anchor){
                 }
                 mobileNavTweenTurn.fromTo(mobileNavName, 1, {opacity: 1}, {opacity: 1}, "-=1");
                 currentRotation = newRotation;
-                //$('#console').append('<p>newRotation after wheel turn: '+newRotation+'</p>');
             }
             
         }
@@ -390,19 +330,14 @@ function checkIE(){
     if (msie > 0) {
         // IE 10 or older => return version number
         styleForIE();
-
-        $('#infograph_modal').on('shown.bs.modal', function(){
-            var imgHeight = $('#infograph_modal .modal-image img').height();
-            $('#infograph_modal .modal-body').height(imgHeight);
-            //console.log('imgHeight: '+imgHeight);
-            $('#infograph_modal').modal('handleUpdate');
-        });
+        modalFixForIE();
     }
 
     var trident = ua.indexOf('Trident/');
     if (trident > 0) {
         // IE 11 => return version number
         styleForIE();
+        modalFixForIE();
     }
 
     var edge = ua.indexOf('Edge/');
@@ -414,6 +349,15 @@ function checkIE(){
     // other browser
     return false;
     }
+}
+
+function modalFixForIE(){
+    $('#infograph_modal').on('shown.bs.modal', function(){
+        var imgHeight = $('#infograph_modal .modal-image img').height();
+        $('#infograph_modal .modal-body').height(imgHeight);
+        //console.log('imgHeight: '+imgHeight);
+        $('#infograph_modal').modal('handleUpdate');
+    });
 }
 
 function styleForIE(){
@@ -463,7 +407,6 @@ function createCircularMenu(_ref){
     sectorAngle = cmAngleInDegrees;
     mobileNavRadius = cmRadius;
     rotationStopPoint = (sectorAngle/2)-90;
-    console.log('cmAngleInDegrees on SVG create: '+ cmAngleInDegrees);
     
     var svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute('xmlns', svgNS);
@@ -516,13 +459,10 @@ function createCircularMenu(_ref){
 
         document.getElementById('svg-link-'+index).appendChild(svgpath);
 
-        //var cmAngleIconRotation = (cmAngleInDegrees/2)+(iconWidth/4);
         var cmPieAngleRotation = 45+(cmAngleInDegrees/2);
         var cmDonutAngleRotation = (cmAngleInDegrees/2)-90;
         var xPos = (cmWidth/2)-(iconWidth/2);
         var yPos = (cmHeight/2)-(iconHeight/2);
-        console.log("xPos: "+xPos);
-        console.log("yPos: "+yPos);
         var svgicon = document.createElementNS(svgNS, "use");
         svgicon.setAttributeNS(null, 'id', 'svg-icon-'+index);
         svgicon.setAttributeNS(svgLinkNS, 'xlink:href', '#'+svgIconID);
@@ -568,10 +508,6 @@ function createCircularMenu(_ref){
             mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {'margin-top': '0px'}, '-=0.5');
             mobileNavTweenShow.fromTo(mobileNav, 1, {opacity:0}, {opacity:1}, '-=0.5');
             mobileNavTweenShow.fromTo(mobileNavName, 0.5, {bottom:-50}, {bottom:mobileNavRadius+10}, '-=1');
-            //mobileNavTweenShow.to(mobileNavButtonIcon, 0.5, {opacity:0}, '-=0.5');
-            //mobileNavTweenShow.to(menuToggleClose, 0.5, {opacity:1}, '-=0.5');
-            //mobileNavTweenShow.to(menuToggleBars, 0.5, {css: {marginBottom: '-100px'}, ease:Strong.easeOut}, '-=1');
-            //mobileNavTweenShow.to(menuToggleClose, 0.5, {css: {marginBottom: '5px'}, ease:Strong.easeOut}, '-=1');
             mobileNavTweenShow.staggerFrom(mobileNavSlices, 1, {
                 rotation:0,
                 svgOrigin: cmCenterX+" "+cmCenterY,
@@ -593,19 +529,13 @@ function createCircularMenu(_ref){
                 mobileNav.toggleClass('active');
                 if(mobileNav.hasClass('active')){
                     $('#icon-bars').addClass('clicked');
-                    //$('body').bind('touchmove', function(e){e.preventDefault()});
-                    //$('body').addClass('stop-scrolling')
                     mobileNavTweenShow.play();
-                    //$('#console').append('<p>nav button clicked: open</p>');
                     window.document.body.addEventListener('touchstart', rotateStart, false);
                     window.document.body.addEventListener('touchmove', rotateMove, false);
                     window.document.body.addEventListener('touchend', rotateEnd, false);
                 }else{
-                    //$('body').unbind('touchmove');
-                    //$('body').removeClass('stop-scrolling')
                     $('#icon-bars').removeClass('clicked');
                     mobileNavTweenShow.reverse();
-                    //$('#console').append('<p>nav button clicked: close</p>');
                     window.document.body.removeEventListener('touchstart', rotateStart, false);
                     window.document.body.removeEventListener('touchmove', rotateMove, false);
                     window.document.body.removeEventListener('touchend', rotateEnd, false);
@@ -623,12 +553,10 @@ function createCircularMenu(_ref){
 
 var rotateStart = function(event){
     var touch = event.touches[0];
-    //$('#console').html(touch.pageX,touch.pageY+'<br>');
     touchStartX = touch.pageX;
     touchStartY = touch.pageY;
     console.log('currentRotation: '+currentRotation);
     console.log('rotationStopPoint: '+rotationStopPoint);
-    //$("#console").append('<p>start: '+touch.pageX+','+touch.pageY+'</p>');
 }
 var rotateMove = function(event){
     var touch = event.touches[0];
@@ -638,27 +566,20 @@ var rotateMove = function(event){
         (currentRotation > -(rotationStopPoint)) ? currentRotation -= 360 : currentRotation = currentRotation;
         (currentRotation < -(360+rotationStopPoint)) ? currentRotation += 360  : currentRotation = currentRotation;
         $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
-        console.log("============= LEFT ==============");
         for(var j=0; j<sliceRotation.length; j++){
             $('#nav-name .title').html(checkTitle(j, "left"));
         }
         touchStartX = touchMoveX;
-        console.log('<p>currentRotation on move left: '+currentRotation+'</p>');
     }else{
         currentRotation += 5;
         (currentRotation > -(rotationStopPoint)) ? currentRotation -= 360 : currentRotation = currentRotation;
         (currentRotation < -(360+rotationStopPoint)) ? currentRotation += 360  : currentRotation = currentRotation;
         $('#circularmenu').css('transform', 'rotate('+currentRotation+'deg)');
-        console.log("============= RIGHT ==============");
         for(var j=0; j<sliceRotation.length; j++){
             $('#nav-name .title').html(checkTitle(j, "right"));
         }
         touchStartX = touchMoveX;
-        console.log('<p>currentRotation on rotate right: '+currentRotation+'</p>');
     }
-    //$('#console').append(touch.pageX,touch.pageY+'<br>');
-    //console.log('move: '+touch.pageX+','+touch.pageY);
-    //$("#console").append('move: '+touch.pageX+','+touch.pageY+'</p>');
 }
 var rotateEnd = function(event){
     //$("#console").append('<p>touch ended</p>');
@@ -672,11 +593,9 @@ function checkTitle(index, dir){
     console.log("j: "+index+", currentRotation: "+currentRotation+", sliceRotation.stoppoint: "+sliceRotation[index].stoppoint+", sliceRotation.stoppoint+1: "+sliceRotation[k].stoppoint);
     if(currentRotation <= sliceRotation[index].stoppoint+(sectorAngle/2)  && dir=="left"){
         return sliceRotation[index].name;
-        console.log("sliceRotation.name: "+sliceRotation[index].name);
     }
     if(currentRotation <= sliceRotation[index].stoppoint+(sectorAngle/2)  && dir=="right"){
         return sliceRotation[index].name;
-        console.log("sliceRotation.name: "+sliceRotation[index].name);
     }
 }
 
@@ -717,15 +636,12 @@ function startAnimation(){
     controller = new ScrollMagic.Controller();
     controller_h = new ScrollMagic.Controller({vertical:false});   
 
-    //$("#console").append("<p>Start Animation</p>");
-
     $('.section.fade').each(function(){
         // Create a scene for each project
         sectionFadeScene = new ScrollMagic.Scene({
             triggerElement: this,
             triggerHook: 0.8
         })
-        //.addIndicators()
         .setClassToggle(this, 'fade-in')
         .addTo(controller);
     });
@@ -738,7 +654,6 @@ function startAnimation(){
         homeSubtitle = $('#section-home h3');
     TweenMax.set(homeContent, {visibility:'visible'});
     homeAnimation = new TimelineMax();
-    //firstLoad ? homeAnimation.delay(0.5) : homeAnimation.delay(2);
     homeAnimation.from(homeVideo, 1, {opacity:0});
     homeAnimation.from(homeTitle, 1, {'top':'-100px', opacity:0, ease:Power4.easeOut}, "-=0.5");
     homeAnimation.from(homeHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -748,11 +663,9 @@ function startAnimation(){
         triggerHook: 0.5
     })
     .setTween(homeAnimation)
-    //.addIndicators({name: "Home"})
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Home Animation Done</p>");
     });
 
     /* Overview Animation */ 
@@ -764,7 +677,6 @@ function startAnimation(){
         overviewSVGStroke = $('#section-overview svg #circle-stroke');
         overviewImage = $('#section-overview .overview-image img');
     overviewAnimation = new TimelineMax();
-    //firstLoad ? overviewAnimation.delay(1) : overAnimation.delay(0);
     overviewAnimation.from(overviewTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewSubTitle, 1, {'left': '-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     overviewAnimation.from(overviewHR, 1, {width: '0%', left: '0px', ease:Cubic.easeOut}, "-=0.5");
@@ -776,11 +688,9 @@ function startAnimation(){
         triggerHook: 0.5
     })
     .setTween(overviewAnimation)
-    //.addIndicators({name: "Overview"})
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Overview Animation Done</p>");
     });
 
     /* Insights Animation */
@@ -788,7 +698,6 @@ function startAnimation(){
         insightsTitle = $('#section-insights .heading h1'),
         insightsSlides = $('#section-insights .insight');
     insightsAnimation = new TimelineMax();
-    //firstLoad ? insightsAnimation.delay(1) : insightsAnimation.delay(0);
     insightsAnimation.from(insightsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     insightsAnimation.staggerFromTo(insightsSlides, 1, {y:'110%', ease:Ease.easeOut}, {y:'0%', delay:0}, 0.1);
     insightsScene = new ScrollMagic.Scene({
@@ -799,7 +708,6 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Insights Animation Done</p>");
     });
 
     /* Report Animation */
@@ -810,7 +718,6 @@ function startAnimation(){
         reportFormRows = $('#section-report .report-form .row');
     var reportController = mobile ? controller : controller_h    
     reportAnimation = new TimelineMax();
-    //firstLoad ? reportAnimation.delay(1) : reportAnimation.delay(0);
     reportAnimation.from(reportTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     reportAnimation.from(reportCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     reportAnimation.from(reportForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -822,7 +729,6 @@ function startAnimation(){
     .addTo(reportController)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Report Animation Done</p>");
     });
 
     /* Key Findings Animation */
@@ -830,7 +736,6 @@ function startAnimation(){
         findingsTitle = $('#section-presentation .heading h1'),
         findingsSlides = $('#section-presentation #findings-content');
     findingsAnimation = new TimelineMax();
-    //firstLoad ? findingsAnimation.delay(1) : findingsAnimation.delay(0);
     findingsAnimation.from(findingsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     findingsAnimation.from(findingsSlides, 1, {opacity:0}, "-=0.5");
     findingsScene = new ScrollMagic.Scene({
@@ -840,7 +745,6 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Findings Animation Done</p>");
     });
 
     /* Press Release Animation */

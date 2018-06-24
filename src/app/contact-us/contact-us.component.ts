@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Headers, Http, Request, RequestMethod, RequestOptions, Response } from '@angular/http';
 import { DataService } from '../shared/data.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-contact-us',
@@ -67,6 +67,7 @@ export class ContactUsComponent implements OnInit {
       lead_source: this.formBuilder.control('Partner Aquisition Campaign'),
       '00N20000001DX1u': this.formBuilder.control('CFOSurveyResults'),
       rating: this.formBuilder.control('Hot'),
+      oid: this.formBuilder.control('00D200000006Adm'),
       message: this.formBuilder.control(null)
     });
     
@@ -158,7 +159,7 @@ export class ContactUsComponent implements OnInit {
 
   onSubmitForm(){
     this.contactForm.setValue({
-      firstName:    this.firstName,
+      firstName: this.firstName,
       lastName: this.lastName,
       company: this.company,
       designation: this.designation,
@@ -169,24 +170,36 @@ export class ContactUsComponent implements OnInit {
       message: this.message,
       lead_source: 'Partner Aquisition Campaign',
       '00N20000001DX1u': 'CFOSurveyResults',
-      rating: 'Hot'
+      rating: 'Hot',
+      oid: '00D200000006Adm'
     });
     this.validateAllFormFields(this.contactForm);
 
     if (this.contactForm.valid) {
-      this.formFilled = true;
+      const data = new HttpParams()
+        .set("firstName", this.firstName)
+        .set("lastName", this.lastName)
+        .set("company", this.company)
+        .set("designation", this.designation)
+        .set("email", this.email)
+        .set("country", this.country)
+        .set("countryCode", this.countryCode)
+        .set("mobile", this.mobile)
+        .set("message", this.message)
+        .set("lead_source", "Partner Aquisition Campaign")
+        .set('00N20000001DX1u', "CFOSurveyResults")
+        .set("rating", "Hot")
+        .set("oid", "00D200000006Adm");
       console.log(this.contactForm.value);
 
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
       let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
-      //let url = 'http://192.168.15.191:4200/'
+      //let url = 'http://localhost:8888/AMEX/sites/cfo-research/src/receive_data.php';
       const httpOptions = {
         headers: new HttpHeaders({
-          'Content-Type':  'application/json'
+          'Content-Type':  'application/x-www-form-urlencoded; charset=UTF-8'
         })
       };
-      this.http.post(url, JSON.stringify(this.contactForm.value), httpOptions)
+      this.http.post(url, data.toString(), httpOptions)
         .subscribe(
           (val) => {
             this.formFilled = true;

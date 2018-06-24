@@ -4,7 +4,7 @@
     position: relative;
 }
 #section-presentation .heading-container{
-    margin-bottom:$heading-bottom-margin;
+    margin-bottom:2rem;
 }
 
 #section-presentation .findings-slide{
@@ -19,10 +19,31 @@
     max-width: 75%;
     margin: 0 auto;
 }
+#section-presentation .btn-primary{
+    background-color:transparent;
+    outline: none;
+    border-color: rgba($dark-blue, 0.5);
+    color:$dark-blue;
+}
+
+@include media-breakpoint-down(lg){
+    #section-presentation #download-presentation{
+        position: relative;
+        margin-bottom: 60px;
+    }
+}
 
 @include media-breakpoint-down(sm){
     #section-presentation .inner-slide img{
         max-width: 100%;
         margin: 0 auto;
+    }
+    #section-presentation .btn-primary{
+        border-color: rgba($white, 0.5);
+        color:$white
+    }
+    #section-presentation #download-presentation{
+        position: relative;
+        margin-top: 0px;
     }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Headers, Http, Request, RequestMethod, RequestOptions, Response } from '@angular/http';
 import { DataService } from '../shared/data.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-reports',
@@ -78,8 +78,7 @@ export class ReportsComponent implements OnInit {
       lead_source: this.formBuilder.control('Partner Aquisition Campaign'),
       '00N20000001DX1u': this.formBuilder.control('CFOSurveyResults'),
       rating: this.formBuilder.control('Hot'),
-      oid: this.formBuilder.control('00D200000006Adm'),
-      retURL: this.formBuilder.control('https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html')
+      oid: this.formBuilder.control('00D200000006Adm')
     }, {updateOn: 'submit'});
 
    this.firstNameControl =  this.reportForm.get('firstName');
@@ -193,33 +192,36 @@ export class ReportsComponent implements OnInit {
       lead_source: 'Partner Aquisition Campaign',
       '00N20000001DX1u': 'CFOSurveyResults',
       rating: 'Hot',
-      oid: '00D200000006Adm',
-      retURL: 'https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html'
+      oid: '00D200000006Adm'
     });
     this.validateAllFormFields(this.reportForm);
 
     if (this.reportForm.valid) {
-      this.downloadable = true;
+      //this.downloadable = true;
       console.log(this.reportForm.value);
 
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      //let url = 'http://denzeltech.com/ogilvy_listener/index.php';
-      //let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
-      let url = 'http://localhost/cfo-research/src/receive_data.php';
-      //let url = 'http://192.168.15.191:4200/'
+      const data = new HttpParams()
+        .set("firstName", this.firstName)
+        .set("lastName", this.lastName)
+        .set("company", this.company)
+        .set("designation", this.designation)
+        .set("email", this.email)
+        .set("country", this.country)
+        .set("countryCode", this.countryCode)
+        .set("mobile", this.mobile)
+        .set("lead_source", "Partner Aquisition Campaign")
+        .set('00N20000001DX1u', "CFOSurveyResults")
+        .set("rating", "Hot")
+        .set("oid", "00D200000006Adm");
+
+      let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+      //let url = 'http://localhost:8888/AMEX/sites/cfo-research/src/receive_data.php';
       const httpOptions = {
         headers: new HttpHeaders({
-          //'Content-Type':  'application/json'
-          //'Content-Type':  'multipart/form-data'
-          //'Content-Type':  'application/form-data'
-          'Access-Control-Allow-Origin': '*',
           'Content-Type':  'application/x-www-form-urlencoded; charset=UTF-8'
-          //'Content-Type':  'text/plain'
         })
       };
-      console.log('10:09pm');
-      this.http.post(url, JSON.stringify(this.reportForm.value), httpOptions)
+      this.http.post(url, data.toString(), httpOptions)
         .subscribe(
           (val) => {
             this.downloadable = true;
@@ -235,7 +237,6 @@ export class ReportsComponent implements OnInit {
         );
     } else {
       this.validateAllFormFields(this.reportForm);
-      //console.log("form not valid");
     }
   }
 

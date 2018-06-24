@@ -17,7 +17,6 @@
       <p>Please complete the form to access the report.</p>
       <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="reportForm" (ngSubmit)="onSubmitForm()">
         <input type="hidden" name="oid" formControlName="oid"  value="00D200000006Adm">
-        <input type="hidden" name="retURL" formControlName="retURL"  value="https://secure.americanexpress.com.bh/gulfair2018/aeme/thank-you-gold.html">
       <!--<form id="ApplicationFormPROther" ngNoForm novalidate *ngIf="formActive" [formGroup]="reportForm" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" (ngSubmit)="onSubmitForm()">-->
         <div class="form-group row">
           <div class="col-sm-6">

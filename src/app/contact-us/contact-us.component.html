@@ -11,7 +11,8 @@
     <div class="col-md-12">
       <p>Have a query or a comment? Just send us a message using this form. </p>
       <!--<form novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">-->
-      <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()"> 
+      <form id="ApplicationFormPROther" novalidate *ngIf="formActive" [formGroup]="contactForm" (ngSubmit)="onSubmitForm()">
+        <input type="hidden" name="oid" formControlName="oid"  value="00D200000006Adm">
         <div class="row">
           <div class="col-md-12 col-lg-6">
 
