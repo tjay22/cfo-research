@@ -13,12 +13,10 @@ export class NavigationComponent implements OnInit {
   linksMobile = [];
   screenWidth;
   screenHeight;
+  screenOrientation;
   desktop = true;
   mobile = false;
-  xs = 576;
-  sm = 768;
-  md = 992;
-  lg = 1200;
+  mobileLandscape = false;
 
   constructor(private data:DataService) {
     this.links = [
@@ -46,8 +44,7 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     this.data.currentScreenWidth.subscribe((value) => this.screenWidth = value );
     this.data.currentScreenHeight.subscribe((value) => this.screenHeight = value );
-    console.log("Navigation onInit Width: "+this.screenWidth);
-    console.log("Navigation onInit Height: "+this.screenHeight);
+    this.data.currentScreenOrientation.subscribe((value) => this.screenOrientation = value );
     this.initNavigation();
   }
 
@@ -61,12 +58,26 @@ export class NavigationComponent implements OnInit {
   }
 
   initNavigation(){
-    if (this.screenWidth > this.xs){
-      this.desktop = true;
-      this.mobile = false;
+    if(this.screenWidth < this.screenHeight){
+      this.data.changeOrientation("portrait");
     }else{
+      this.data.changeOrientation("landscape");
+    }
+
+    if((this.screenOrientation == "landscape" && this.screenHeight < this.data.xs) || (this.screenOrientation == "portrait" && this.screenWidth < this.data.xs)){
       this.desktop = false;
       this.mobile = true;
+      this.data.desktop = false;
+      this.data.mobile = true;
+    }else{
+      this.desktop = true;
+      this.mobile = false;
+      this.data.desktop = true;
+      this.data.mobile = false;
+    }
+    
+    if(this.screenOrientation == "landscape" && this.screenHeight < this.data.xs){
+      this.mobileLandscape = true;
     }
   }
 

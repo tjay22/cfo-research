@@ -260,9 +260,8 @@ body.stop-scrolling{
     visibility: hidden;
 }
 
-@media (max-width: 576px) { #circularmenu { display:block; height: 270px; width: 270px; } }
-
-
+@media (max-width: 576px) and (orientation: portrait) { #circularmenu { display:block; height: 270px; width: 270px; } }
+@media (max-width: 992px) and (orientation: landscape) { #circularmenu { display:block; height: 270px; width: 270px; } }
 
 /*@include media-breakpoint-up(sm) { ... }
 @include media-breakpoint-up(md) { ... }

@@ -21,7 +21,7 @@
      <div class="title"></div>
      <div class="arrow"></div>
    </div>
-   <div id="circularmenu">
+   <div id="circularmenu" *ngIf="!mobileLandscape">
     <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">
       <a class="nav-link" href="{{link.linkhref}}" [attr.data-icon]="link.svgicon" [attr.data-anchor]="link.anchor" [attr.data-content]="link.content"> 
         <!--<i id="{{link.anchor}}" class="fas {{link.icon}} fa-sm"></i>-->
@@ -30,7 +30,7 @@
    </div>
    <!--<div id="circularmenu-rotate"></div>-->
 
-  <div id="nav-container">
+  <div id="nav-container" *ngIf="!mobileLandscape">
     <div id="corner">
       <button class="navbar-toggler" type="button" data-toggle="active" data-target="#circularmenu" aria-controls="circularmenu" aria-expanded="false" aria-label="Toggle navigation">
           <svg id="icon-bars" class="inline-svg icon-bars" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="50%" y="50%"
@@ -52,16 +52,20 @@
           </g>
         </svg>
       </button>
-      <!-- <div class="icons">
-        <div class="bars">
-          <i id="menu-toggle" class="fa fa-bars fa-sm"></i>
-        </div>
-        <div class="times">
-          <i id="menu-toggle-close" class="fa fa-times fa-sm"></i>
-        </div>
-      </div> -->
     </div>
   </div>
+
+  <nav id="main-nav" *ngIf="mobileLandscape" class="fixed-top cfo-fixed navbar navbar-expand-lg navbar-light"  (window:resize)="onResize($event)" [class.hidden]="desktop">
+    <div id="navbarSupportedContent"> <!-- if collapse needed, add class="collapse navbar-collapse" -->
+      <ul class="navbar-nav mr-auto">
+        <li *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" data-placement="left" data-trigger="hover" [attr.data-content]="link.content" data-toggle="popover" class="nav-item">
+          <a class="nav-link" href="{{link.linkhref}}"> 
+            <i class="fas {{link.icon}} fa-fw"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
   <!--<div id="navbar-items">
     <div *ngFor="let link of linksMobile" [attr.data-menuanchor]="link.anchor" class="nav-item">

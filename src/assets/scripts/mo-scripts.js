@@ -9,6 +9,7 @@ var screenSmall = 576;
 var screenMedium = 768;
 var screenLarge = 992;
 var screenExtraLarge = 1200;
+var screenOrientation;
 var screenWidth, prevScreenWidth, screenHeight, prevScreenHeight;
 var socialIcons, slickArrows;
 var firstLoad = true;
@@ -35,6 +36,8 @@ var findingsSlick;
 var insightsSlick;
 
 var mobile = false;
+var mobilePortrait = false;
+var mobileLandscape = false;
 var screenResizeCount = 0;
 var resizeId;
 var sliceRotation = [];
@@ -43,6 +46,8 @@ var currentAnchor = "home";
 var currentRotation = 0;
 var mobileNavRadius;
 var touchStartX, touchStartY, touchMoveX, touchMoveY, rotationStopPoint;
+
+window.onorientationchange = function() { window.location.reload(); };
 
 $(document).ready(function() {
 
@@ -64,7 +69,6 @@ $(document).ready(function() {
 });
 
 function handleFileComplete() {
-    //console.log("files loaded");
 
     setTimeout(function(){ $('#preloader').fadeOut(1000); }, 3000);
 
@@ -74,7 +78,6 @@ function handleFileComplete() {
         var imgURL = $(this).data('content');
         var imgString = '<img src="'+imgURL+'" style="max-width:100%;">';
         $('#infograph_modal .modal-body .modal-image').html(imgString);
-        //$('#infograph_modal').modal('show');
         $('#infograph_modal').modal('show');
     })
     
@@ -82,18 +85,18 @@ function handleFileComplete() {
     screenWidth = $(window).width();
     screenHeight = $(window).height();
     prevScreenWidth = screenWidth;
-    //$('#console').append("<p>Document Ready: W("+screenWidth + ") x H(" + screenHeight + ")</p>");
+    //console.log("<p>Document Ready: W("+screenWidth + ") x H(" + screenHeight + ")</p>");
 
-    (screenWidth > screenSmall) ? mobile = false : mobile = true;
+    (screenWidth > screenHeight) ? screenOrientation = "landscape" : screenOrientation = "portrait";
 
-    //$("#console").append("<p>document ready mobile: "+mobile+"</p>");
+    (screenOrientation == "landscape" && screenHeight < screenSmall) ? mobileLandscape = true : mobileLandscape = false;
+
+    (screenOrientation == "portrait" && screenWidth < screenSmall) ? mobilePortrait = true : mobilePortrait = false;
+
+    (mobileLandscape || mobilePortrait) ? mobile = true : mobile = false;
 
     socialIcons = $("#social-icons .nav-link");
     slickArrows = $(".slick-arrow");
-    $('[data-toggle="popover"]').popover({
-        placement : 'left',
-        trigger : 'hover'
-    });
 
     var SVGsToInject = document.querySelectorAll('.svg-sprite');
     SVGInjector(SVGsToInject);
@@ -124,7 +127,59 @@ $( window ).resize(function() {
 
 function setupPage(){
 
+    if(mobileLandscape){
+
+        $('.mobile').css('display', 'block');
+        $('.desktop').css('display', 'none');
+
+        initPage({
+            screenSize: 'small',
+            fpID: '#fullpage-mobile',
+            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-information', 'press-release', 'corporate-payment-solutions', 'contact-us'],
+            fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
+            fpScroll: 1,
+            fpAutoScrolling: false,
+            popPlacement: 'top',
+            popTrigger: 'click'
+        });
+
+        createLandscapeMenu({
+            container: 'main-nav'
+        });
+        $('[data-toggle="popover"]').popover({
+            placement : 'top',
+            trigger : 'hover'
+        });
+
+    }
+    if(mobilePortrait){
+
+        $('.mobile').css('display', 'block');
+        $('.desktop').css('display', 'none');
+
+        initPage({
+            screenSize: 'small',
+            fpID: '#fullpage-mobile',
+            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-information', 'press-release', 'corporate-payment-solutions', 'contact-us'],
+            fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
+            fpScroll: 1,
+            fpAutoScrolling: false,
+            popPlacement: 'top',
+            popTrigger: 'hover'
+        });
+
+        createCircularMenu({
+            container: 'circularmenu',
+            svgId: 'svg-menu',
+            type: 'donut'
+        });
+    }
     if(!mobile){
+
+        $('[data-toggle="popover"]').popover({
+            placement : 'left',
+            trigger : 'hover'
+        });
 
         $('.mobile').css('display', 'none');
         $('.desktop').css('display', 'block');
@@ -147,31 +202,8 @@ function setupPage(){
         }, {
             x: 0,
             delay: 0.5
-        }, 0.1, function(){
-            //$("#console").append("<p>desktop navigation done</p>");
-        });
+        }, 0.1);
 
-    }else{
-
-        $('.mobile').css('display', 'block');
-        $('.desktop').css('display', 'none');
-
-        initPage({
-            screenSize: 'small',
-            fpID: '#fullpage-mobile',
-            fpAnchors: ['home', 'overview', 'insights', 'report', 'press-information', 'press-release', 'corporate-payment-solutions', 'contact-us'],
-            fpSectionsColor: [darkBlue, white, darkBlue, white, darkBlue, white, darkBlue, white],
-            fpScroll: 1,
-            fpAutoScrolling: false,
-            popPlacement: 'top',
-            popTrigger: 'hover'
-        });
-
-        createCircularMenu({
-            container: 'circularmenu',
-            svgId: 'svg-menu',
-            type: 'donut'
-        });
     }
 
 }
@@ -205,7 +237,6 @@ function initPage(_ref){
                     startAnimation();
                 }
                 $("#scroll-initiator").click(function(){
-                    console.log("clicked");
                     $.fn.fullpage.moveTo(2, 0);
                 });
             },
@@ -219,8 +250,6 @@ function initPage(_ref){
                 }
             },
             afterLoad: function(anchorLink, index){
-                console.log(anchorLink);
-
                 currentAnchor = anchorLink;
                 animateMobileWheel(currentAnchor);
             }
@@ -231,8 +260,8 @@ function initPage(_ref){
 
         overviewSlick = $('#overview-content').not('.slick-initialized').slick({
             infinite: false,
-            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
-            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inheirt;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>"
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\"> \n <i class=\"fas fa-chevron-right fa-lg\"></i> \n </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inheirt;\"> \n <i class=\"fas fa-chevron-left fa-lg\"></i> \n </div>"
         }).on('afterChange', function () {
             $('.slick-arrow').css('display', 'block');
             $('.slick-disabled').css('display', 'none');
@@ -240,8 +269,8 @@ function initPage(_ref){
 
         findingsSlick = $('#findings-content').not('.slick-initialized').slick({
             infinite: false,
-            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
-            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>"
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\"> \n <i class=\"fas fa-chevron-right fa-lg\"></i> \n </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\"> \n <i class=\"fas fa-chevron-left fa-lg\"></i> \n </div>"
         }).on('afterChange', function () {
             $('.slick-arrow').css('display', 'block');
             $('.slick-disabled').css('display', 'none');
@@ -249,8 +278,8 @@ function initPage(_ref){
 
         insightsSlick = $('#insights-content').not('.slick-initialized').slick({
             infinite: false,
-            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-right fa-lg\"></i>\n                        </div>",
-            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\">\n                            <i class=\"fas fa-chevron-left fa-lg\"></i>\n                        </div>",
+            nextArrow: "<div class=\"slick-button slick-next\" style=\"color:inherit;\"> \n <i class=\"fas fa-chevron-right fa-lg\"></i> \n </div>",
+            prevArrow: "<div class=\"slick-button slick-prev\" style=\"color:inherit;\"> \n <i class=\"fas fa-chevron-left fa-lg\"></i> \n </div>",
             slidesToShow: 3,
             responsive: [{
                 breakpoint: screenExtraLarge,
@@ -258,7 +287,12 @@ function initPage(_ref){
                     slidesToShow: 3
                 }
             }, {
-                breakpoint: screenLarge,
+                breakpoint: screenMedium,
+                settings: {
+                    slidesToShow: 2
+                }
+            }, {
+                breakpoint: screenSmall,
                 settings: {
                     slidesToShow: 1
                 }
@@ -282,8 +316,6 @@ function animateMobileWheel(anchor){
             var mobileNavTweenTurn = new TimelineMax({pause:true});
             var newRotation = sliceRotation[i].stoppoint;
             $('#nav-name .title').html(sliceRotation[i].name);
-            console.log("sliceRotation[i].link: "+sliceRotation[i].link);
-            console.log("currentAnchor: "+currentAnchor);
             mobileNavTweenTurn.set(mobileNavName, {display: 'block', bottom:mobileNavRadius+10, opacity:0})
             mobileNavTweenTurn.fromTo(mobileNav, 1, {rotation:currentRotation}, {directionalRotation:newRotation+"_short", ease:Strong.easeOut});
             if(mobileNav.hasClass('active') && (sliceRotation[i].link != currentAnchor)){
@@ -355,7 +387,6 @@ function modalFixForIE(){
     $('#infograph_modal').on('shown.bs.modal', function(){
         var imgHeight = $('#infograph_modal .modal-image img').height();
         $('#infograph_modal .modal-body').height(imgHeight);
-        //console.log('imgHeight: '+imgHeight);
         $('#infograph_modal').modal('handleUpdate');
     });
 }
@@ -378,6 +409,18 @@ function styleForIE(){
     });
     $('#section-presentation .inner-slide img').css({
         'max-width': '70%'
+    });
+}
+
+function createLandscapeMenu(_ref){
+    var element = _ref.container;
+    var navLSItemNum = $( "#"+element+" .nav-item").length;
+    var navLSWidth = screenWidth / navLSItemNum;
+    $( "#"+element+" .nav-item").css({
+        width: navLSWidth
+    });
+    $( "#"+element+" .nav-item .nav-link").css({
+        'text-align': 'center'
     });
 }
 
@@ -544,8 +587,6 @@ function createCircularMenu(_ref){
                 
             });
         }else{
-            console.log("sliceRotation: "+sliceRotation[count].deg);
-            console.log("sliceRotation: "+sliceRotation[count].link);
             count++;
         }
     });
@@ -555,8 +596,6 @@ var rotateStart = function(event){
     var touch = event.touches[0];
     touchStartX = touch.pageX;
     touchStartY = touch.pageY;
-    console.log('currentRotation: '+currentRotation);
-    console.log('rotationStopPoint: '+rotationStopPoint);
 }
 var rotateMove = function(event){
     var touch = event.touches[0];
@@ -581,16 +620,12 @@ var rotateMove = function(event){
         touchStartX = touchMoveX;
     }
 }
-var rotateEnd = function(event){
-    //$("#console").append('<p>touch ended</p>');
-    //$('#console').append('<p>currentRotation on end: '+currentRotation+'</p>');
-}
+var rotateEnd = function(event){}
 
 function checkTitle(index, dir){
     var k = index;
     k += 1;
     (k>sliceRotation.length-1) ? k = 0 : k=k;
-    console.log("j: "+index+", currentRotation: "+currentRotation+", sliceRotation.stoppoint: "+sliceRotation[index].stoppoint+", sliceRotation.stoppoint+1: "+sliceRotation[k].stoppoint);
     if(currentRotation <= sliceRotation[index].stoppoint+(sectorAngle/2)  && dir=="left"){
         return sliceRotation[index].name;
     }
@@ -754,7 +789,6 @@ function startAnimation(){
         prButtons = $('#section-press-release .buttons');
     var prController = mobile ? controller : controller_h    
     prAnimation = new TimelineMax();
-    //firstLoad ? prAnimation.delay(1) : prAnimation.delay(0);
     prAnimation.from(prTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     prAnimation.from(prEnglish, 1, {left:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
     prAnimation.from(prButtons, 1, {right:'-100%', opacity:0, ease:Back.easeInOut}, "-=0.5");
@@ -765,7 +799,6 @@ function startAnimation(){
     .addTo(prController)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>PR Animation Done</p>");
     });
 
     /* CPS Animation */
@@ -775,7 +808,6 @@ function startAnimation(){
         cpsForm = $('#section-cps .cps-form'),
         cpsFormRows = $('#section-cps .cps-form .row');
     cpsAnimation = new TimelineMax();
-    //firstLoad ? cpsAnimation.delay(1) : cpsAnimation.delay(0);
     cpsAnimation.from(cpsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     cpsAnimation.from(cpsCopy, 1, {left:'-150%', ease:Back.easeInOut}, "-=0.5");
     cpsAnimation.from(cpsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
@@ -787,7 +819,6 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>CPS Animation Done</p>");
     });
 
     /* Contact Us Animation */
@@ -796,7 +827,6 @@ function startAnimation(){
         contactUsForm = $('#section-contact-us .contact-form'),
         contactUsFormRows = $('#section-contact-us .contact-form .row');
     contactUsAnimation = new TimelineMax();
-    //firstLoad ? contactUsAnimation.delay(1) : contactUsAnimation.delay(0);
     contactUsAnimation.from(contactUsTitle, 1, {'top':'-100px', opacity:0, ease:Bounce.easeOut}, "-=0.5");
     contactUsAnimation.from(contactUsForm, 1, {opacity:0, ease:Cubic.easeInOut}, "-=0.5");
     contactUsAnimation.staggerFromTo(contactUsFormRows, 1, {x:'120%', ease:Back.easeInOut}, {x:'0%', delay:0}, 0.1);
@@ -807,6 +837,5 @@ function startAnimation(){
     .addTo(controller)
     .on("end", function(){
         firstLoad = false;
-        //$("#console").append("<p>Contact Us Animation Done</p>");
     });
 }

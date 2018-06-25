@@ -234,6 +234,9 @@ export class CpsComponent implements OnInit {
         let countryCodeControl = this.cpsForm.get('countryCode') as FormControl;
         countryCodeControl.setValue(this.countryItems[i].dial_code);
 
+        this.data.currentCountry = this.countryItems[i].name;
+        this.data.currentCountryCode = this.countryItems[i].dial_code;
+
       }
     }
   }

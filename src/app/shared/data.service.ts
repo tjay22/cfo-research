@@ -15,6 +15,7 @@ export class DataService {
   private formMessage = new BehaviorSubject<string>(null);
   private screenWidth = new BehaviorSubject<number>(window.innerWidth);
   private screenHeight = new BehaviorSubject<number>(window.innerHeight);
+  private screenOrientation = new BehaviorSubject<string>(null);
 
   currentFirstName = this.formFirstName.asObservable();
   currentLastName = this.formLastName.asObservable();
@@ -27,6 +28,7 @@ export class DataService {
   currentMessage = this.formMessage.asObservable();
   currentScreenWidth = this.screenWidth.asObservable();
   currentScreenHeight = this.screenHeight.asObservable();
+  currentScreenOrientation = this.screenOrientation.asObservable();
 
   xs = 576;
   sm = 768;
@@ -80,6 +82,10 @@ export class DataService {
 
   changeScreenHeight(height: number){
     this.screenHeight.next(height);
+  }
+
+  changeOrientation(val: string){
+    this.screenOrientation.next(val);
   }
 
 }

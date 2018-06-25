@@ -34,6 +34,12 @@
     color: $white;
 }
 
+@include media-breakpoint-only(md){
+    .insight-title .btn-primary{
+        margin-bottom: 10px;
+    }
+}
+
 @include media-breakpoint-down(xs){
     .insight-title .btn-primary{
         font-size: 0.9rem;

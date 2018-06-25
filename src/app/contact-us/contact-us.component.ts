@@ -186,7 +186,7 @@ export class ContactUsComponent implements OnInit {
         .set("country", this.country)
         .set("countryCode", this.countryCode)
         .set("mobile", this.mobile)
-        .set("currency", this.message)
+        .set("00N6100000IB4rx", this.message)
         .set("lead_source", "Partner Aquisition Campaign")
         .set('00N20000001DX1u', "CFOSurveyResults")
         .set("rating", "Hot")
@@ -214,21 +214,7 @@ export class ContactUsComponent implements OnInit {
           }
         );
     } else {
-      // this.cpsForm.setValue({
-      //     firstName:    this.firstName,
-      //     lastName: this.lastName,
-      //     company: this.company,
-      //     designation: this.designation,
-      //     email: this.email,
-      //     country: this.country,
-      //     countryCode: this.countryCode,
-      //     mobile: this.mobile,
-      //     lead_source: 'Partner Aquisition Campaign',
-      //     '00N20000001DX1u': 'CFOSurveyResults',
-      //     rating: 'Hot'
-      // });
-      // this.validateAllFormFields(this.cpsForm);
-      //console.log("form not valid");
+      this.validateAllFormFields(this.contactForm);
     }
   }
 
@@ -237,8 +223,6 @@ export class ContactUsComponent implements OnInit {
       const control = formGroup.get(field);             //{3}
       if (control instanceof FormControl) {             //{4}
         control.markAsTouched({ onlySelf: true });
-        //control.markAsDirty({ onlySelf: true });
-        //control.setErrors(null);
       } else if (control instanceof FormGroup) {        //{5}
         this.validateAllFormFields(control);            //{6}
       }
@@ -253,12 +237,11 @@ export class ContactUsComponent implements OnInit {
         let countryCodeControl = this.contactForm.get('countryCode') as FormControl;
         countryCodeControl.setValue(this.countryItems[i].dial_code);
 
+        this.data.currentCountry = this.countryItems[i].name;
+        this.data.currentCountryCode = this.countryItems[i].dial_code;
+
       }
     }
-  }
-
-  checkValidity(input){
-    console.log(input);
   }
 
 }
