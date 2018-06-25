@@ -197,14 +197,13 @@ export class ReportsComponent implements OnInit {
     this.validateAllFormFields(this.reportForm);
 
     if (this.reportForm.valid) {
-      //this.downloadable = true;
-      console.log(this.reportForm.value);
+      this.downloadable = true;
 
       const data = new HttpParams()
         .set("first_name", this.firstName)
         .set("last_name", this.lastName)
         .set("company", this.company)
-        .set("saluation", this.designation)
+        .set("00N20000001CtHk", this.designation)
         .set("email", this.email)
         .set("country", this.country)
         .set("countryCode", this.countryCode)

@@ -176,11 +176,12 @@ export class ContactUsComponent implements OnInit {
     this.validateAllFormFields(this.contactForm);
 
     if (this.contactForm.valid) {
+      this.formFilled = true;
       const data = new HttpParams()
         .set("first_name", this.firstName)
         .set("last_name", this.lastName)
         .set("company", this.company)
-        .set("salutation", this.designation)
+        .set("00N20000001CtHk", this.designation)
         .set("email", this.email)
         .set("country", this.country)
         .set("countryCode", this.countryCode)
@@ -190,7 +191,6 @@ export class ContactUsComponent implements OnInit {
         .set('00N20000001DX1u', "CFOSurveyResults")
         .set("rating", "Hot")
         .set("oid", "00D200000006Adm");
-      console.log(this.contactForm.value);
 
       let url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
       //let url = 'http://localhost:8888/AMEX/sites/cfo-research/src/receive_data.php';

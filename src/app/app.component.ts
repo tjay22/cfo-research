@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   }
 
   onResize(event){
-    //console.log(event.target);
     this.screenWidth = event.target.innerWidth;
     this.screenHeight = event.target.innerHeight;
     this.data.changeScreenWidth(this.screenWidth);
@@ -44,13 +43,11 @@ export class AppComponent implements OnInit {
       this.mobile = false;
       this.data.desktop = true;
       this.data.mobile = false;
-      console.log("App Component: desktop = true");
     }else{
       this.desktop = false;
       this.mobile = true;
       this.data.desktop = false;
       this.data.mobile = true;
-      console.log("App Component: desktop = false");
       this.fpsections = [
         {
           'home' : '<app-home></app-home>',

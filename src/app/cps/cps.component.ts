@@ -166,11 +166,12 @@ export class CpsComponent implements OnInit {
     this.validateAllFormFields(this.cpsForm);
 
     if (this.cpsForm.valid) {
+      this.formFilled = true;
       const data = new HttpParams()
         .set("first_name", this.firstName)
         .set("last_name", this.lastName)
         .set("company", this.company)
-        .set("saluation", this.designation)
+        .set("00N20000001CtHk", this.designation)
         .set("email", this.email)
         .set("country", this.country)
         .set("countryCode", this.countryCode)
